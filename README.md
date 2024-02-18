@@ -25,6 +25,11 @@ Or using Conda
 
 `conda -y install bioconda::blast`
 
+**Verify BLAST Installation**
+
+`makeblastdb -h` \n
+`blastn` -h
+
 # multiBLAST Installation
 
 We suggest installing multiBLAST within your Home folder, such as `/Users/your_username/multiblast` 
@@ -50,4 +55,6 @@ Save the file and restart your terminal or run `source ~/.bash_profile` (Linux/U
 
 **Install Dependencies**
 
-`pip install -r requirements.txt`
+`pip install -r requirements.txt` or `pip3 install -r requirements.txt`
+
+**Verify 
