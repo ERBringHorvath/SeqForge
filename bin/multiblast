@@ -60,13 +60,14 @@ from query import run_blast_query
 
 def main():
     parser = argparse.ArgumentParser(prog='multiblast', description='multiBLAST: Automates the process of running BLAST queries.')
+    parser.add_argument('-v', '--version', action='version', version='%(prog)s v.1.0.0')
     subparsers = parser.add_subparsers(dest='command', help='Available commands')
 
     # Sub-parser for the "makedb" command
     parser_makedb = subparsers.add_parser('makedb', help='Create a BLAST database from a FASTA file.')
     parser_makedb.add_argument('-f', '--file_directory', required=True, help='Path to FASTA files.')
     parser_makedb.add_argument('-d', '--dbtype', choices=['nucl', 'prot'], required=True, help='Type of the database (nucl for nucleotide, prot for protein).')
-    parser_makedb.add_argument('-o', '--out', required=True, help='Name for the output database.')
+    parser_makedb.add_argument('-o', '--out', required=True, help='Path to the output database folder.')
     parser_makedb.set_defaults(func=make_blast_db)
 
     # Sub-parser for the "query" command
