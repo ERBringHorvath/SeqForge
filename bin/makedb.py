@@ -24,4 +24,4 @@ def make_blast_db(args):
             cmd = f"makeblastdb -in {input_file} -out {output_file} -dbtype {dbtype}"
             subprocess.call(cmd, shell=True)
 
-    print("Success! Databases Created.")
+    print("\033[92mDatabases successfully created\033[0m \n")
