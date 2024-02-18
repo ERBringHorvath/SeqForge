@@ -1,5 +1,9 @@
 # **multiBLAST**
 
+**This program automates the process of running BLAST (Basic Local Alignment Search Tool) <br />
+queries against multiple databases and organizing the results. It is designed to handle various <br />
+types of BLAST searches (e.g., blastn, tblastn) and formats the output for easy analysis.** <br />
+
 # Install NCBI BLAST+
 
 *multiBLAST uses [NCBI BLAST+ Software](https://pubmed.ncbi.nlm.nih.gov/20003500/)*
@@ -9,7 +13,7 @@ BLAST+: architecture and applications. BMC Bioinformatics, 10, 421. doi:10.1186/
 
 **Install BLAST+**
 
-https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/
+Download latest version of [BLAST+](https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
 
 Or using Conda
 
@@ -30,11 +34,11 @@ Or using Conda
 `makeblastdb -h` <br />
 `blastn` -h
 
-If these commands run without error, BLAST is correctly installed. If an error occurs, refer to the BLAST+ documentation
+If these commands run without error, BLAST is correctly installed. If an error occurs, refer to the [BLAST+ documentation](https://blast.ncbi.nlm.nih.gov/doc/blast-help/index.html#index)
 
 # multiBLAST Installation
 
-We suggest installing multiBLAST within your Home folder, such as `/Users/your_username/multiblast` 
+We suggest installing multiBLAST within your Home folder, such as `/Users/your_username/` 
 
 Change directory to desired installation path
 
@@ -59,4 +63,8 @@ Save the file and restart your terminal or run `source ~/.bash_profile` (Linux/U
 
 `pip install -r requirements.txt` or `pip3 install -r requirements.txt`
 
-**Verify 
+**Verify multiBLAST Installation**
+
+`multiblast --help`
+
+
