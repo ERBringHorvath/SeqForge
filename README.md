@@ -1,8 +1,8 @@
 # **multiBLAST**
 
-**This program automates the process of running BLAST (Basic Local Alignment Search Tool) <br />
-queries against multiple databases and organizing the results. It is designed to handle various <br />
-types of BLAST searches (e.g., blastn, tblastn) and formats the output for easy analysis.** <br />
+**This program automates the process of running BLAST (Basic Local Alignment Search Tool) 
+queries against multiple databases and organizing the results. It is designed to handle various 
+types of BLAST searches (e.g., blastn, tblastn) and formats the output for easy analysis.** 
 
 # Install NCBI BLAST+
 
