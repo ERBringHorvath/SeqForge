@@ -103,7 +103,7 @@ multiblast query: <br />
 Example: <br />
 `multiblast query -m tblastn -d /path/to/blast/database/folder -q /path/to/query/files/folder -e 0.01 -o /path/to/results/folder`
 
-**All multiBLAST results are concatenated to `multiblast_results.csv` within the output folder designated by `-o, --output`
+All multiBLAST results are concatenated to `multiblast_results.csv` within the output folder designated by `-o, --output`
 
 
 
