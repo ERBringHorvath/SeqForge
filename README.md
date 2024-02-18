@@ -112,5 +112,5 @@ Cite multiBLAST: <br />
 multiBLAST v.1.0.0 (https://github.com/ERBringHorvath/multiBLAST)
 
 Cite NCBI BLAST+: <br />
-Camancho C et al., **2009**. BLAST+: acrchitecture and applications. *BMC Bioinformatics*, 10, 421. 
+Camancho C et al., **2009**. BLAST+: architecture and applications. *BMC Bioinformatics*, 10, 421. 
 
