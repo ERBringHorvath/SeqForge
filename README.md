@@ -27,7 +27,7 @@ Or using Conda
 
 **Verify BLAST Installation**
 
-`makeblastdb -h` \n
+`makeblastdb -h`/
 `blastn` -h
 
 # multiBLAST Installation
