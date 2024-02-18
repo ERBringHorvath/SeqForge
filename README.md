@@ -4,6 +4,16 @@
 databases and organizing the results. It is designed to handle various types of BLAST searches (e.g., blastn, tblastn) <br />
 and formats the output for easy analysis.** 
 
+**Author:** <br />
+    Elijah R. Bring Horvath (https://github.com/ERBringHorvath)
+
+**License:** <br />
+    This script is shared under MIT License, which allows for modification and redistribution with attribution.
+
+**Note**: <br />
+    This script is intended for research and academic purposes. 
+    Please ensure you have the necessary permissions to use the databases and query files with BLAST.
+
 # Install NCBI BLAST+
 
 *multiBLAST uses [NCBI BLAST+ Software](https://pubmed.ncbi.nlm.nih.gov/20003500/)*
@@ -66,5 +76,34 @@ Save the file and restart your terminal or run `source ~/.bash_profile` (Linux/U
 **Verify multiBLAST Installation**
 
 `multiblast --help`
+
+# Example Usage
+
+**Building a BlAST+ Database Library**
+
+multiblast makedb: <br />
+`-f, --file_directory`: path to the directory containing input files in FASTA format <br />
+`-d, --dbtype`: specify what sort of database you want to create (`nucl`, nucleotide, `prot`, protein) <br />
+`-o, --out`: path to directory where you want to store your databases
+
+Example: <br />
+`multiblast makedb -f /path/to/FASTA/files/folder -d nucl -o /path/to/results/folder`
+
+**Querying a database library**
+
+multiblast query: <br />
+`-m, --method`: BLAST method to perform <br />
+    `tblastn`, search protein query through nucleotide database; query FASTA files must contain amino acid sequences <br />
+    `blastn`, search nucleotide query trhough nucleotide database; query FASTA must be contain nucleotide sequences <br />
+`-d, --database`: path to directory containing BLAST+ databases <br />
+`-q, --query_files`: path to directory containing query files in FASTA format <br />
+`-e, --evalue`: maximum e-value cutoff <br />
+`-o, --output`: path to directory to store results
+
+Example: <br />
+`multiblast query -m tblastn -d /path/to/blast/database/folder -q /path/to/query/files/folder -e 0.01 -o /path/to/results/folder`
+
+**All multiBLAST results are concatenated to `01_results.csv` within the output folder designated by `-o, --output`
+
 
 
