@@ -27,15 +27,15 @@ Download latest version of [BLAST+](https://ftp.ncbi.nlm.nih.gov/blast/executabl
 
 Or using Conda
 
-1. Create Conda environment:
+1. Create Conda environment
 
 `conda create -n blast`
 
-2. Activate Conda envrionment:
+2. Activate Conda envrionment
 
 `source activate blast`
 
-3. Install BLAST+:
+3. Install BLAST+
 
 `conda -y install bioconda::blast`
 
