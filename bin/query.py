@@ -27,6 +27,8 @@ def run_blast_query(args):
     fieldnames = ['qseqid', 'sseqid', 'pident', 'length', 'mismatch', 'gapopen', 'qstart', 'qend', 'sstart', 'send', 'evalue', 'bitscore', 'file_path', 'database', 'query_file_name']
     results = []
 
+    print("\n \033[92mProcessing...\033[0m \n")
+
     for query_file in os.listdir(query_path):
         if any(query_file.endswith(ext) for ext in extensions):
             query_file_path = os.path.join(query_path, query_file)
