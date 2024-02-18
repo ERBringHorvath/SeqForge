@@ -2,9 +2,9 @@
 
 # Install NCBI BLAST+
 
-*multiBLAST uses NCBI BLAST+ Software*
+*multiBLAST uses [NCBI BLAST+ Software](https://pubmed.ncbi.nlm.nih.gov/20003500/)*
 
-Camancho C, Coulouris G, Avagyan V, Ma N, Papadopoulos J, Bealer K, Madden TL, 2009. 
+Camancho C, Coulouris G, Avagyan V, Ma N, Papadopoulos J, Bealer K, Madden TL, 2009. <br />
 BLAST+: architecture and applications. BMC Bioinformatics, 10, 421. doi:10.1186/1471-2105-10-421
 
 **Install BLAST+**
@@ -13,15 +13,15 @@ https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/
 
 Or using Conda
 
-1. Create Conda environment
+1. Create Conda environment:
 
 `conda create -n blast`
 
-2. Activate Conda envrionment
+2. Activate Conda envrionment:
 
 `source activate blast`
 
-3. Install BLAST+
+3. Install BLAST+:
 
 `conda -y install bioconda::blast`
 
@@ -29,6 +29,8 @@ Or using Conda
 
 `makeblastdb -h` <br />
 `blastn` -h
+
+If these commands run without error, BLAST is correctly installed. If an error occurs, refer to the BLAST+ documentation
 
 # multiBLAST Installation
 
