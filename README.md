@@ -106,7 +106,7 @@ Example: <br />
 
 All multiBLAST results are concatenated to `multiblast_results.csv` within the output folder designated by `-o, --output`
 
-# Cite multiBLAST
+# Citations
 
 Cite multiBLAST: <br />
 multiBLAST v.1.0.0 (https://github.com/ERBringHorvath/multiBLAST)
