@@ -25,7 +25,7 @@ BLAST+: architecture and applications. BMC Bioinformatics, 10, 421. doi:10.1186/
 
 Download latest version of [BLAST+](https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
 
-Or using Conda
+Or using Conda:
 
 1. Create Conda environment
 
@@ -105,5 +105,11 @@ Example: <br />
 
 All multiBLAST results are concatenated to `multiblast_results.csv` within the output folder designated by `-o, --output`
 
+# Cite multiBLAST
 
+Cite multiBLAST: <br />
+multiBLAST v.1.0 (https://github.com/ERBringHorvath/multiBLAST)
+
+Cite NCBI BLAST+: <br />
+Camancho C et al., **2009**. BLAST+: acrchitecture and applications. *BMC Bioinformatics*, 10, 421. 
 
