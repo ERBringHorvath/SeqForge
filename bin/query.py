@@ -93,5 +93,5 @@ def run_blast_query(args):
 
     df = df.rename(columns=column_names_mapping)
     df = df[ordered_fieldnames]
-    df.to_csv(os.path.join(results_output, "01_results.csv"), index=False)
+    df.to_csv(os.path.join(results_output, "multiblast_results.csv"), index=False)
     print(f"\n \033[92mQueries Complete and stored in {results_output}\033[0m \n")
