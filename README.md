@@ -75,7 +75,8 @@ Save the file and restart your terminal or run `source ~/.bash_profile` (Linux/U
 
 **Verify multiBLAST Installation**
 
-`multiblast --help`
+`multiblast --help` <br />
+`multiblast --version`
 
 # Example Usage
 
@@ -108,7 +109,7 @@ All multiBLAST results are concatenated to `multiblast_results.csv` within the o
 # Cite multiBLAST
 
 Cite multiBLAST: <br />
-multiBLAST v.1.0 (https://github.com/ERBringHorvath/multiBLAST)
+multiBLAST v.1.0.0 (https://github.com/ERBringHorvath/multiBLAST)
 
 Cite NCBI BLAST+: <br />
 Camancho C et al., **2009**. BLAST+: acrchitecture and applications. *BMC Bioinformatics*, 10, 421. 
