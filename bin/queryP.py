@@ -6,11 +6,13 @@ from concurrent.futures import ProcessPoolExecutor
 
 ##Define blast command chain
 def execute_blast_query(data):
-        blast, db_path, query_file_path, output_file, e_value_threshold = data  # Adjusted parameters
-        cmd = f"{blast} -query {query_file_path} -db {db_path} -outfmt '6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore' -out {output_file} -evalue {e_value_threshold}"
-        subprocess.run(cmd, shell=True)
-        print(f"Completed BLAST for {query_file_path}")
-        return output_file  # Return individual output file path for processing
+    # Updated to unpack all seven elements from the task tuple
+    blast, db_path, query_file_path, output_file, e_value_threshold, db_name, query_file_base_name = data
+    cmd = f"{blast} -query {query_file_path} -db {db_path} -outfmt '6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore' -out {output_file} -evalue {e_value_threshold}"
+    subprocess.run(cmd, shell=True)
+    print(f"Completed BLAST for {query_file_path} against {db_name}")
+    # Return the output file path along with db_name and query_file_base_name for further processing
+    return output_file, db_name, query_file_base_name
 
 ##Blast and process results
 def run_multiblastp(args):
@@ -25,6 +27,7 @@ def run_multiblastp(args):
     threads = args.threads
     results_output_dir = args.output
     e_value_threshold = args.evalue
+    report_only_lowest_evalue = args.report_only_lowest_evalue
 
     ##Handle directories
     if not os.path.exists(db_dir):
@@ -39,7 +42,7 @@ def run_multiblastp(args):
         os.makedirs(results_output_dir)
 
     ##Create function to process output files
-    def process_output_file(output_file, db_name, query_file_base_name, e_value_threshold, fieldnames):
+    def process_output_file(output_file, e_value_threshold, fieldnames, db_name, query_file_base_name):
         results = []
         with open(output_file, 'r') as f:
             reader = csv.DictReader(f, fieldnames=fieldnames[:-3], delimiter='\t')
@@ -66,7 +69,7 @@ def run_multiblastp(args):
                     db_name = os.path.splitext(file_name)[0]
                     db_path = os.path.join(db_dir, db_name)
                     output_file_path = os.path.join(results_output_dir, f"{db_name}_{query_file_base_name}_results.txt")  # Corrected variable name
-                    tasks.append((blast, db_path, query_file_path, output_file_path, e_value_threshold))
+                    tasks.append((blast, db_path, query_file_path, output_file_path, e_value_threshold, db_name, query_file_base_name))
 
     #Parallel execution call
     with ProcessPoolExecutor(max_workers=threads) as executor:
@@ -74,9 +77,10 @@ def run_multiblastp(args):
 
     ##Combine results
     results = []
-    for output_file in output_files:
-        processed_results = process_output_file(output_file, db_name, query_file_base_name, e_value_threshold, fieldnames)
+    for output_file, db_name, query_file_base_name in output_files:
+        processed_results = process_output_file(output_file, e_value_threshold, fieldnames, db_name, query_file_base_name)
         results.extend(processed_results)
+
 
     df = pd.DataFrame(results)
 
@@ -97,7 +101,7 @@ def run_multiblastp(args):
     'qstart': 'query_start',
     'qend': 'query_end',
     'file_path': 'result_file_path'
-}
+    }
 
     #Define column order
     ordered_fieldnames = [
@@ -117,11 +121,19 @@ def run_multiblastp(args):
         'query_end',
         'result_file_path'
     ]
+
+    if args.report_only_lowest_evalue:
+        #Use evalue to sort
+        df.sort_values(by=['database', 'query_file_name', 'evalue'], ascending=[True, True, True], inplace=True)
+        #Reassign df with dropped duplicates
+        df = df.drop_duplicates(subset=['database', 'query_file_name'], keep='first')
     
     df = df.rename(columns=column_names_mapping)
     df = df[ordered_fieldnames]
 
     # Save DataFrame to CSV
     df.to_csv(os.path.join(results_output_dir, "results.csv"), index=False)
+
+    print(f"\n \033[93mReport only top hit: {report_only_lowest_evalue}\033[0m")
 
     print(f"\n \033[92mQueries Complete and stored in {results_output_dir}\033[0m \n")
