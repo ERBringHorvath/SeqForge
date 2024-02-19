@@ -57,6 +57,7 @@ import argparse, logging, sys, subprocess, os
 from datetime import datetime
 from makedb import make_blast_db
 from query import run_blast_query
+from queryP import run_multiblastp
 
 def main():
     parser = argparse.ArgumentParser(prog='multiblast', description='multiBLAST: Automates the process of running BLAST queries.')
@@ -67,17 +68,27 @@ def main():
     parser_makedb = subparsers.add_parser('makedb', help='Create a BLAST database from a FASTA file.')
     parser_makedb.add_argument('-f', '--file_directory', required=True, help='Path to FASTA files.')
     parser_makedb.add_argument('-d', '--dbtype', choices=['nucl', 'prot'], required=True, help='Type of the database (nucl for nucleotide, prot for protein).')
-    parser_makedb.add_argument('-o', '--out', required=True, help='Path to the output database folder.')
+    parser_makedb.add_argument('-o', '--out', required=True, help='Name for the output database.')
     parser_makedb.set_defaults(func=make_blast_db)
 
     # Sub-parser for the "query" command
     parser_query = subparsers.add_parser('query', help='Run a BLAST query against a database.')
     parser_query.add_argument('-m', '--method', choices=['blastn', 'tblastn'], required=True, help='BLAST method to use.')
-    parser_query.add_argument('-d', '--database', required=True, help='Path to the BLAST database.')
+    parser_query.add_argument('-d', '--database', required=True, help='Path to the BLAST databases.')
     parser_query.add_argument('-q', '--query_files', required=True, help='Path to the query files in FASTA format.')
     parser_query.add_argument('-e', '--evalue', type=float, required=True, help='E-value threshold.')
     parser_query.add_argument('-o', '--output', required=True, help='Path to directory to store results.')
     parser_query.set_defaults(func=run_blast_query)
+
+    ##Add sub-parser for the "queryP" command
+    parser_queryP = subparsers.add_parser('queryP', help="Run BLAST queries in parallel.")
+    parser_queryP.add_argument('-m', '--method', choices=['blastn', 'tblastn'], required=True, help='BLAST method to use.')
+    parser_queryP.add_argument('-d', '--database', required=True, help='Path to the BLAST databases.')
+    parser_queryP.add_argument('-q', '--query_files', required=True, help='Path to the query files in FASTA format.')
+    parser_queryP.add_argument('-T', '--threads', type=int, required=True, help='Number of cores to dedicate')
+    parser_queryP.add_argument('-e', '--evalue', type=float, required=True, help='E-value threshold.')
+    parser_queryP.add_argument('-o', '--output', required=True, help='Path to directory to store results.')
+    parser_queryP.set_defaults(func=run_multiblastp)
 
     args = parser.parse_args()
 
@@ -85,6 +96,8 @@ def main():
         make_blast_db(args)
     elif args.command == 'query':
         run_blast_query(args)
+    elif args.command == 'queryP':
+        run_multiblastp(args)
     else:
         parser.print_help()
 
