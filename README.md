@@ -27,8 +27,7 @@ Download latest version of [BLAST+](https://ftp.ncbi.nlm.nih.gov/blast/executabl
 
 Or using Conda:
 
-Install Conda: <br />
-Download [miniforge](https://github.com/conda-forge/miniforge/)
+Install Conda [miniforge](https://github.com/conda-forge/miniforge/)
 
 1. Create Conda environment
 
