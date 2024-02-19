@@ -11,6 +11,7 @@ def run_blast_query(args):
     query_path = args.query_files
     results_output = args.output
     e_value_threshold = args.evalue
+    report_only_lowest_evalue = args.report_only_lowest_evalue
 
     if not os.path.exists(db_dir):
         print(f"No BLAST databases found at {db_dir}")
@@ -27,7 +28,9 @@ def run_blast_query(args):
     fieldnames = ['qseqid', 'sseqid', 'pident', 'length', 'mismatch', 'gapopen', 'qstart', 'qend', 'sstart', 'send', 'evalue', 'bitscore', 'file_path', 'database', 'query_file_name']
     results = []
 
-    print("\n \033[92mProcessing...\033[0m \n")
+    print("\n \033[92mProcessing queries...\033[0m")
+
+    print(f"\n \033[93mReport only top hit: {report_only_lowest_evalue}\033[0m")
 
     for query_file in os.listdir(query_path):
         if any(query_file.endswith(ext) for ext in extensions):
@@ -92,8 +95,14 @@ def run_blast_query(args):
         'result_file_path'
     ]
 
+    if args.report_only_lowest_evalue:
+        #Use evalue to sort
+        df.sort_values(by=['database', 'query_file_name', 'evalue'], ascending=[True, True, True], inplace=True)
+        #Reassign df with dropped duplicates
+        df = df.drop_duplicates(subset=['database', 'query_file_name'], keep='first')
 
     df = df.rename(columns=column_names_mapping)
     df = df[ordered_fieldnames]
-    df.to_csv(os.path.join(results_output, "multiblast_results.csv"), index=False)
+
+    df.to_csv(os.path.join(results_output, "results.csv"), index=False)
     print(f"\n \033[92mQueries Complete and stored in {results_output}\033[0m \n")
