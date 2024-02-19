@@ -104,7 +104,7 @@ multiblast query: <br />
 `-e`, `--evalue`: maximum e-value cutoff <br />
 `-o`, `--output`: path to directory to store results
 
-Optional flag `--report-only-lowest-evalue` keep only the lowest e-value amongst results <br />
+Optional flag `--report-only-lowest-evalue`: results will only report the lowest e-value amongst BLAST hits <br />
 Useful for genes with many homologs
 
 Example: <br />
@@ -124,7 +124,7 @@ multiblast query: <br />
 `-e`, `--evalue`: maximum e-value cutoff <br />
 `-o`, `--output`: path to directory to store results
 
-Optional flag `--report-only-lowest-evalue` keep only the lowest e-value amongst results <br />
+Optional flag `--report-only-lowest-evalue`: results will only report the lowest e-value amongst BLAST hits <br />
 Useful for genes with many homologs
 
 Example: <br />
