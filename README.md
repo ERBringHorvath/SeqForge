@@ -1,4 +1,4 @@
-## **multiBLAST**
+# **multiBLAST**
 
 **This program automates the process of running BLAST (Basic Local Alignment Search Tool) queries against multiple <br />
 databases and organizing the results. It is designed to handle various types of BLAST searches (e.g., blastn, tblastn) <br />
@@ -14,7 +14,7 @@ and formats the output for easy analysis.**
     This script is intended for research and academic purposes. 
     Please ensure you have the necessary permissions to use the databases and query files with BLAST.
 
-# Install NCBI BLAST+
+## Install NCBI BLAST+
 
 *multiBLAST uses [NCBI BLAST+ Software](https://pubmed.ncbi.nlm.nih.gov/20003500/)*
 
@@ -48,7 +48,7 @@ Or using Conda:
 
 If these commands run without error, BLAST is correctly installed. If an error occurs, refer to the [BLAST+ documentation](https://blast.ncbi.nlm.nih.gov/doc/blast-help/index.html#index)
 
-# multiBLAST Installation
+## multiBLAST Installation
 
 We suggest installing multiBLAST within your Home folder, such as `/Users/user/` 
 
@@ -81,7 +81,7 @@ Save the file and restart your terminal or run `source ~/.bash_profile` (Linux/U
 `multiblast --help` <br />
 `multiblast --version`
 
-# Example Usage
+## Example Usage
 
 **Building a BlAST+ Database Library**
 
@@ -112,7 +112,7 @@ Example: <br />
 
 All multiBLAST results are concatenated to `multiblast_results.csv` within the output folder designated by `-o, --output`
 
-# Run multiBLAST in Parallel
+## Run multiBLAST in Parallel
 
 multiblast query: <br />
 `-m`, `--method`: BLAST method to perform <br />
