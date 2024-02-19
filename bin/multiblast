@@ -78,6 +78,7 @@ def main():
     parser_query.add_argument('-q', '--query_files', required=True, help='Path to the query files in FASTA format.')
     parser_query.add_argument('-e', '--evalue', type=float, required=True, help='E-value threshold.')
     parser_query.add_argument('-o', '--output', required=True, help='Path to directory to store results.')
+    parser_query.add_argument('--report-only-lowest-evalue', action='store_true', help='Report only the top hit for each query')
     parser_query.set_defaults(func=run_blast_query)
 
     ##Add sub-parser for the "queryP" command
@@ -88,6 +89,7 @@ def main():
     parser_queryP.add_argument('-T', '--threads', type=int, required=True, help='Number of cores to dedicate')
     parser_queryP.add_argument('-e', '--evalue', type=float, required=True, help='E-value threshold.')
     parser_queryP.add_argument('-o', '--output', required=True, help='Path to directory to store results.')
+    parser_queryP.add_argument('--report-only-lowest-evalue', action='store_true', help='Report only the top hit for each query')
     parser_queryP.set_defaults(func=run_multiblastp)
 
     args = parser.parse_args()
