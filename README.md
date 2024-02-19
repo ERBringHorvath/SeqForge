@@ -27,17 +27,17 @@ Download latest version of [BLAST+](https://ftp.ncbi.nlm.nih.gov/blast/executabl
 
 Or using Conda:
 
-Install Conda [miniforge](https://github.com/conda-forge/miniforge/)
+1. Install Conda [miniforge](https://github.com/conda-forge/miniforge/) if not already installed
 
-1. Create Conda environment
+2. Create Conda environment
 
 `conda create -n blast`
 
-2. Activate Conda envrionment
+3. Activate Conda envrionment
 
 `source activate blast`
 
-3. Install BLAST+
+4. Install BLAST+
 
 `conda -y install bioconda::blast`
 
