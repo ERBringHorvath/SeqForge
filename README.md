@@ -112,6 +112,8 @@ multiblast query: <br />
 `-e`, `--evalue`: maximum e-value cutoff <br />
 `-o`, `--output`: path to directory to store results
 
+Maximum evalue may be expressed as an integer, decimal, or in scientific notation, `-e 2e-30`
+
 Optional flag `--report-only-lowest-evalue`: results will only report the lowest e-value amongst BLAST hits <br />
 Useful for genes with many homologs
 
@@ -131,6 +133,8 @@ multiblast query: <br />
 `-T`, `--threads`: number of cores to dedicate <br />
 `-e`, `--evalue`: maximum e-value cutoff <br />
 `-o`, `--output`: path to directory to store results
+
+Maximum evalue may be expressed as an integer, decimal, or in scientific notation, `-e 2e-30`
 
 Optional flag `--report-only-lowest-evalue`: results will only report the lowest e-value amongst BLAST hits <br />
 Useful for genes with many homologs
