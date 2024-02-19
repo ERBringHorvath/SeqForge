@@ -104,6 +104,9 @@ multiblast query: <br />
 `-e`, `--evalue`: maximum e-value cutoff <br />
 `-o`, `--output`: path to directory to store results
 
+Optional flag `--report-only-lowest-evalue` keep only the lowest e-value amongst results <br />
+Useful for genes with many homologs
+
 Example: <br />
 `multiblast query -m tblastn -d /path/to/blast/database/folder -q /path/to/query/files/folder -e 0.01 -o /path/to/results/folder`
 
@@ -121,8 +124,11 @@ multiblast query: <br />
 `-e`, `--evalue`: maximum e-value cutoff <br />
 `-o`, `--output`: path to directory to store results
 
+Optional flag `--report-only-lowest-evalue` keep only the lowest e-value amongst results <br />
+Useful for genes with many homologs
+
 Example: <br />
-`multiblast query -m tblastn -d /path/to/blast/database/folder -q /path/to/query/files/folder -T 8 -e 0.01 -o /path/to/results/folder`
+`multiblast query -m tblastn -d /path/to/blast/database/folder -q /path/to/query/files/folder -T 8 -e 0.01 -o /path/to/results/folder --report-only-lowest-evalue`
 
 # Citations
 
