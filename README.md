@@ -105,8 +105,8 @@ Example: <br />
 
 multiblast query: <br />
 `-m`, `--method`: BLAST method to perform <br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`tblastn`, search protein query through nucleotide database <br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`blastn`, search nucleotide query trhough nucleotide database <br />
+&nbsp;&nbsp;&nbsp;&nbsp;`tblastn`, search protein query through nucleotide database <br />
+&nbsp;&nbsp;&nbsp;&nbsp;`blastn`, search nucleotide query trhough nucleotide database <br />
 `-d`, `--database`: path to directory containing BLAST+ databases <br />
 `-q`, `--query_files`: path to directory containing query files in FASTA format <br />
 `-e`, `--evalue`: maximum e-value cutoff <br />
@@ -124,8 +124,8 @@ All multiBLAST results are concatenated to `multiblast_results.csv` within the o
 
 multiblast query: <br />
 `-m`, `--method`: BLAST method to perform <br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`tblastn`, search protein query through nucleotide database <br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`blastn`, search nucleotide query trhough nucleotide database <br />
+&nbsp;&nbsp;&nbsp;&nbsp;`tblastn`, search protein query through nucleotide database <br />
+&nbsp;&nbsp;&nbsp;&nbsp;`blastn`, search nucleotide query trhough nucleotide database <br />
 `-d`, `--database`: path to directory containing BLAST+ databases <br />
 `-q`, `--query_files`: path to directory containing query files in FASTA format <br />
 `-T`, `--threads`: number of cores to dedicate <br />
