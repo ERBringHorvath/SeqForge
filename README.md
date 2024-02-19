@@ -48,11 +48,11 @@ If these commands run without error, BLAST is correctly installed. If an error o
 
 # multiBLAST Installation
 
-We suggest installing multiBLAST within your Home folder, such as `/Users/your_username/` 
+We suggest installing multiBLAST within your Home folder, such as `/Users/user/` 
 
 Change directory to desired installation path
 
-`cd /Users/your_username`
+`cd /Users/user`
 
 Clone multiBLAST from the repository
 
@@ -63,9 +63,10 @@ Add multiBLAST to your PATH
 1. Open your profile in a text editor. This might be `~/.bash_profile` or `~/.zshrc`
 2. Add the following line to the end of the file:
 
-`export PATH=$PATH:/path/to/multiblast`
+`export PATH=$PATH:/Users/user/multiblast/bin`
 
-Replace `/path/to/multiblast` with the actual path to the directory containing executable
+Replace `/Users/user/multiblast/bin` with the actual path to the directory containing executable. <br />
+Whatever the initial directory, this path should end with `/multiblast/bin`
 
 Save the file and restart your terminal or run `source ~/.bash_profile` (Linux/Unix) or `source ~/.zshrc` (macOS)
 
