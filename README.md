@@ -50,6 +50,9 @@ If these commands run without error, BLAST is correctly installed. If an error o
 
 ## multiBLAST Installation
 
+First, if not already installed, install [Git](https://github.com/git-guides/install-git) <br />
+>macOS should have this installed by default
+
 We suggest installing multiBLAST within your Home folder, such as `/Users/user/` 
 
 Change directory to desired installation path
