@@ -55,6 +55,9 @@ First, if not already installed, install [Git](https://github.com/git-guides/ins
 * To test installation, open the terminal and type `git --version` <br />
 * For macOS users, you should see something like `git version 2.37.1 (Apple Git-137.1)`
 
+
+## **Clone multiBLAST from source**
+
 We suggest installing multiBLAST within your Home folder, such as `/Users/user/` 
 
 Change directory to desired installation path
