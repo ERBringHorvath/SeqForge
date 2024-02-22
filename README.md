@@ -103,7 +103,7 @@ NOTE: Permissions may need to be changed. To do this, you can use the following 
 
 ## Example Usage
 
-**Building a BlAST+ Database Library**
+**Building a BLAST+ Database Library**
 
 multiblast makedb: <br />
 `-f`, `--file_directory`: path to the directory containing input files in FASTA format <br />
