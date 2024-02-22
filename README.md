@@ -1,7 +1,7 @@
 # **multiBLAST**
 
-**This program automates the process of running BLAST (Basic Local Alignment Search Tool) queries against multiple <br />
-databases and organizing the results. It is designed to handle various types of BLAST searches (e.g., blastn, tblastn) <br />
+**This program automates the process of running BLAST (Basic Local Alignment Search Tool) queries against multiple
+databases and organizing the results. It is designed to handle various types of BLAST searches (e.g., blastn, tblastn)
 and formats the output for easy analysis.** 
 
 **Author:** <br />
