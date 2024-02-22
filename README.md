@@ -82,7 +82,7 @@ Save the file and restart your terminal or run `source ~/.bash_profile` (Linux/U
 
 **For Windows** (Not yet validated)
 
-1. Search for `Environmental Vairalbes` in the Start Menu and select `Edit the system environment variables`
+1. Search for `Environmental Variables` in the Start Menu and select `Edit the system environment variables`
 2. In the System Properties window, click on `Environmental Variables`
 3. Under System Variables, find the `Path` variable, select it, and click `Edit`
 4. Click `New` and add the path to the folder containing the `multiblast` executable
