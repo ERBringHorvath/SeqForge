@@ -97,6 +97,10 @@ Save the file and restart your terminal or run `source ~/.bash_profile` (Linux/U
 `multiblast --help` <br />
 `multiblast --version`
 
+NOTE: Permissions may need to be changed. To do this, you can use the following command:
+
+`chmod +x /path/to/multiblast/bin/multiblast`
+
 ## Example Usage
 
 **Building a BlAST+ Database Library**
