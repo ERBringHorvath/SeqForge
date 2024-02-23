@@ -75,7 +75,7 @@ Add multiBLAST to your PATH
 
 `export PATH=$PATH:/Users/user/multiblast/bin`
 
-Replace `/Users/user/multiblast/bin` with the actual path to the directory containing executable. <br />
+Replace `/Users/user/multiblast/bin` with the actual path to the directory containing the executable. <br />
 Whatever the initial directory, this path should end with `/multiblast/bin`
 
 Save the file and restart your terminal or run `source ~/.bash_profile` (Linux/Unix) or `source ~/.zshrc` (macOS)
