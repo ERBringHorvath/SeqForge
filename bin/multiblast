@@ -121,7 +121,7 @@ def main():
         except Exception as e:
             logging.error("An error occurred: %s", str(e))
     elif args.command == 'split_fasta':
-        run(args)
+        run_split(args)
     else:
         parser.print_help()
 
