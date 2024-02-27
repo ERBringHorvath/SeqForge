@@ -92,6 +92,11 @@ def main():
     parser_queryP.add_argument('--report-only-lowest-evalue', action='store_true', help='Report only the top hit for each query')
     parser_queryP.set_defaults(func=run_multiblastp)
 
+    ##Add sub-parser for multi-FASTA file splitter
+    split_fasta_parser = subparsers.add_parser('split_fasta')
+    split_fasta_parser.add_argument('-i', '--input', required=True, help="Input multi-FASTA file")
+    split_fasta_parser.add_argument('-o', '--output_dir', required=True, help="Output directory for split FASTA files")
+
     args = parser.parse_args()
 
     if args.command == 'makedb':
@@ -100,6 +105,9 @@ def main():
         run_blast_query(args)
     elif args.command == 'queryP':
         run_multiblastp(args)
+    elif args.command == 'split_fasta':
+        import split_fasta
+        split_fasta.run(args)
     else:
         parser.print_help()
 
