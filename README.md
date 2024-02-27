@@ -154,6 +154,15 @@ Useful for genes with many homologs
 Example: <br />
 `multiblast query -m tblastn -d /path/to/blast/database/folder -q /path/to/query/files/folder -T 8 -e 0.01 -o /path/to/results/folder --report-only-lowest-evalue`
 
+# <ins>Accessory Scripts</ins>
+## Split multi-FASTA files
+
+Often times when downloading large genomic datasets, individual FASTA files will be concatenated into one large multi-FASTA file. This script is designed to split multi-FASTA files into more useful individual FASTA files required for proper use of the multiBLAST platform.
+
+**Example usage:**
+
+`multiblast split_fasta -i /path/to/multiFASTA/file -o /path/to/results/folder`
+
 # Citations
 
 Cite multiBLAST: <br />
