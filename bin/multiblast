@@ -58,8 +58,15 @@ from datetime import datetime
 from makedb import make_blast_db
 from query import run_blast_query
 from queryP import run_multiblastp
+from split_fasta import run_split
 
 def main():
+    ##Initialize logging
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    
+    logging.info("Starting multiBLAST")
+
+    ##Main parser logic
     parser = argparse.ArgumentParser(prog='multiblast', description='multiBLAST: Automates the process of running BLAST queries.')
     parser.add_argument('-v', '--version', action='version', version='%(prog)s v.1.0.0')
     subparsers = parser.add_subparsers(dest='command', help='Available commands')
@@ -102,12 +109,19 @@ def main():
     if args.command == 'makedb':
         make_blast_db(args)
     elif args.command == 'query':
-        run_blast_query(args)
+        try:
+            run_blast_query(args)
+            pass
+        except Exception as e:
+            logging.error("An error occurred: %s", str(e))
     elif args.command == 'queryP':
-        run_multiblastp(args)
+        try:
+            run_multiblastp(args)
+            pass
+        except Exception as e:
+            logging.error("An error occurred: %s", str(e))
     elif args.command == 'split_fasta':
-        import split_fasta
-        split_fasta.run(args)
+        run(args)
     else:
         parser.print_help()
 
