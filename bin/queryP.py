@@ -121,15 +121,17 @@ def run_multiblastp(args):
         'query_end',
         'result_file_path'
     ]
+    
+    df = df.rename(columns=column_names_mapping)
+    df = df[ordered_fieldnames]
 
     if args.report_only_lowest_evalue:
+        #Ensure 'evalue' column is numeric
+        df['evalue'] = pd.to_numeric(df['evalue'], errors = 'coerce')
         #Use evalue to sort
         df.sort_values(by=['database', 'query_file_name', 'evalue'], ascending=[True, True, True], inplace=True)
         #Reassign df with dropped duplicates
         df = df.drop_duplicates(subset=['database', 'query_file_name'], keep='first')
-    
-    df = df.rename(columns=column_names_mapping)
-    df = df[ordered_fieldnames]
 
     # Save DataFrame to CSV
     df.to_csv(os.path.join(results_output_dir, "results.csv"), index=False)
