@@ -152,7 +152,8 @@ Optional flag `--report-only-lowest-evalue`: results will only report the lowest
 Useful for genes with many homologs
 
 Example: <br />
-`multiblast queryP -m tblastn -d /path/to/blast/database/folder -q /path/to/query/files/folder -T 8 -e 0.01 -o /path/to/results/folder --report-only-lowest-evalue`
+`multiblast queryP -m tblastn -d /path/to/blast/database/folder -q /path/to/query/files/folder -T 8` <br /> 
+`-e 0.01 -o /path/to/results/folder --report-only-lowest-evalue`
 
 # <ins>Accessory Scripts</ins>
 ## Split multi-FASTA files
