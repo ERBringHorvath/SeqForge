@@ -136,7 +136,7 @@ All multiBLAST results are concatenated to `multiblast_results.csv` within the o
 
 ## Run multiBLAST in Parallel
 
-multiblast query: <br />
+multiblast queryP: <br />
 `-m`, `--method`: BLAST method to perform <br />
 &nbsp;&nbsp;&nbsp;&nbsp;`tblastn`, search protein query through nucleotide database <br />
 &nbsp;&nbsp;&nbsp;&nbsp;`blastn`, search nucleotide query trhough nucleotide database <br />
