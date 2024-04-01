@@ -166,7 +166,7 @@ Often times when downloading large genomic datasets, individual FASTA files will
 # Citations
 
 Cite multiBLAST: <br />
-multiBLAST v.1.0.1 (https://github.com/ERBringHorvath/multiBLAST)
+multiBLAST (https://github.com/ERBringHorvath/multiBLAST)
 
 Cite NCBI BLAST+: <br />
 Camancho C et al., **2009**. BLAST+: architecture and applications. *BMC Bioinformatics*, 10, 421. 
