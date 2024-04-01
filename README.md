@@ -170,5 +170,6 @@ Cite multiBLAST: <br />
 multiBLAST (https://github.com/ERBringHorvath/multiBLAST)
 
 Cite NCBI BLAST+: <br />
-Camancho C, Coulouris G, Avagyan V, Ma N, Papadopoulos J, Bealer K, Madden TL, **2009**. BLAST+: architecture and applications. *BMC Bioinformatics*, 10, 421. doi:10.1186/1471-2105-10-421
+Camancho C, Coulouris G, Avagyan V, Ma N, Papadopoulos J, Bealer K, Madden TL, **2009**. BLAST+: architecture and applications. <br />
+*BMC Bioinformatics*, 10, 421. doi:10.1186/1471-2105-10-421
 
