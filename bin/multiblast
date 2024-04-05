@@ -59,6 +59,7 @@ from makedb import make_blast_db
 from query import run_blast_query
 from queryP import run_multiblastp
 from split_fasta import run_split
+from extract_sequences import extract_sequences_tabular
 
 def main():
     ##Initialize logging
@@ -66,7 +67,6 @@ def main():
     
     logging.info("Starting multiBLAST")
 
-    ##Main parser logic
     parser = argparse.ArgumentParser(prog='multiblast', description='multiBLAST: Automates the process of running BLAST queries.')
     parser.add_argument('-v', '--version', action='version', version='%(prog)s v.1.0.1')
     subparsers = parser.add_subparsers(dest='command', help='Available commands')
@@ -104,6 +104,18 @@ def main():
     split_fasta_parser.add_argument('-i', '--input', required=True, help="Input multi-FASTA file")
     split_fasta_parser.add_argument('-o', '--output_dir', required=True, help="Output directory for split FASTA files")
 
+    ##Add sub-parser for sequence extraction
+    parser_extract = subparsers.add_parser('extract', help="Extract sequences based on multiBLAST query.")
+    parser_extract.add_argument('-d', '--results_directory', required=True, help="Path to BLAST results files.")
+    parser_extract.add_argument('-f', '--fasta_directory', required=True, help="Path to reference FASTA assemblies.")
+    parser_extract.add_argument('-o', '--output_fasta', required=True, help="Output FASTA file name.")
+    parser_extract.add_argument('-T', '--threads', help="How many CPUs to dedicate.")
+    parser_extract.add_argument('-e', '--evalue', help="E-value cutoff.")
+    parser_extract.set_defaults(func=extract_sequences_tabular)
+    # group = parser.add_mutually_exclusive_group(required=True)
+    # group.add_argument('--tblastn', action='store_true', help="Set this flag if using TBLASTN results.")
+    # group.add_argument('--blastn', action='store_true', help="Set this flag if using BLASTN results.")
+
     args = parser.parse_args()
 
     if args.command == 'makedb':
@@ -121,7 +133,17 @@ def main():
         except Exception as e:
             logging.error("An error occurred: %s", str(e))
     elif args.command == 'split_fasta':
-        run_split(args)
+        try:
+            run_split(args)
+            pass
+        except Exception as e:
+            logging.error("An error occurred: %s", str(e))
+    elif args.command == 'extract':
+        try:
+            extract_sequences_tabular(args)
+            pass
+        except Exception as e:
+            logging.error("An error occurred: %s", str(e))
     else:
         parser.print_help()
 
