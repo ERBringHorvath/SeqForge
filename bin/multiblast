@@ -19,8 +19,8 @@ Usage:
 
 Requirements:
     - Python 3.x
-    - pandas library
     - BLAST+ command line tools installed and in your system's PATH.
+    - additional requirements are outlined in 'requirements.txt'
 
 Features:
     - Supports multiple query files and databases.
@@ -68,7 +68,7 @@ def main():
     logging.info("Starting multiBLAST")
 
     parser = argparse.ArgumentParser(prog='multiblast', description='multiBLAST: Automates the process of running BLAST queries.')
-    parser.add_argument('-v', '--version', action='version', version='%(prog)s v.1.0.4')
+    parser.add_argument('-v', '--version', action='version', version='%(prog)s v.1.0.5')
     subparsers = parser.add_subparsers(dest='command', help='Available commands')
 
     # Sub-parser for the "makedb" command
