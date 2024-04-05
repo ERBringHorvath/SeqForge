@@ -185,6 +185,8 @@ If multiBLAST is used for database creation and queries, matching basenames shou
 **Example usage:** <br />
 `multiblast extract -d /path/to/results/files -f /path/to/reference/FASTA/files -T 8 -e 2e-5 -o sequences.fa`
 
+`multiblast extract` will generate a multi-FASTA file of all sequences identified by `multiblast queryP`/`query` based on the default or user-defined e-value cutoff.
+
 # Citations
 
 Cite multiBLAST: <br />
