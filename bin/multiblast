@@ -26,20 +26,7 @@ Features:
     - Supports multiple query files and databases.
     - Filters results based on the E-value threshold.
     - Outputs results in a structured CSV file with customizable column names.
-
-Instructions:
-    1. Input the path to the directory containing your BLAST databases.
-    2. Choose the BLAST search method (e.g., blastn, tblastn).
-    3. Input the path to the directory containing your query files.
-    4. Specify where you want to store the results.
-    5. Enter the maximum E-value for filtering results.
-
-Example:
-    Enter path to BLAST DBs: /path/to/blast_dbs
-    What method would you like to use? (blastn, tblastn): blastn
-    Enter path to query file(s): /path/to/query_files
-    Where do you want to store the results?: /path/to/results
-    Enter maximum E-value: 0.01
+    - Extracts sequences based on a multiBLAST query. Translation is optional.
 
 Author:
     Elijah R. Bring Horvath (https://github.com/ERBringHorvath)
@@ -68,7 +55,7 @@ def main():
     logging.info("Starting multiBLAST")
 
     parser = argparse.ArgumentParser(prog='multiblast', description='multiBLAST: Automates the process of running BLAST queries.')
-    parser.add_argument('-v', '--version', action='version', version='%(prog)s v.1.0.5')
+    parser.add_argument('-v', '--version', action='version', version='%(prog)s v.1.0.6')
     subparsers = parser.add_subparsers(dest='command', help='Available commands')
 
     # Sub-parser for the "makedb" command
