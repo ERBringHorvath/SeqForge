@@ -175,9 +175,12 @@ multiblast extract: <br />
 `-e` `--evalue`: maximum e-value cutoff, default is 0.001 <br />
 
 NOTE: Results files and FASTA reference assemblies <ins>**must**</ins> share the same basename:
-Example basename: 'FILE'
+
+Example basename: 'FILE' <br />
 &nbsp;&nbsp;&nbsp;&nbsp;Example FASTA: FILE.fasta <br />
-&nbsp;&nbsp;&nbsp;&nbsp;Example results file: FILE_results.txt <br />
+&nbsp;&nbsp;&nbsp;&nbsp;Example results file: FILE_results.txt
+
+If multiBLAST is used for database creation and queries, matching basenames should be generated automatically
 
 **Example usage:** <br />
 `multiblast extract -d /path/to/results/files -f /path/to/reference/FASTA/files -T 8 -e 2e-5 -o sequences.fa`
