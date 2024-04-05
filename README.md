@@ -173,8 +173,11 @@ multiblast extract: <br />
 `-o`, `--output_fasta`: output file to contain sequences, defaults to current working directory <br />
 `-T`, `--threads`: number of cores to dedicate, default is 1 <br />
 `-e` `--evalue`: maximum e-value cutoff, default is 0.001 <br />
+`--translate`: translates extracted nucleotide sequence(s)
 
-NOTE: Results files and FASTA reference assemblies <ins>**must**</ins> share the same basename:
+**NOTE:** Translation of sequences is optional, however care should be used when translating extracted nucleotide sequences, as BLAST results may not always contain a full CDS. To allow for this, when the `--translate` argument is called, extracted sequences will be trimmed to only include complete codons, which may affect interpretation of results.
+
+**NOTE:** Results files and FASTA reference assemblies <ins>**must**</ins> share the same basename:
 
 Example basename: 'FILE' <br />
 &nbsp;&nbsp;&nbsp;&nbsp;Example FASTA: FILE.fasta <br />
