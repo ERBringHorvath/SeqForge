@@ -121,7 +121,7 @@ multiblast query: <br />
 &nbsp;&nbsp;&nbsp;&nbsp;`blastn`, search nucleotide query trhough nucleotide database <br />
 `-d`, `--database`: path to directory containing BLAST+ databases <br />
 `-q`, `--query_files`: path to directory containing query files in FASTA format <br />
-`-e`, `--evalue`: maximum e-value cutoff <br />
+`-e`, `--evalue`: maximum e-value cutoff, default 0.001 <br />
 `-o`, `--output`: path to directory to store results
 
 Maximum evalue may be expressed as an integer, decimal, or in scientific notation, `--evalue 2e-30`
@@ -142,8 +142,8 @@ multiblast queryP: <br />
 &nbsp;&nbsp;&nbsp;&nbsp;`blastn`, search nucleotide query trhough nucleotide database <br />
 `-d`, `--database`: path to directory containing BLAST+ databases <br />
 `-q`, `--query_files`: path to directory containing query files in FASTA format <br />
-`-T`, `--threads`: number of cores to dedicate <br />
-`-e`, `--evalue`: maximum e-value cutoff <br />
+`-T`, `--threads`: number of cores to dedicate, default 1 <br />
+`-e`, `--evalue`: maximum e-value cutoff, default 0.001 <br />
 `-o`, `--output`: path to directory to store results
 
 Maximum evalue may be expressed as an integer, decimal, or in scientific notation, `--evalue 2e-30`
