@@ -174,9 +174,10 @@ multiblast extract: <br />
 `-T`, `--threads`: number of cores to dedicate, default is 1 <br />
 `-e` `--evalue`: maximum e-value cutoff, default is 0.001 <br />
 
-NOTE: Results files and FASTA reference assemblies <ins>**must**</ins> share the same basename: <br />
-Example FASTA: FILE.fasta <br />
-Example results file: FILE_results.txt <br />
+NOTE: Results files and FASTA reference assemblies <ins>**must**</ins> share the same basename:
+Example basename: 'FILE'
+&nbsp;&nbsp;&nbsp;&nbsp;Example FASTA: FILE.fasta <br />
+&nbsp;&nbsp;&nbsp;&nbsp;Example results file: FILE_results.txt <br />
 
 **Example usage:** <br />
 `multiblast extract -d /path/to/results/files -f /path/to/reference/FASTA/files -T 8 -e 2e-5 -o sequences.fa`
