@@ -68,7 +68,7 @@ def main():
     logging.info("Starting multiBLAST")
 
     parser = argparse.ArgumentParser(prog='multiblast', description='multiBLAST: Automates the process of running BLAST queries.')
-    parser.add_argument('-v', '--version', action='version', version='%(prog)s v.1.0.1')
+    parser.add_argument('-v', '--version', action='version', version='%(prog)s v.1.0.4')
     subparsers = parser.add_subparsers(dest='command', help='Available commands')
 
     # Sub-parser for the "makedb" command
