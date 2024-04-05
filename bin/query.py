@@ -10,7 +10,7 @@ def run_blast_query(args):
     db_dir = args.database
     query_path = args.query_files
     results_output = args.output
-    e_value_threshold = args.evalue
+    e_value_threshold = args.evalue if args.evalue else 0.001
     report_only_lowest_evalue = args.report_only_lowest_evalue
 
     if not os.path.exists(db_dir):
