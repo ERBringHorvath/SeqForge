@@ -111,6 +111,7 @@ def main():
     parser_extract.add_argument('-o', '--output_fasta', required=True, help="Output FASTA file name.")
     parser_extract.add_argument('-T', '--threads', help="How many CPUs to dedicate.")
     parser_extract.add_argument('-e', '--evalue', help="E-value cutoff.")
+    parser_extract.add_argument('--translate', action='store_true', help='Translate extracted nucleotide sequence using the standard genetic code.')
     parser_extract.set_defaults(func=extract_sequences_tabular)
     # group = parser.add_mutually_exclusive_group(required=True)
     # group.add_argument('--tblastn', action='store_true', help="Set this flag if using TBLASTN results.")
