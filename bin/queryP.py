@@ -24,9 +24,9 @@ def run_multiblastp(args):
     blast = args.method
     db_dir = args.database
     query_path = args.query_files
-    threads = args.threads
+    threads = args.threads if args.threads else 1
     results_output_dir = args.output
-    e_value_threshold = args.evalue
+    e_value_threshold = args.evalue if args.evalue else 0.001
     report_only_lowest_evalue = args.report_only_lowest_evalue
 
     ##Handle directories
