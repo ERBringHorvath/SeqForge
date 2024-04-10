@@ -169,7 +169,7 @@ Often times when downloading large genomic datasets, individual FASTA files will
 multiblast extract: <br />
 `-d`, `--results_directory`: path to directory containing multiBLAST results files <br />
 `-f`, `--fasta_directory`: path to reference FASTA assemblies <br />
-&nbsp;&nbsp;&nbsp;&nbsp;These should be the FASTA files the BLAST databases were created from and should have the same basename as the query results files
+&nbsp;&nbsp;&nbsp;&nbsp;These should be the FASTA files the BLAST databases were created from and should have the same basename as the query results files <br />
 `-o`, `--output_fasta`: output file to contain sequences, defaults to current working directory <br />
 `-T`, `--threads`: number of cores to dedicate, default is 1 <br />
 `-e` `--evalue`: maximum e-value cutoff, default is 0.001 <br />
