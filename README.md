@@ -192,7 +192,7 @@ If multiBLAST is used for database creation and queries, matching basenames shou
 
 ## Extract Entire Contig ##
 
-`multiblast extract_contig: <br />
+`multiblast extract_contig`: <br />
 `-d`, `--results_directory`: path to directory containing multiBLAST results files <br />
 `-f`, `--fasta_directory`: path to reference FASTA assemblies <br />
 &nbsp;&nbsp;&nbsp;&nbsp;These should be the FASTA files the BLAST databases were created from and should have the same basename as the query results files <br />
