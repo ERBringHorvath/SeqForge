@@ -19,14 +19,27 @@ Usage:
 
 Requirements:
     - Python 3.x
+    - pandas library
     - BLAST+ command line tools installed and in your system's PATH.
-    - additional requirements are outlined in 'requirements.txt'
 
 Features:
     - Supports multiple query files and databases.
     - Filters results based on the E-value threshold.
     - Outputs results in a structured CSV file with customizable column names.
-    - Extracts sequences based on a multiBLAST query. Translation is optional.
+
+Instructions:
+    1. Input the path to the directory containing your BLAST databases.
+    2. Choose the BLAST search method (e.g., blastn, tblastn).
+    3. Input the path to the directory containing your query files.
+    4. Specify where you want to store the results.
+    5. Enter the maximum E-value for filtering results.
+
+Example:
+    Enter path to BLAST DBs: /path/to/blast_dbs
+    What method would you like to use? (blastn, tblastn): blastn
+    Enter path to query file(s): /path/to/query_files
+    Where do you want to store the results?: /path/to/results
+    Enter maximum E-value: 0.01
 
 Author:
     Elijah R. Bring Horvath (https://github.com/ERBringHorvath)
@@ -47,6 +60,7 @@ from query import run_blast_query
 from queryP import run_multiblastp
 from split_fasta import run_split
 from extract_sequences import extract_sequences_tabular
+from extract_contig import extract_contigs_tabular
 
 def main():
     ##Initialize logging
@@ -55,7 +69,7 @@ def main():
     logging.info("Starting multiBLAST")
 
     parser = argparse.ArgumentParser(prog='multiblast', description='multiBLAST: Automates the process of running BLAST queries.')
-    parser.add_argument('-v', '--version', action='version', version='%(prog)s v.1.0.6')
+    parser.add_argument('-v', '--version', action='version', version='%(prog)s v.1.0.3')
     subparsers = parser.add_subparsers(dest='command', help='Available commands')
 
     # Sub-parser for the "makedb" command
@@ -70,7 +84,7 @@ def main():
     parser_query.add_argument('-m', '--method', choices=['blastn', 'tblastn'], required=True, help='BLAST method to use.')
     parser_query.add_argument('-d', '--database', required=True, help='Path to the BLAST databases.')
     parser_query.add_argument('-q', '--query_files', required=True, help='Path to the query files in FASTA format.')
-    parser_query.add_argument('-e', '--evalue', type=float, help='E-value threshold.')
+    parser_query.add_argument('-e', '--evalue', type=float, required=True, help='E-value threshold.')
     parser_query.add_argument('-o', '--output', required=True, help='Path to directory to store results.')
     parser_query.add_argument('--report-only-lowest-evalue', action='store_true', help='Report only the top hit for each query')
     parser_query.set_defaults(func=run_blast_query)
@@ -104,6 +118,15 @@ def main():
     # group.add_argument('--tblastn', action='store_true', help="Set this flag if using TBLASTN results.")
     # group.add_argument('--blastn', action='store_true', help="Set this flag if using BLASTN results.")
 
+    ##Add sub-parser for contig extraction
+    parser_extract_contig = subparsers.add_parser('extract_contig', help="Extract contig containing matching sequence")
+    parser_extract_contig.add_argument('-d', '--results-directory', required=True, help="Path to BLAST results files.")
+    parser_extract_contig.add_argument('-f', '--fasta_directory', required=True, help="Path to reference FASTA assemblies.")
+    parser_extract_contig.add_argument('-o', '--output_fasta', required=True, help="Output FASTA file name.")
+    parser_extract_contig.add_argument('-T', '--threads', help="How many CPUs to dedicate.")
+    parser_extract_contig.add_argument('-e', '--evalue', help="E-value cutoff.")
+    parser_extract_contig.set_defaults(func=extract_contigs_tabular)
+
     args = parser.parse_args()
 
     if args.command == 'makedb':
@@ -129,6 +152,12 @@ def main():
     elif args.command == 'extract':
         try:
             extract_sequences_tabular(args)
+            pass
+        except Exception as e:
+            logging.error("An error occurred: %s", str(e))
+    elif args.command == 'extract_contig':
+        try:
+            extract_contigs_tabular(args)
             pass
         except Exception as e:
             logging.error("An error occurred: %s", str(e))
