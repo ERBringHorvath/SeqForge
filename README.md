@@ -190,6 +190,29 @@ If multiBLAST is used for database creation and queries, matching basenames shou
 
 `multiblast extract` will generate a multi-FASTA file of all sequences identified by `multiblast queryP`/`query` based on the default or user-defined e-value cutoff.
 
+## Extract Entire Contig ##
+
+`multiblast extract_contig: <br />
+`-d`, `--results_directory`: path to directory containing multiBLAST results files <br />
+`-f`, `--fasta_directory`: path to reference FASTA assemblies <br />
+&nbsp;&nbsp;&nbsp;&nbsp;These should be the FASTA files the BLAST databases were created from and should have the same basename as the query results files <br />
+`-o`, `--output_fasta`: output file to contain sequences, defaults to current working directory <br />
+`-T`, `--threads`: number of cores to dedicate, default is 1 <br />
+`-e` `--evalue`: maximum e-value cutoff, default is 0.001 <br />
+
+**NOTE:** Results files and FASTA reference assemblies <ins>**must**</ins> share the same basename:
+
+Example basename: 'FILE' <br />
+&nbsp;&nbsp;&nbsp;&nbsp;Example FASTA: FILE.fasta <br />
+&nbsp;&nbsp;&nbsp;&nbsp;Example results file: FILE_results.txt
+
+If multiBLAST is used for database creation and queries, matching basenames should be generated automatically
+
+**Example usage:** <br />
+`multiblast extract_contig -d /path/to/results/files -f /path/to/reference/FASTA/files -T 8 -e 2e-5 -o contigs.fa`
+
+`multiblast extract_contigs` will generate a multi-FASTA file of all contigs harboring a matching sequence identified by `multiblast queryP`/`query` based on the default or user-defined e-value cutoff.
+
 # Citations
 
 Cite multiBLAST: <br />
