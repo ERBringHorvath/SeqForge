@@ -150,9 +150,9 @@ If multiBLAST is used for database creation and queries, matching basenames shou
 **Example usage:** <br />
 `multiblast extract -d /path/to/results/file -f /path/to/reference/FASTA/files -T 8 -o sequences.fa`
 
-**NOTE:**
-Results file should be `all_results.csv`, `all_filtered_results.csv`, or `filtered_results.csv`, which are automatically generated using `multiblast query` <br />
-If percent identity and query coverage were designated manually during `multiblast query`, these values will need to be reflected when using `mutliblast extract` using `--min-perc` and/or `--min-cov` <br />
+**NOTE:** <br />
+Results file should be `all_results.csv`, `all_filtered_results.csv`, or `filtered_results.csv`, which are automatically generated using `multiblast query`
+If percent identity and query coverage were designated manually during `multiblast query`, these values will need to be reflected when using `mutliblast extract` using `--min-perc` and/or `--min-cov`
 `multiblast extract` will generate a multi-FASTA file of all sequences identified by `multiblast queryP`/`query` based on the default or user-defined e-value cutoff.
 
 ## Extract Entire Contig ##
