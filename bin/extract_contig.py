@@ -1,72 +1,88 @@
 import os
+import time
+import pandas as pd
 from Bio import SeqIO
 import concurrent.futures
+from threading import Lock
 
 """
-This program is designed to extract the entire contig harboring a sequence match based on a multiBLAST query. 
+This program is designed to extract entire contigs based on a multiBLAST Query.
+
+Author: Elijah R. Bring Horvath, PhD
 """
 
 def find_fasta_file(basename, fasta_dir):
+    extensions = {'fa', 'fna', 'fas', 'fasta', 'faa'}
     for file in os.listdir(fasta_dir):
-        if file.startswith(basename) and file.split('.')[-1] in ['fa', 'fas', 'fasta', 'ffn', 'fna']:
-            return os.path.join(fasta_dir, file)
-        
-def process_blast_file(blast_file, blast_dir, fasta_dir, evalue_cutoff):
-    file_path = os.path.join(blast_dir, blast_file)
-    if os.stat(file_path).st_size == 0:
-        print(f"Skipping empty file: {blast_file}")
-        return{}
+        name_part, extension = os.path.splitext(file)
+        extension = extension.lstrip('.').lower()
+        if extension in extensions:
+            if name_part == basename or file.startswith(basename + '_') or file.startswith(basename + '.'):
+                return os.path.join(fasta_dir, file)
+    return None
+
+def process_contig_entry(row, fasta_dir, min_evalue, min_perc, min_cov, extracted_contigs, lock):
+    if float(row['evalue']) > min_evalue or float(row['pident']) < min_perc or float(row['query_coverage']) < min_cov:
+        print(f"\n \033[91mSkipping sequence ({row['database']} query: {row['query_file_name']} pident: {row['pident']} query coverage: {row['query_coverage']} evalue: {row['evalue']}) due to filtering thresholds\033[0m")
+        return None
     
-    print(f"\n \033[93mProcessing blast file: {blast_file}\033[0m\n")
-    unique_sequences = {}
+    contig_key = (row['database'], row['sseqid'])
 
-    base_name = blast_file.split('_')[0]
-    original_fasta = find_fasta_file(base_name, fasta_dir)
-
+    with lock:
+        if contig_key in extracted_contigs:
+            return None
+        extracted_contigs.add(contig_key)
+    
+    original_fasta = find_fasta_file(row['database'], fasta_dir)
     if original_fasta is None:
-        print(f"\n \033[93mNo matching FASTA file found for {blast_file}. Skipping.\033[0m\n")
-        return {}
+        print(f"\n \033[91mNo matching FASTA file found for {row['database']}\033[0m")
+        return None
     
-    with open(os.path.join(blast_dir, blast_file), 'r') as blast_f:
-        for line in blast_f:
-            parts = line.strip().split('\t')
-            if float(parts[10]) <= evalue_cutoff:
-                seq_id = parts[1]
+    found = False
+    for seq_record in SeqIO.parse(original_fasta, "fasta"):
+        seq_id = seq_record.id.split()[0]
+        if seq_record.id == row['sseqid']:
+            found = True
+            extracted_contigs.add(contig_key) # Mark this contig as extracted
+            header_id = f"{seq_record.id}_{row['database']}_{row['query_file_name']}_full_contig"
+            description = "full contig extracted"
+            return SeqIO.SeqRecord(seq_record.seq, id=header_id, description=description)
+        
+    if not found:
+        print(f"\n \033[91mSequence ID {row['sseqid']} not found in {original_fasta}\033[0m")
+    return None
+    
+def extract_contigs_from_csv(csv_path, fasta_dir, output_fasta, min_evalue=1e-5, min_perc=90.0, min_cov=75.0):
+    df = pd.read_csv(csv_path)
+    contigs = []
+    extracted_contigs = set() # Set to keep track of contigs that have already been extracted
+    lock = Lock()
 
-                if seq_id not in unique_sequences:
-                    for seq_record in SeqIO.parse(original_fasta, "fasta"):
-                        if seq_record.id == seq_id:
-                            contig_sequence = seq_record.seq
-
-                            new_record = SeqIO.SeqRecord(contig_sequence, id=seq_record.id, description="contig sequence")
-                            unique_sequences[seq_id] = new_record
-                            break
-
-    return unique_sequences
-
-def extract_contigs_tabular(args):
-    blast_dir = args.results_directory
-    fasta_dir = args.fasta_directory
-    output_fasta = args.output_fasta
-    evalue_cuttoff = float(args.evalue) if args.evalue else 0.001
-    cores = int(args.threads) if args.threads else 1
-
-    blast_files = [file for file in os.listdir(blast_dir) if file.endswith('.txt')]
-
-    print(f"\n \033[92mTotal BLAST files: {len(blast_files)}\033[0m\n")
-
-    all_unique_sequences = {}
-
-    with concurrent.futures.ProcessPoolExecutor(max_workers=cores) as executor:
-        futures = {executor.submit(process_blast_file, blast_file, blast_dir, fasta_dir, evalue_cuttoff): blast_file for blast_file in blast_files}
-
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        futures = [
+            executor.submit(process_contig_entry, row, fasta_dir, min_evalue, min_perc, min_cov, extracted_contigs, lock)
+            for index, row in df.iterrows()
+        ]
         for future in concurrent.futures.as_completed(futures):
-            unique_sequences = future.result()
-            for seq_id, seq_record in unique_sequences.items():
-                if seq_id not in all_unique_sequences:
-                    all_unique_sequences[seq_id] = seq_record
+            result = future.result()
+            if result:
+                contigs.append(result)
 
-    print(f"Writing {len(all_unique_sequences)} sequences to output.")      
+    SeqIO.write(contigs, output_fasta, "fasta")
+    print(f"\n \033[92mExtracted {len(contigs)} unique contigs to {output_fasta}\033[0m")
 
-    SeqIO.write(all_unique_sequences.values(), output_fasta, "fasta")
-    print("Sequences processed and written to:", output_fasta)
+def run_contigs(args):
+    start_time = time.time()
+
+    extract_contigs_from_csv(
+        csv_path=args.csv_path,
+        fasta_dir=args.fasta_directory,
+        output_fasta=args.output_fasta,
+        min_evalue=args.min_evalue,
+        min_perc=args.min_perc,
+        min_cov=args.min_cov
+    )
+
+    end_time = time.time()
+    print(f" Total runtime: {end_time-start_time:.2f} seconds")
+    
