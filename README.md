@@ -1,8 +1,9 @@
-# **multiBLAST**
+# **<ins>multiBLAST<ins/>**
 
-**This program automates the process of running BLAST (Basic Local Alignment Search Tool) queries against multiple
-databases and organizing the results. It is designed to handle various types of BLAST searches (e.g., blastn, tblastn)
-and formats the output for easy analysis.** 
+**multiBLAST automates the process of running BLAST (Basic Local Alignment Search Tool) queries against multiple
+databases and organizing the results. It is designed to handle various types of BLAST searches (nucelotide, translated nucleotide)
+and formats the output for easy analysis. Additionally, aligned sequences may be extracted from genome assemblies. To facilitate
+metagenomic analyses, contigs harboring genes of interest identified via multiBLAST may additionally be extracted for further analysis.** 
 
 **Author:** <br />
     Elijah R. Bring Horvath, PhD (https://github.com/ERBringHorvath)
@@ -46,8 +47,8 @@ If these commands run without error, BLAST is correctly installed. If an error o
 
 ## multiBLAST Installation
 
-First, if not already installed, install [Git](https://github.com/git-guides/install-git) <br />
-* macOS should have this installed by default <br />
+If not already installed, install [Git](https://github.com/git-guides/install-git) <br />
+* Linux/Unix systems should have this installed by default <br />
 * To test installation, open the terminal and type `git --version` <br />
 * For macOS users, you should see something like `git version 2.37.1 (Apple Git-137.1)`
 
@@ -84,7 +85,7 @@ Save the file and restart your terminal or run `source ~/.bash_profile` (Linux/U
 `multiblast --help` <br />
 `multiblast --version`
 
-NOTE: Permissions should automatically update. If you get a `permission denied` message when running `multiblast` <br />
+NOTE: Permissions should automatically be applied during installation. If you get a `permission denied` message when running `multiblast` <br />
 permissions may need to be changed manually. To do this, you can use the following command:
 
 `chmod +x /path/to/multiblast/bin/multiblast`
@@ -154,7 +155,7 @@ If multiBLAST is used for database creation and queries, matching basenames shou
 Results file should be `all_results.csv`, `all_filtered_results.csv`, or `filtered_results.csv`, which are automatically generated using `multiblast query`
 
 If percent identity and query coverage were set manually during `multiblast query`, these values will need to be reflected when using `mutliblast extract` using `--min-perc` and/or `--min-cov` <br />
-For instance, if `multiblast query` was called using `--perc 75`, but `multiblast extract` minimum percent identity is left at its default value (90), the appropriate sequences will not be extracted, as they may fall beneath the internally curated thesholds. 
+For instance, if `multiblast query` was called using `--perc 75`, but the `multiblast extract` minimum percent identity is left at its default value (90), the appropriate sequences may not be extracted, as they may fall beneath the internally curated `--min-perc` theshold. 
 
 `multiblast extract` will generate a multi-FASTA file of all sequences identified by `multiblast queryP`/`query` based on the default or user-defined e-value cutoff.
 
@@ -170,23 +171,25 @@ For instance, if `multiblast query` was called using `--perc 75`, but `multiblas
 `--min-perc`: minimum percent identity threshold. Default = 90 <br />
 `--min-cov`: minimum query coverage threshold. Default = 75 <br />
 
-**NOTE:** Results files and FASTA reference assemblies <ins>**must**</ins> share the same basename:
+**NOTE:** Results files and FASTA reference assemblies <ins>**must**</ins> share the same basename for both `multiblast extract` and `multiblast extract-contig`:
 
 Example basename: 'FILE' <br />
 &nbsp;&nbsp;&nbsp;&nbsp;Example FASTA: FILE.fasta <br />
 &nbsp;&nbsp;&nbsp;&nbsp;Example results file: FILE_results.txt
 
-If multiBLAST is used for database creation and queries, matching basenames will be handled automatically
+If multiBLAST is used for database creation and queries, matching basenames are handled automatically
 
 **Example usage:** <br />
 `multiblast extract-contig -d /path/to/results/files -f /path/to/reference/FASTA/files -T 8 -o contigs.fa`
 
 `multiblast extract-contig` will generate a multi-FASTA file of all contigs harboring a matching <br /> 
-sequence identified by `multiblast query` based on the default or user-defined thresholds.
+sequence identified by `multiblast query` based on the default or user-defined thresholds. 
+
+This program was designed for use with metagenome mining, as metagenomic assemblies are often too large to explore using a genome browser. If short-read assembly methods are used, contigs harboring genes of interest may be extracted; contigs will likely be more tractible to parsing using a genome browser if manual annotation is needed. 
 
 ## Split multi-FASTA files
 
-Often times when downloading large genomic datasets, individual FASTA files will be concatenated into one large multi-FASTA file. This script is designed to split multi-FASTA files into more useful individual FASTA files required for proper use of the multiBLAST platform.
+Often times when downloading large genomic datasets, individual FASTA files will be concatenated into one large multi-FASTA file. This script is designed to split multi-FASTA files into individual FASTA files for use with the multiBLAST or other bioinformatic platforms.
 
 **Example usage:**
 
