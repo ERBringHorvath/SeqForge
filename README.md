@@ -10,13 +10,9 @@ and formats the output for easy analysis.**
 **License:** <br />
     This script is shared under MIT License, which allows for modification and redistribution with attribution.
 
-**Note**: <br />
-    This script is intended for research and academic purposes. 
-    Please ensure you have the necessary permissions to use the databases and query files with BLAST.
-
 ## Install NCBI BLAST+
 
-*multiBLAST uses [NCBI BLAST+ Software](https://pubmed.ncbi.nlm.nih.gov/20003500/)*
++*multiBLAST uses [NCBI BLAST+](https://pubmed.ncbi.nlm.nih.gov/20003500/)**
 
 Camancho C, Coulouris G, Avagyan V, Ma N, Papadopoulos J, Bealer K, Madden TL, **2009**. <br />
 BLAST+: architecture and applications. *BMC Bioinformatics*, 10, 421. doi:10.1186/1471-2105-10-421
@@ -55,7 +51,6 @@ First, if not already installed, install [Git](https://github.com/git-guides/ins
 * To test installation, open the terminal and type `git --version` <br />
 * For macOS users, you should see something like `git version 2.37.1 (Apple Git-137.1)`
 
-
 ## **Clone multiBLAST from source**
 
 We suggest installing multiBLAST within your Home folder, such as `/Users/user/` 
@@ -89,7 +84,8 @@ Save the file and restart your terminal or run `source ~/.bash_profile` (Linux/U
 `multiblast --help` <br />
 `multiblast --version`
 
-NOTE: Permissions may need to be changed. To do this, you can use the following command:
+NOTE: Permissions should automatically update. If you get a `permission denied` message when running `multiblast` <br />
+permissions may need to be changed manually. To do this, you can use the following command:
 
 `chmod +x /path/to/multiblast/bin/multiblast`
 
@@ -103,7 +99,7 @@ multiblast makedb: <br />
 `-o`, `--out`: path to directory where you want to store your databases
 
 Example: <br />
-`multiblast makedb -f /path/to/FASTA/files/folder -d nucl -o /path/to/results/folder`
+`multiblast makedb -f /path/to/FASTA/files -d nucl -o /path/to/results/folder`
 
 **Querying a database library**
 
@@ -120,7 +116,7 @@ multiblast query: <br />
 `--min-seq-len`: define minimum sequence length for short amino acid/nucleotide sequence queries (use with caution) <br />
 
 Example: <br />
-`multiblast query -T 8 -d /path/to/blast/database/folder -q /path/to/query/files/folder -o /path/to/results/folder`
+`multiblast query -T 8 -d /path/to/blast/database/files -q /path/to/query/files/ -o /path/to/results/folder`
 
 All multiBLAST results are concatenated to `all_results.csv` and either `all_filtered_results.csv` or <br /> 
 `filtered_results.csv` within the output folder designated by `-o, --output`
@@ -158,7 +154,11 @@ Example basename: 'FILE' <br />
 If multiBLAST is used for database creation and queries, matching basenames should be generated automatically
 
 **Example usage:** <br />
-`multiblast extract -d /path/to/results/files -f /path/to/reference/FASTA/files -T 8 -o sequences.fa`
+`multiblast extract -d /path/to/results/file -f /path/to/reference/FASTA/files -T 8 -o sequences.fa`
+
+**NOTE:**
+Results file should be `all_results.csv`, `all_filtered_results.csv`, or `filtered_results.csv`, which are automatically generated using `multiblast query` <br />
+
 
 `multiblast extract` will generate a multi-FASTA file of all sequences identified by `multiblast queryP`/`query` based on the default or user-defined e-value cutoff.
 
@@ -185,7 +185,8 @@ If multiBLAST is used for database creation and queries, matching basenames will
 **Example usage:** <br />
 `multiblast extract-contig -d /path/to/results/files -f /path/to/reference/FASTA/files -T 8 -o contigs.fa`
 
-`multiblast extract-contig` will generate a multi-FASTA file of all contigs harboring a matching <br /> sequence identified by `multiblast query` based on the default or user-defined thresholds.
+`multiblast extract-contig` will generate a multi-FASTA file of all contigs harboring a matching <br /> 
+sequence identified by `multiblast query` based on the default or user-defined thresholds.
 
 # Citations
 
