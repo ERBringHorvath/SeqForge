@@ -99,7 +99,7 @@ def main():
     parser_query.add_argument('-o', '--output', required=True, help='Path to directory to store results.')
     parser_query.add_argument('--perc', type=check_query_range, help='Define percent identity threshold (default = 90)')
     parser_query.add_argument('--cov', type=check_query_range, help="Define query coverage threshold (default = 75)")
-    parser_query.add_argument('--report-only-lowest-evalue', action='store_true', help='Report only the top hit for each query')
+    parser_query.add_argument('--report-strongest-matches', action='store_true', help='Report only the top hit for each query')
     parser_query.add_argument('--nucleotide-query', action='store_true', help='Use blastn for nucelotide queries')
     parser_query.add_argument('--min-seq-len', type=int, help='Minimum sequence length for database searches (use with caution)')
     parser_query.set_defaults(func=run_multiblast)
