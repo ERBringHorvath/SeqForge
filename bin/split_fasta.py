@@ -12,13 +12,13 @@ def run_split(args):
 
     _, file_extension = os.path.splitext(input_file)
     if file_extension.lower() not in allowed_extensions:
-        logging.warning(f"Skipped {input_file} due to incorrect file extension.")
+        logging.warning(f"\n \033[91mSkipped {input_file} due to incorrect file extension.\033[0m")
         return
     
     try:
         total_records = sum(1 for _ in SeqIO.parse(input_file, "fasta"))
     except Exception as e:
-        logging.error(f"Error parsing {input_file}: {e}")
+        logging.error(f"\n \033[91mError parsing {input_file}: {e}\033[0m")
         return
     
     with tqdm(total=total_records, desc="Processing") as pbar:
@@ -28,5 +28,5 @@ def run_split(args):
                 SeqIO.write(record, output_file, "fasta")
                 pbar.update(1)
             except Exception as e:
-                logging.error(f"Error processing record {record.id} in {input_file}: {e}")
+                logging.error(f"\n \033[91mError processing record {record.id} in {input_file}: {e}\033[0m")
                 continue

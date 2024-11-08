@@ -32,7 +32,7 @@ def run_multiblast(args):
 
     # Handle directories
     if not os.path.exists(db_dir):
-        print(f"No BLAST databases found at {db_dir}")
+        print(f"\n \033[91mNo BLAST databases found at {db_dir}\033[0m")
         return
 
     if not os.path.exists(query_path):
@@ -75,7 +75,7 @@ def run_multiblast(args):
                         combined_results.append(row + list(task_info))
 
     if not combined_results:
-        print("No BLAST results found. Please check input files and parameters.")
+        print("\n \033[91mNo BLAST results found. Please check input files and parameters\033[0m")
         return
 
     df = pd.DataFrame(combined_results, columns=fieldnames + ['database', 'query_file_name'])
@@ -91,7 +91,7 @@ def run_multiblast(args):
 
     output_csv_path = os.path.join(results_output_dir, "all_results.csv")
     df.to_csv(output_csv_path, index=False)
-    print(f"All results saved in {output_csv_path}")
+    print(f"\n \033[92mAll results saved in {output_csv_path}\033[0m")
 
     filtered_df = df[(df['evalue'] <= evalue_threshold) & (df['pident'] >= perc_identity_threshold) & (df['query_coverage'] >= query_coverage_threshold)]
 
@@ -99,10 +99,10 @@ def run_multiblast(args):
         strongest_hits = filtered_df.groupby(['database', 'query_file_name']).first().reset_index()
         output_csv_path = os.path.join(results_output_dir, "filtered_results.csv")
         strongest_hits.to_csv(output_csv_path, index=False)
-        print(f"Strongest matches stored in {output_csv_path}")
+        print(f"\n \033[92mStrongest matches stored in {output_csv_path}\033[0m")
     else:
         output_csv_path = os.path.join(results_output_dir, "all_filtered_results.csv")
         filtered_df.to_csv(output_csv_path, index=False)
-        print(f"Filtered results stored in {output_csv_path}")
+        print(f"\n \033[92mFiltered results stored in {output_csv_path}\033[0m")
 
     return filtered_df
