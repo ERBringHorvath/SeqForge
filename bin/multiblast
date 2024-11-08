@@ -85,7 +85,7 @@ def main():
 
     # Sub-parser for the "makedb" command
     parser_makedb = subparsers.add_parser('makedb', help='Create a BLAST database from a FASTA file.')
-    parser_makedb.add_argument('-f', '--file_directory', required=True, help='Path to FASTA files.')
+    parser_makedb.add_argument('-f', '--file-directory', required=True, help='Path to FASTA files.')
     parser_makedb.add_argument('-d', '--dbtype', choices=['nucl', 'prot'], required=True, help='Type of the database (nucl for nucleotide, prot for protein).')
     parser_makedb.add_argument('-o', '--out', required=True, help='Name for the output database.')
     parser_makedb.set_defaults(func=make_blast_db)
