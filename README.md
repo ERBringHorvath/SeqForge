@@ -5,7 +5,7 @@ databases and organizing the results. It is designed to handle various types of 
 and formats the output for easy analysis.** 
 
 **Author:** <br />
-    Elijah R. Bring Horvath (https://github.com/ERBringHorvath)
+    Elijah R. Bring Horvath, PhD (https://github.com/ERBringHorvath)
 
 **License:** <br />
     This script is shared under MIT License, which allows for modification and redistribution with attribution.
