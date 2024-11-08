@@ -116,19 +116,13 @@ multiblast query: <br />
 `--min-seq-len`: define minimum sequence length for short amino acid/nucleotide sequence queries (use with caution) <br />
 
 Example: <br />
-`multiblast query -T 8 -d /path/to/blast/database/files -q /path/to/query/files/ -o /path/to/results/folder`
+`multiblast query -T 8 -d /path/to/blast/database/files -q /path/to/query/files/` <br /> 
+`-o /path/to/results/folder`
 
 All multiBLAST results are concatenated to `all_results.csv` and either `all_filtered_results.csv` or <br /> 
 `filtered_results.csv` within the output folder designated by `-o, --output`
 
 # <ins>Accessory Scripts</ins>
-## Split multi-FASTA files
-
-Often times when downloading large genomic datasets, individual FASTA files will be concatenated into one large multi-FASTA file. This script is designed to split multi-FASTA files into more useful individual FASTA files required for proper use of the multiBLAST platform.
-
-**Example usage:**
-
-`multiblast split_fasta -i /path/to/multiFASTA/file -o /path/to/results/folder`
 
 ## Extract Sequences from a multiBLAST Query
 
@@ -158,8 +152,7 @@ If multiBLAST is used for database creation and queries, matching basenames shou
 
 **NOTE:**
 Results file should be `all_results.csv`, `all_filtered_results.csv`, or `filtered_results.csv`, which are automatically generated using `multiblast query` <br />
-
-
+If percent identity and query coverage were designated manually during `multiblast query`, these values will need to be reflected when using `mutliblast extract` using `--min-perc` and/or `--min-cov` <br />
 `multiblast extract` will generate a multi-FASTA file of all sequences identified by `multiblast queryP`/`query` based on the default or user-defined e-value cutoff.
 
 ## Extract Entire Contig ##
@@ -180,13 +173,21 @@ Example basename: 'FILE' <br />
 &nbsp;&nbsp;&nbsp;&nbsp;Example FASTA: FILE.fasta <br />
 &nbsp;&nbsp;&nbsp;&nbsp;Example results file: FILE_results.txt
 
-If multiBLAST is used for database creation and queries, matching basenames will be generated automatically
+If multiBLAST is used for database creation and queries, matching basenames will be handled automatically
 
 **Example usage:** <br />
 `multiblast extract-contig -d /path/to/results/files -f /path/to/reference/FASTA/files -T 8 -o contigs.fa`
 
 `multiblast extract-contig` will generate a multi-FASTA file of all contigs harboring a matching <br /> 
 sequence identified by `multiblast query` based on the default or user-defined thresholds.
+
+## Split multi-FASTA files
+
+Often times when downloading large genomic datasets, individual FASTA files will be concatenated into one large multi-FASTA file. This script is designed to split multi-FASTA files into more useful individual FASTA files required for proper use of the multiBLAST platform.
+
+**Example usage:**
+
+`multiblast split_fasta -i /path/to/multiFASTA/file -o /path/to/results/folder`
 
 # Citations
 
