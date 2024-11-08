@@ -1,0 +1,144 @@
+#!/usr/bin/env python3
+
+"""
+multiBLAST
+
+This program automates the process of running BLAST (Basic Local Alignment Search Tool) 
+    queries against multiple databases and organizing the results. It is designed to handle 
+    various types of BLAST searches (e.g., blastn, tblastn) and formats the output for easy analysis.
+
+multiBLAST utilizes NCBI BLAST+: 
+    Camancho C, Coulouris G, Avagyan V, Ma N, Papadopoulos J, Bealer K, Madden TL, 2009. 
+    BLAST+: architecture and applications. BMC Bioinformatics, 10, 421. doi:10.1186/1471-2105-10-421
+
+Usage:
+    - Ensure BLAST+ command line tools are installed and accessible in your environment.
+    - Prepare your query files and BLAST database directories.
+    - Run the script and follow the prompts to specify the BLAST method, paths to query files, 
+        database directories, and the desired output location.
+
+Requirements:
+    - Python 3.x
+    - pandas library
+    - BLAST+ command line tools installed and in your system's PATH.
+
+Features:
+    - Supports multiple query files and databases.
+    - Filters results based on the E-value threshold.
+    - Outputs results in a structured CSV file with customizable column names.
+
+Instructions:
+    1. Input the path to the directory containing your BLAST databases.
+    2. Choose the BLAST search method (e.g., blastn, tblastn).
+    3. Input the path to the directory containing your query files.
+    4. Specify where you want to store the results.
+    5. Enter the maximum E-value for filtering results.
+
+Example:
+    Enter path to BLAST DBs: /path/to/blast_dbs
+    What method would you like to use? (blastn, tblastn): blastn
+    Enter path to query file(s): /path/to/query_files
+    Where do you want to store the results?: /path/to/results
+    Enter maximum E-value: 0.01
+
+Author:
+    Elijah R. Bring Horvath (https://github.com/ERBringHorvath)
+
+License:
+    This script is shared under MIT License, which allows for modification and redistribution with attribution.
+
+Note:
+    This script is intended for research and academic purposes. 
+    Please ensure you have the necessary permissions to use the databases and query files with BLAST.
+
+"""
+
+import argparse, logging, sys, subprocess, os
+from datetime import datetime
+from makedb import make_blast_db
+from query import run_multiblast
+from split_fasta import run_split
+from extract_sequences import run
+from extract_contigs import run_contigs
+
+def check_query_range(value):
+    ivalue = int(value)
+    if ivalue < 0 or ivalue > 100:
+        raise argparse.ArgumentTypeError(f" {value} is out of allowed range (0-100)")
+    return ivalue
+
+def check_extract_range(value):
+    value = float(value)
+    if value < 0 or value > 100:
+        raise argparse.ArgumentTypeError(f" \033[91mValue is out of allowed range (0-100)\033[0m \n")
+    return value
+
+def main():
+    ##Initialize logging
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    
+    logging.info("Starting multiBLAST")
+
+    parser = argparse.ArgumentParser(prog='multiblast', description='multiBLAST: Automates the process of running BLAST queries.')
+    parser.add_argument('-v', '--version', action='version', version='%(prog)s v.1.5.0')
+    subparsers = parser.add_subparsers(dest='command', help='Available commands')
+
+    # Sub-parser for the "makedb" command
+    parser_makedb = subparsers.add_parser('makedb', help='Create a BLAST database from a FASTA file.')
+    parser_makedb.add_argument('-f', '--file_directory', required=True, help='Path to FASTA files.')
+    parser_makedb.add_argument('-d', '--dbtype', choices=['nucl', 'prot'], required=True, help='Type of the database (nucl for nucleotide, prot for protein).')
+    parser_makedb.add_argument('-o', '--out', required=True, help='Name for the output database.')
+    parser_makedb.set_defaults(func=make_blast_db)
+
+    ##Add sub-parser for the "queryP" command
+    parser_query = subparsers.add_parser('query', help="Run BLAST queries in parallel.")
+    parser_query.add_argument('-d', '--database', required=True, help='Path to the BLAST databases.')
+    parser_query.add_argument('-q', '--query_files', required=True, help='Path to the query files in FASTA format.')
+    parser_query.add_argument('-T', '--threads', type=int, help='Number of cores to dedicate')
+    parser_query.add_argument('-e', '--evalue', type=float, help='E-value threshold.')
+    parser_query.add_argument('-o', '--output', required=True, help='Path to directory to store results.')
+    parser_query.add_argument('--perc', type=check_query_range, help='Define percent identity threshold (default = 90)')
+    parser_query.add_argument('--cov', type=check_query_range, help="Define query coverage threshold (default = 75)")
+    parser_query.add_argument('--report-only-lowest-evalue', action='store_true', help='Report only the top hit for each query')
+    parser_query.add_argument('--nucleotide-query', action='store_true', help='Use blastn for nucelotide queries')
+    parser_query.add_argument('--min-seq-len', type=int, help='Minimum sequence length for database searches (use with caution)')
+    parser_query.set_defaults(func=run_multiblast)
+
+    ##Add sub-parser for multi-FASTA file splitter
+    split_fasta_parser = subparsers.add_parser('split_fasta')
+    split_fasta_parser.add_argument('-i', '--input', required=True, help="Input multi-FASTA file")
+    split_fasta_parser.add_argument('-o', '--output_dir', required=True, help="Output directory for split FASTA files")
+
+    parser_extract = subparsers.add_parser('extract', help="Extract sequences based multiBLAST Query results")
+    parser_extract.add_argument('-c', '--csv-path', required=True, help="Path to BLAST results files.")
+    parser_extract.add_argument('-f', '--fasta-directory', required=True, help="Path to reference FASTA assemblies.")
+    parser_extract.add_argument('-o', '--output-fasta', required=True, help="Output FASTA file name.")
+    parser_extract.add_argument('-T', '--threads', help="Number of cores to dedicate.")
+    parser_extract.add_argument('--min-evalue', type=float, default=1e-5, help='Minimum e-value threshold for sequence extraction.')
+    parser_extract.add_argument('--min-perc', type=check_extract_range, default=90.0, help='Minimum percent identity threshold for sequence extraction.')
+    parser_extract.add_argument('--min-cov', type=check_extract_range, default=75.0, help='Minimum query coverage threshold for sequence extraction.')
+    parser_extract.add_argument('--translate', action='store_true', help='Translate extracted nucleotide sequence using the standard genetic code.')
+    parser_extract.set_defaults(func=run)
+
+    parser_extract_contig = subparsers.add_parser('extract-contig', help="Extract entire contig containing matching sequences.")
+    parser_extract_contig.add_argument('-c', '--csv-path', required=True, help="Path to multiBLAST Query results file (all_results.csv or all_filtered_results.csv)")
+    parser_extract_contig.add_argument('-f', '--fasta-directory', required=True, help="Path to your FASTA files used to make multiBLAST makedb databases")
+    parser_extract_contig.add_argument('-o', '--output-fasta', required=True, help="Output FASTA file with extension (.fa, .fas, .fna, .fasta)")
+    parser_extract_contig.add_argument('-T', '--threads', default=1, help="Number of cores to dedicate")
+    parser_extract_contig.add_argument('--min-evalue', type=float, default=1e-5, help="Minimum e-value threshold")
+    parser_extract_contig.add_argument('--min-perc', type=check_extract_range, default=90, help="Minimum percent identity threshold")
+    parser_extract_contig.add_argument('--min-cov', type=check_extract_range, default=75, help="Minimum query coverage threshold")
+    parser_extract_contig.set_defaults(func=run_contigs)
+
+    args = parser.parse_args()
+
+    if hasattr(args, 'func'):
+        try:
+            args.func(args)
+        except Exception as e:
+            logging.error("An error occurred: %s", str(e))
+    else:
+        parser.print_help()
+
+if __name__ == "__main__":
+    main()
