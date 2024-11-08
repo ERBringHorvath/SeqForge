@@ -42,7 +42,7 @@ Or using Conda:
 **Verify BLAST Installation**
 
 `makeblastdb -h` <br />
-`blastn` -h
+`blastn -h`
 
 If these commands run without error, BLAST is correctly installed. If an error occurs, refer to the [BLAST+ documentation](https://blast.ncbi.nlm.nih.gov/doc/blast-help/index.html#index)
 
