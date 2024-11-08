@@ -80,14 +80,6 @@ Whatever the initial directory, this path should end with `/multiblast/bin`
 
 Save the file and restart your terminal or run `source ~/.bash_profile` (Linux/Unix) or `source ~/.zshrc` (macOS)
 
-**For Windows** (Not yet validated)
-
-1. Search for `Environmental Variables` in the Start Menu and select `Edit the system environment variables`
-2. In the System Properties window, click on `Environmental Variables`
-3. Under System Variables, find the `Path` variable, select it, and click `Edit`
-4. Click `New` and add the path to the folder containing the `multiblast` executable
-5. Click `OK` to save your changes
-
 **Install Dependencies**
 
 `pip install -r requirements.txt` or `pip3 install -r requirements.txt`
@@ -116,44 +108,22 @@ Example: <br />
 **Querying a database library**
 
 multiblast query: <br />
-`-m`, `--method`: BLAST method to perform <br />
-&nbsp;&nbsp;&nbsp;&nbsp;`tblastn`, search protein query through nucleotide database <br />
-&nbsp;&nbsp;&nbsp;&nbsp;`blastn`, search nucleotide query trhough nucleotide database <br />
 `-d`, `--database`: path to directory containing BLAST+ databases <br />
-`-q`, `--query_files`: path to directory containing query files in FASTA format <br />
-`-e`, `--evalue`: maximum e-value cutoff, default 0.001 <br />
+`-q`, `--query_files`: path to directory containing query files in amino acid FASTA format <br />
+`-e`, `--evalue`: maximum e-value cutoff, default 0.00001 <br />
 `-o`, `--output`: path to directory to store results
-
-Maximum evalue may be expressed as an integer, decimal, or in scientific notation, `--evalue 2e-30`
-
-Optional flag `--report-only-lowest-evalue`: results will only report the lowest e-value amongst BLAST hits <br />
-Useful for genes with many homologs
+`-T`, `--threads`: number of cores to dedicate for multi-threading <br />
+`--report-strongest-match`: report only the single strongest match for each query <br />
+`--perc`: define minimum percent identity threshold. Default = 90 <br />
+`--cov`: define minimum query coverage threshold. Default = 75 <br />
+`--nucleotide-query`: use blastn for queries in nucleotide FASTA format <br />
+`--min-seq-len`: define minimum sequence length for short amino acid/nucleotide sequence queries (use with caution) <br />
 
 Example: <br />
-`multiblast query -m tblastn -d /path/to/blast/database/folder -q /path/to/query/files/folder -e 0.01 -o /path/to/results/folder`
+`multiblast query -T 8 -d /path/to/blast/database/folder -q /path/to/query/files/folder -o /path/to/results/folder`
 
-All multiBLAST results are concatenated to `multiblast_results.csv` within the output folder designated by `-o, --output`
-
-## Run multiBLAST in Parallel
-
-multiblast queryP: <br />
-`-m`, `--method`: BLAST method to perform <br />
-&nbsp;&nbsp;&nbsp;&nbsp;`tblastn`, search protein query through nucleotide database <br />
-&nbsp;&nbsp;&nbsp;&nbsp;`blastn`, search nucleotide query trhough nucleotide database <br />
-`-d`, `--database`: path to directory containing BLAST+ databases <br />
-`-q`, `--query_files`: path to directory containing query files in FASTA format <br />
-`-T`, `--threads`: number of cores to dedicate, default 1 <br />
-`-e`, `--evalue`: maximum e-value cutoff, default 0.001 <br />
-`-o`, `--output`: path to directory to store results
-
-Maximum evalue may be expressed as an integer, decimal, or in scientific notation, `--evalue 2e-30`
-
-Optional flag `--report-only-lowest-evalue`: results will only report the lowest e-value amongst BLAST hits <br />
-Useful for genes with many homologs
-
-Example: <br />
-`multiblast queryP -m tblastn -d /path/to/blast/database/folder -q /path/to/query/files/folder -T 8` <br /> 
-`-e 0.01 -o /path/to/results/folder --report-only-lowest-evalue`
+All multiBLAST results are concatenated to `all_results.csv` and either `all_filtered_results.csv` or <br /> 
+`filtered_results.csv` within the output folder designated by `-o, --output`
 
 # <ins>Accessory Scripts</ins>
 ## Split multi-FASTA files
@@ -172,7 +142,9 @@ multiblast extract: <br />
 &nbsp;&nbsp;&nbsp;&nbsp;These should be the FASTA files the BLAST databases were created from and should have the same basename as the query results files <br />
 `-o`, `--output_fasta`: output file to contain sequences, defaults to current working directory <br />
 `-T`, `--threads`: number of cores to dedicate, default is 1 <br />
-`-e` `--evalue`: maximum e-value cutoff, default is 0.001 <br />
+`--min-evalue`: maximum e-value threshold, default = 0.00001 <br />
+`--min-perc`: minimum percent identity threshold. Default = 90 <br />
+`--min-cov`: minimum query coverage threshold. Default = 75 <br />
 `--translate`: translates extracted nucleotide sequence(s)
 
 **NOTE:** Translation of sequences is optional, however care should be used when translating extracted nucleotide sequences, as BLAST results may not always contain a full CDS. To allow for this, when the `--translate` argument is called, extracted sequences will be trimmed to only include complete codons, which may affect interpretation of results.
@@ -186,19 +158,21 @@ Example basename: 'FILE' <br />
 If multiBLAST is used for database creation and queries, matching basenames should be generated automatically
 
 **Example usage:** <br />
-`multiblast extract -d /path/to/results/files -f /path/to/reference/FASTA/files -T 8 -e 2e-5 -o sequences.fa`
+`multiblast extract -d /path/to/results/files -f /path/to/reference/FASTA/files -T 8 -o sequences.fa`
 
 `multiblast extract` will generate a multi-FASTA file of all sequences identified by `multiblast queryP`/`query` based on the default or user-defined e-value cutoff.
 
 ## Extract Entire Contig ##
 
-`multiblast extract_contig`: <br />
+`multiblast extract-contig`: <br />
 `-d`, `--results_directory`: path to directory containing multiBLAST results files <br />
 `-f`, `--fasta_directory`: path to reference FASTA assemblies <br />
 &nbsp;&nbsp;&nbsp;&nbsp;These should be the FASTA files the BLAST databases were created from and should have the same basename as the query results files <br />
 `-o`, `--output_fasta`: output file to contain sequences, defaults to current working directory <br />
 `-T`, `--threads`: number of cores to dedicate, default is 1 <br />
-`-e` `--evalue`: maximum e-value cutoff, default is 0.001 <br />
+`--min-evalue`: maximum e-value threshold, default = 0.00001 <br />
+`--min-perc`: minimum percent identity threshold. Default = 90 <br />
+`--min-cov`: minimum query coverage threshold. Default = 75 <br />
 
 **NOTE:** Results files and FASTA reference assemblies <ins>**must**</ins> share the same basename:
 
@@ -206,12 +180,12 @@ Example basename: 'FILE' <br />
 &nbsp;&nbsp;&nbsp;&nbsp;Example FASTA: FILE.fasta <br />
 &nbsp;&nbsp;&nbsp;&nbsp;Example results file: FILE_results.txt
 
-If multiBLAST is used for database creation and queries, matching basenames should be generated automatically
+If multiBLAST is used for database creation and queries, matching basenames will be generated automatically
 
 **Example usage:** <br />
-`multiblast extract_contig -d /path/to/results/files -f /path/to/reference/FASTA/files -T 8 -e 2e-5` <br /> `-o contigs.fa`
+`multiblast extract-contig -d /path/to/results/files -f /path/to/reference/FASTA/files -T 8 -o contigs.fa`
 
-`multiblast extract_contigs` will generate a multi-FASTA file of all contigs harboring a matching <br /> sequence identified by `multiblast queryP`/`query` based on the default or user-defined e-value cutoff.
+`multiblast extract-contig` will generate a multi-FASTA file of all contigs harboring a matching <br /> sequence identified by `multiblast query` based on the default or user-defined thresholds.
 
 # Citations
 
