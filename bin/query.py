@@ -4,6 +4,12 @@ import csv
 import pandas as pd
 from concurrent.futures import ProcessPoolExecutor
 
+"""
+multiBLAST Query
+
+Author: Elijah R. Bring Horvath, PhD
+"""
+
 def execute_blast_query(data):
     blast, db_path, query_file_path, output_file, evalue_threshold, db_name, query_file_base_name, min_seq_len = data
     cmd = f"{blast} -query {query_file_path} -db {db_path} -outfmt '6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qlen' -out {output_file} -evalue {evalue_threshold}"
@@ -89,7 +95,7 @@ def run_multiblast(args):
 
     filtered_df = df[(df['evalue'] <= evalue_threshold) & (df['pident'] >= perc_identity_threshold) & (df['query_coverage'] >= query_coverage_threshold)]
 
-    if args.report_only_lowest_evalue:
+    if args.report_strongest_matches:
         strongest_hits = filtered_df.groupby(['database', 'query_file_name']).first().reset_index()
         output_csv_path = os.path.join(results_output_dir, "filtered_results.csv")
         strongest_hits.to_csv(output_csv_path, index=False)
