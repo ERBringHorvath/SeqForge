@@ -105,7 +105,7 @@ def main():
     parser_query.set_defaults(func=run_multiblast)
 
     ##Add sub-parser for multi-FASTA file splitter
-    split_fasta_parser = subparsers.add_parser('split_fasta')
+    split_fasta_parser = subparsers.add_parser('split-fasta')
     split_fasta_parser.add_argument('-i', '--input', required=True, help="Input multi-FASTA file")
     split_fasta_parser.add_argument('-o', '--output_dir', required=True, help="Output directory for split FASTA files")
     split_fasta_parser.set_defaults(func=run_split)
