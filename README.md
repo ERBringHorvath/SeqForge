@@ -181,7 +181,7 @@ Example basename: 'FILE' <br />
 If multiBLAST is used for database creation and queries, matching basenames are handled automatically
 
 **Example usage:** <br />
-`multiblast extract-contig -d /path/to/results/files -f /path/to/reference/FASTA/files -T 8 -o contigs.fa`
+`multiblast extract-contig -c /path/to/results/files -f /path/to/reference/FASTA/files -T 8 -o contigs.fa`
 
 `multiblast extract-contig` will generate a multi-FASTA file of all contigs harboring a matching <br /> 
 sequence identified by `multiblast query` based on the default or user-defined thresholds. 
