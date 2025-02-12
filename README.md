@@ -194,7 +194,7 @@ Often times when downloading large genomic datasets, individual FASTA files will
 
 **Example usage:**
 
-`multiblast split_fasta -i /path/to/multiFASTA/file -o /path/to/results/folder`
+`multiblast split-fasta -i /path/to/multiFASTA/file -o /path/to/results/folder`
 
 # Citations
 
