@@ -129,7 +129,7 @@ All multiBLAST results are concatenated to `all_results.csv` and either `all_fil
 ## Extract Sequences from a multiBLAST Query
 
 multiblast extract: <br />
-`-c`, `--csv-oath`: path to results csv file from `multiblast query` <br />
+`-c`, `--csv-path`: path to results csv file from `multiblast query` <br />
 `-f`, `--fasta_directory`: path to reference FASTA assemblies <br />
 &nbsp;&nbsp;&nbsp;&nbsp;These should be the FASTA files the BLAST databases were created from and should have the same basename as the query results files <br />
 `-o`, `--output_fasta`: output file to contain sequences, defaults to current working directory <br />
