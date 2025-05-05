@@ -109,7 +109,7 @@ multiblast query: <br />
 `-d`, `--database`: path to directory containing BLAST+ databases <br />
 `-q`, `--query_files`: path to directory containing query files in amino acid FASTA format <br />
 `-e`, `--evalue`: maximum e-value cutoff, default 0.00001 <br />
-`-o`, `--output`: path to directory to store results
+`-o`, `--output`: path to directory to store results <br />
 `-T`, `--threads`: number of cores to dedicate for multi-threading <br />
 `--report-strongest-match`: report only the single strongest match for each query <br />
 `--perc`: define minimum percent identity threshold. Default = 90 <br />
