@@ -141,7 +141,7 @@ multiblast extract: <br />
 `--up`: extract basepairs upstream of aligned sequence. Default = 0 <br />
 `--down`: extract basepairs downstream of aligned sequence. Default = 0 <br />
 
-**NOTE:** Translation of sequences is optional, however care should be used when translating extracted nucleotide sequences, as BLAST results may not always contain a full CDS. To allow for this, when the `--translate` argument is called, extracted sequences will be trimmed to only include complete codons, which may affect interpretation of results.
+**NOTE:** Translation of sequences is optional, however care should be used when translating extracted nucleotide sequences, as BLAST results may not always contain a full CDS. To allow for this, when the `--translate` argument is called, extracted sequences will be trimmed to only include complete codons, which may affect interpretation of results. Similarly, when using `--up` and/or `--down`, stop codons will be predicted; however, trimming may cause frameshifts of these neighboring genomic elements. Therefore, `--translate` should be used in a workflow incorporating additional ORF/gene validation. 
 
 **NOTE:** Results files and FASTA reference assemblies <ins>**must**</ins> share the same basename:
 
