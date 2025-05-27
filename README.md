@@ -133,7 +133,7 @@ All multiBLAST results are concatenated to `all_results.csv` and either `all_fil
 multiblast extract: <br />
 `-c`, `--csv-path`: path to results csv file from `multiblast query` <br />
 `-f`, `--fasta-directory`: path to reference FASTA assemblies <br />
-&nbsp;&nbsp;&nbsp;&nbsp;These should be the FASTA files the BLAST databases were created from and should have the same basename as the query results files <br />
+**These should be the FASTA files the BLAST databases were created from and should have the same basename as the query results files** <br />
 `-o`, `--output-fasta`: output file to contain sequences, defaults to current working directory <br />
 `-T`, `--threads`: number of cores to dedicate, default is 1 <br />
 `--min-evalue`: maximum e-value threshold, default = 0.00001 <br />
