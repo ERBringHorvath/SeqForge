@@ -136,7 +136,7 @@ multiblast extract: <br />
 `--min-evalue`: maximum e-value threshold, default = 0.00001 <br />
 `--min-perc`: minimum percent identity threshold. Default = 90 <br />
 `--min-cov`: minimum query coverage threshold. Default = 75 <br />
-`--translate`: translates extracted nucleotide sequence(s)
+`--translate`: translates extracted nucleotide sequence(s) <br />
 `--up`: extract basepairs upstream of aligned sequence. Default = 0 <br />
 `--down`: extract basepairs downstream of aligned sequence. Default = 0 <br />
 
