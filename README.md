@@ -29,11 +29,11 @@ Or using Conda:
 
 2. Create Conda environment
 
-`conda create -n blast`
+`conda create -n multiblast python>=3.10`
 
 3. Activate Conda envrionment
 
-`source activate blast`
+`source activate multiblast`
 
 4. Install BLAST+
 
