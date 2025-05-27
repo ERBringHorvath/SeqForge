@@ -138,6 +138,8 @@ multiblast extract: <br />
 `--min-perc`: minimum percent identity threshold. Default = 90 <br />
 `--min-cov`: minimum query coverage threshold. Default = 75 <br />
 `--translate`: translates extracted nucleotide sequence(s)
+`--up`: extract basepairs upstream of aligned sequence. Default = 0 <br />
+`--down`: extract basepairs downstream of aligned sequence. Default = 0 <br />
 
 **NOTE:** Translation of sequences is optional, however care should be used when translating extracted nucleotide sequences, as BLAST results may not always contain a full CDS. To allow for this, when the `--translate` argument is called, extracted sequences will be trimmed to only include complete codons, which may affect interpretation of results.
 
