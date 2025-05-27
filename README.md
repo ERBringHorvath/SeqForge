@@ -190,7 +190,7 @@ If multiBLAST is used for database creation and queries, matching basenames are 
 `multiblast extract-contig` will generate a multi-FASTA file of all contigs harboring a matching <br /> 
 sequence identified by `multiblast query` based on the default or user-defined thresholds. 
 
-This program was designed for use with metagenome mining, as metagenomic assemblies are often too large to explore using a genome browser. If short-read assembly methods are used, contigs harboring genes of interest may be extracted; contigs will likely be more tractible to parsing using a genome browser if manual annotation is needed. 
+This program was designed for use with metagenome mining, as metagenomic assemblies are often too large to explore using a genome browser (i.e., loaded into memory). If short-read assembly methods are used, extracted contig file will likely be more tractible to parsing using a genome browser if manual annotation is needed. 
 
 ## Split multi-FASTA files
 
