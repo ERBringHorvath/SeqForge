@@ -86,7 +86,7 @@ Save the file and restart your terminal or run `source ~/.bash_profile` (Linux/U
 `multiblast --help` <br />
 `multiblast --version`
 
-NOTE: Permissions should automatically be applied during installation. If you get a `permission denied` message when running `multiblast` permissions may need to be changed manually. To do this, you can use the following command: <br />
+NOTE: Permissions should automatically be applied during installation. If you get a `permission denied` message when running `multiblast`, permissions may need to be changed manually. To do this, you can use the following command: <br />
 
 `chmod +x /path/to/multiblast/bin/multiblast`
 
