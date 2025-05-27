@@ -42,7 +42,7 @@ Example:
     Enter maximum E-value: 0.01
 
 Author:
-    Elijah R. Bring Horvath (https://github.com/ERBringHorvath)
+    Elijah R. Bring Horvath, PhD (https://github.com/ERBringHorvath)
 
 License:
     This script is shared under MIT License, which allows for modification and redistribution with attribution.
@@ -107,7 +107,7 @@ def main():
     ##Add sub-parser for multi-FASTA file splitter
     split_fasta_parser = subparsers.add_parser('split-fasta')
     split_fasta_parser.add_argument('-i', '--input', required=True, help="Input multi-FASTA file")
-    split_fasta_parser.add_argument('-o', '--output_dir', required=True, help="Output directory for split FASTA files")
+    split_fasta_parser.add_argument('-o', '--output-dir', required=True, help="Output directory for split FASTA files")
     split_fasta_parser.set_defaults(func=run_split)
 
     parser_extract = subparsers.add_parser('extract', help="Extract sequences based multiBLAST Query results")
