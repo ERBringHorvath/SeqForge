@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-multiBLAST
+multiBLAST | Copyright 2025 GenERA Biotech
 
 This program automates the process of running BLAST (Basic Local Alignment Search Tool) 
     queries against multiple databases and organizing the results. It is designed to handle 
