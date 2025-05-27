@@ -71,14 +71,12 @@ def main():
     parser.add_argument('-v', '--version', action='version', version='%(prog)s v.2.0.0')
     subparsers = parser.add_subparsers(dest='command', help='Available commands')
 
-    # Sub-parser for the "makedb" command
     parser_makedb = subparsers.add_parser('makedb', help='Create a BLAST database from a FASTA file.')
     parser_makedb.add_argument('-f', '--file-directory', required=True, help='Path to FASTA files.')
     parser_makedb.add_argument('-d', '--dbtype', choices=['nucl', 'prot'], required=True, help='Type of the database (nucl for nucleotide, prot for protein).')
     parser_makedb.add_argument('-o', '--out', required=True, help='Name for the output database.')
     parser_makedb.set_defaults(func=make_blast_db)
 
-    ##Add sub-parser for the "queryP" command
     parser_query = subparsers.add_parser('query', help="Query BLAST databases with any number of queries.")
     parser_query.add_argument('-d', '--database', required=True, help='Path to the BLAST databases.')
     parser_query.add_argument('-q', '--query-files', required=True, help='Path to the query files in FASTA format.')
@@ -92,7 +90,6 @@ def main():
     parser_query.add_argument('--min-seq-len', type=int, help='Minimum sequence length for database searches (use with caution)')
     parser_query.set_defaults(func=run_multiblast)
 
-    ##Add sub-parser for multi-FASTA file splitter
     split_fasta_parser = subparsers.add_parser('split-fasta')
     split_fasta_parser.add_argument('-i', '--input', required=True, help="Input multi-FASTA file")
     split_fasta_parser.add_argument('-o', '--output_dir', required=True, help="Output directory for split FASTA files")
