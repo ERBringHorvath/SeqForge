@@ -159,7 +159,7 @@ If multiBLAST is used for database creation and queries, matching basenames shou
 Results file should be `all_results.csv`, `all_filtered_results.csv`, or `filtered_results.csv`, which are automatically generated using `multiblast query`
 
 If percent identity and query coverage were set manually during `multiblast query`, these values will need to be reflected when using `mutliblast extract` using `--min-perc` and/or `--min-cov` <br />
-For instance, if `multiblast query` was called using `--perc 75`, but the `multiblast extract` minimum percent identity is left at its default value (90), the appropriate sequences may not be extracted, as they may fall beneath the internally curated `--min-perc` theshold. 
+For instance, if `multiblast query` was called using `--perc 75`, but the `multiblast extract` minimum percent identity is left at its default value (90), the appropriate sequences will not be extracted, as the alignment scores fall beneath the internally set `--min-perc` theshold. 
 
 `multiblast extract` will generate a multi-FASTA file of all sequences identified by `multiblast queryP`/`query` based on the default or user-defined e-value cutoff.
 
