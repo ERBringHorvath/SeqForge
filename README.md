@@ -12,9 +12,6 @@ multiBLAST is scalable and has been used to run dozens of gene queries against h
 **Author:** <br />
     Elijah R. Bring Horvath, PhD (https://github.com/ERBringHorvath)
 
-**License:** <br />
-    This script is shared under MIT License, which allows for modification and redistribution with attribution.
-
 ## Install NCBI BLAST+
 
 **multiBLAST uses [NCBI BLAST+](https://pubmed.ncbi.nlm.nih.gov/20003500/)**
