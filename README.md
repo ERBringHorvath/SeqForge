@@ -118,6 +118,7 @@ multiblast query: <br />
 `--cov`: define minimum query coverage threshold. Default = 75 <br />
 `--nucleotide-query`: use blastn for queries in nucleotide FASTA format <br />
 `--min-seq-len`: define minimum sequence length for short amino acid/nucleotide sequence queries (use with caution) <br />
+`--no-alignment-files`: do not generate BLAST alignment output files <br/>
 
 Example: <br />
 `multiblast query -T 8 -d /path/to/blast/database/files -q /path/to/query/files/` <br /> 
