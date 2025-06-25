@@ -1,10 +1,11 @@
 # **<ins>multiBLAST<ins/>**
 
-**multiBLAST automates the process of running multiple BLAST (Basic Local Alignment Search Tool) queries against multiple
-databases and organizing the results. It is designed to handle various types of BLAST searches (nucelotide, translated nucleotide)
-and formats the output for easy analysis. Additionally, aligned sequences may be extracted from genome assemblies. To facilitate
-metagenomic analyses, contigs harboring genes of interest identified via multiBLAST may additionally be extracted for further analysis.
-multiBLAST is scalable and has been used to run dozens of gene queries against hundreds of genomes.**
+**multiBLAST automates the process of running one or more BLAST (Basic Local Alignment Search Tool) queries against hundreds or even thousands of
+databases and organizing the results. Incorporating NCBI BLAST+, multiBLAST allows all standard BLAST searches (blastn, tblastn, blastp)
+and tabulates the output for easy analysis, as well as generating standard BLAST alignment files. Additionally, aligned sequences
+may be extracted from genome assemblies, with an option to extract a defined number of basepairs up- and/or downstream of the target sequence. To facilitate 
+metagenomic analyses, whole contigs harboring the target gene(s) identified via multiBLAST may optionally be extracted for further analysis. 
+multiBLAST is scalable through multiprocessing.**
 
 **About:** <br />
     multiBLAST, Copyright 2025 GenERA Biotech, LLC
