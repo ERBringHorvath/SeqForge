@@ -91,9 +91,7 @@ NOTE: Permissions should automatically be applied during installation. If you ge
 
 `chmod +x /path/to/seqforge/bin/seqforge`
 
-##BLAST Search Modules
-
-#Example Usage
+## <ins>BLAST Search Modules</ins>
 
 **Building a BLAST+ Database Library**
 
@@ -130,7 +128,7 @@ All SeqForge results are concatenated to `all_results.csv` and either `all_filte
 
 ## <ins>Utility Modules</ins>
 
-#Extract Sequences from a SeqForge Query
+# Extract Sequences from a SeqForge Query
 
 seqforge extract: <br />
 `-c`, `--csv-path`: path to results csv file from `seqforge query` <br />
@@ -166,7 +164,7 @@ For instance, if `seqforge query` was called using `--perc 75`, but the `seqforg
 
 `seqforge extract` will generate a multi-FASTA file of all sequences identified by `seqforge queryP`/`query` based on the default or user-defined e-value cutoff.
 
-#Extract Entire Contig
+# Extract Entire Contig
 
 `seqforge extract-contig`: <br />
 `-c`, `--csv-path`: path to csv results file from `seqforge query` <br />
@@ -203,7 +201,7 @@ sequence identified by `seqforge query` based on the default or user-defined thr
 **Example usage:** <br />
 `seqforge split-fasta -i ./path/to/multi-FASTA/file -o /path/to/output/dir` <br />
 
-#Mask Unitig or Kmer Sequences:
+# Mask Unitig or Kmer Sequences:
 
 `seqforge mask`: <br />
 `-i`, `--input-dir`: directory containing FASTA files to mask <br />
