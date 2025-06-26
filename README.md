@@ -1,10 +1,20 @@
 # **<ins>SeqForge<ins/>**
 
-**SeqForge automates the process of running multiple BLAST (Basic Local Alignment Search Tool) queries against multiple
+SeqForge automates the process of running *N* BLAST (Basic Local Alignment Search Tool) queries against *N*
 databases and organizing the results. It is designed to handle various types of BLAST searches (nucelotide, translated nucleotide)
-and formats the output for easy analysis. Additionally, aligned sequences may be extracted from genome assemblies. To facilitate
-metagenomic analyses, contigs harboring genes of interest identified via SeqForge may additionally be extracted for further analysis.
-SeqForge is scalable and has been used to run dozens of gene queries against hundreds of genomes.** 
+and formats the output for easy analysis. 
+
+Additionally, aligned sequences may be extracted from genome assemblies with or without up and/or downstream basepairs. To facilitate
+metagenomic analyses, full contigs harboring a gene of interest identified via SeqForge may be extracted for further analysis.
+SeqForge is scalable and has been used to run and extract dozens of gene queries against hundreds of genomes.
+
+______________________________________________________________________________________________________________________________________
+
+SeqForge provides a robust sequence masking module for use in GWAS/kmer-association analyses. This module is designed to mask out noise
+from a GWAS analysis; noise may be defined as overrepresented or biologically irrelevant sequences, sequencing/assembly artifacts, etc.
+
+Large multi-FASTA meta/genome/sequence files may be split into single FASTA files or smaller multi-FASTA files using the split-fasta utility
+module. 
 
 **Author:** <br />
     Elijah R. Bring Horvath, PhD (https://github.com/ERBringHorvath)
