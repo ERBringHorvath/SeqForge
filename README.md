@@ -8,7 +8,7 @@ metagenomic analyses, whole contigs harboring the target gene(s) identified via 
 SeqForge is scalable through multiprocessing.**
 
 **About:** <br />
-    SeqForge, Copyright 2025 GenERA Biotech, LLC
+    SeqForge, Copyright 2025 Elijah R. Bring Horvath
 
 **Author:** <br />
     Elijah R. Bring Horvath, PhD (https://github.com/ERBringHorvath)
@@ -91,7 +91,9 @@ NOTE: Permissions should automatically be applied during installation. If you ge
 
 `chmod +x /path/to/seqforge/bin/seqforge`
 
-## Example Usage
+##BLAST Search Modules
+
+#Example Usage
 
 **Building a BLAST+ Database Library**
 
@@ -117,6 +119,7 @@ seqforge query: <br />
 `--nucleotide-query`: use blastn for queries in nucleotide FASTA format <br />
 `--min-seq-len`: define minimum sequence length for short amino acid/nucleotide sequence queries (use with caution) <br />
 `--no-alignment-files`: do not generate BLAST alignment output files <br/>
+`--keep-temp-files`: keep temporary *_results.txt files <br/>
 
 Example: <br />
 `seqforge query -T 8 -d /path/to/blast/database/files -q /path/to/query/files/` <br /> 
@@ -125,9 +128,9 @@ Example: <br />
 All SeqForge results are concatenated to `all_results.csv` and either `all_filtered_results.csv` or <br /> 
 `filtered_results.csv` within the output folder designated by `-o, --output`
 
-# <ins>Accessory Scripts</ins>
+## <ins>Utility Modules</ins>
 
-## Extract Sequences from a SeqForge Query
+#Extract Sequences from a SeqForge Query
 
 seqforge extract: <br />
 `-c`, `--csv-path`: path to results csv file from `seqforge query` <br />
@@ -163,7 +166,7 @@ For instance, if `seqforge query` was called using `--perc 75`, but the `seqforg
 
 `seqforge extract` will generate a multi-FASTA file of all sequences identified by `seqforge queryP`/`query` based on the default or user-defined e-value cutoff.
 
-## Extract Entire Contig ##
+#Extract Entire Contig
 
 `seqforge extract-contig`: <br />
 `-c`, `--csv-path`: path to csv results file from `seqforge query` <br />
@@ -189,15 +192,33 @@ If SeqForge is used for database creation and queries, matching basenames are ha
 `seqforge extract-contig` will generate a multi-FASTA file of all contigs harboring a matching <br /> 
 sequence identified by `seqforge query` based on the default or user-defined thresholds. 
 
-This program was designed for use with metagenome mining, as metagenomic assemblies are often too large to explore using a genome browser (i.e., loaded into memory). If short-read assembly methods are used, extracted contig file will likely be more tractible to parsing using a genome browser if manual annotation is needed. 
+#Split Multi-FASTA File
 
-## Split multi-FASTA files
+`seqforge split-fasta`: <br />
+`-i`, `--input`: input multi-FASTA file <br />
+`-o`, `--output-dir`: output directory for split FASTA files <br />
+`--fragment`: split multi-FASTA file into chunks of <int> sequences <br />
+`--compress`: compress output FASTA files as .gz <br />
 
-Often times when downloading large genomic datasets, individual FASTA files will be concatenated into one large multi-FASTA file. This script is designed to split multi-FASTA files into individual FASTA files for use with the SeqForge or other bioinformatic platforms.
+**Example usage:** <br />
+`seqforge split-fasta -i ./path/to/multi-FASTA/file -o /path/to/output/dir` <br />
 
-**Example usage:**
+#Mask Unitig or Kmer Sequences:
 
-`seqforge split-fasta -i /path/to/multiFASTA/file -o /path/to/results/folder`
+`seqforge mask`: <br />
+`-i`, `--input-dir`: directory containing FASTA files to mask <br />
+`-o`, `--output-dir`: output directory for masked FASTA files <br />
+`-s`, `--sequence-file`: text or FASTA file of unitigs/kmers to mask <br />
+`-T`, `--threads`: number of threads to use for masking <br />
+`-v`, `--verbose`: print detailed match information <br />
+`--dash`: mask sequences with '-' instead of 'N' (default) <br />
+`--scramble`: mask as -[ACGT]- (random NT sequence flanked by dashes, fsm-lite compatible) <br />
+`--dry-run`: preview of run without making changes <br />
+
+`seqforge mask` was built to mask noisy sequences from GWAS kmer association analyses using. Noise may include over-represented kmers, sequencing artifacts, or biologically irrelevant targets.
+
+**Example Usage:** <br />
+`seqforge mask -i /path/to/genome/FASTA/files -o /path/to/output/dir -s kmers.txt -T 8`
 
 # Citations
 
