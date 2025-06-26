@@ -208,6 +208,11 @@ seqforge mask: <br />
 `--scramble`: mask as -[ATGC]- (random string of ATGC flanked by dashes, fsm-lite compatible <br />
 `--dry-run`: preview run without making changes <br />
 
+seqforge mask was designed to mask noisy sequences from GWAS kmer-association analyses. 'Noise' might be overrepresented sequences, sequencing/assembly artifacts, etc.
+
+**Example Usage:** <br />
+`seqforge mask -i /path/to/genome/FASTA/files -o /path/to/output/dir -s kmers.txt -T 8`
+
 # Citations
 
 Cite SeqForge: <br />
