@@ -16,6 +16,9 @@ from a GWAS analysis; noise may be defined as overrepresented or biologically ir
 Large multi-FASTA meta/genome/sequence files may be split into single FASTA files or smaller multi-FASTA files using the split-fasta utility
 module. 
 
+______________________________________________________________________________________________________________________________________
+______________________________________________________________________________________________________________________________________
+
 **Author:** <br />
     Elijah R. Bring Horvath, PhD (https://github.com/ERBringHorvath)
 
