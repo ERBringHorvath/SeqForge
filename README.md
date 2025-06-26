@@ -5,8 +5,10 @@ databases and organizing the results. It is designed to handle various types of 
 and formats the output for easy analysis. 
 
 Additionally, aligned sequences may be extracted from genome assemblies with or without up and/or downstream basepairs. To facilitate
-metagenomic analyses, full contigs harboring a gene of interest identified via SeqForge may be extracted for further analysis.
-SeqForge is scalable and has been used to run and extract dozens of gene queries against hundreds of genomes.
+metagenomic analyses, full contigs harboring a gene of interest identified via SeqForge may be extracted for further analysis within a
+genome browser.
+
+SeqForge is scalable through multi-processing and has been used to run and extract dozens of gene queries against hundreds of genomes.
 
 ______________________________________________________________________________________________________________________________________
 
