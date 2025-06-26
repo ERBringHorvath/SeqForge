@@ -1,1 +1,29 @@
+package:
+  name: seqforge
+  version: "1.0.0"
 
+source:
+  path: ../../seqforge
+
+build:
+  noarch: python
+  script: python -m pip install . --no-deps --ignore-installed -vv
+
+requirements:
+  host:
+    - python >=3.8
+    - pip
+  run:
+    - python >=3.8
+    - pandas
+    - biopython
+    - blast
+
+test:
+  commands:
+    - seqforge --help
+
+about:
+  home: https://github.com/ERBringHorvath/SeqForge
+  license: MIT
+  summary: "A BLAST-based genomics toolkit."
