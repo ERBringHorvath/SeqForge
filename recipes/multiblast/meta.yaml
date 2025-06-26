@@ -1,0 +1,29 @@
+package:
+  name: multiblast
+  version: "2.1.0"
+
+source:
+  path: ../../multiBLAST
+
+build:
+  noarch: python
+  script: python -m pip install . --no-deps --ignore-installed -vv
+
+requirements:
+  host:
+    - python >=3.8
+    - pip
+  run:
+    - python >=3.8
+    - pandas
+    - biopython
+    - blast
+
+test:
+  commands:
+    - multiblast --help
+
+about:
+  home: https://github.com/ERBringHorvath/multiBLAST
+  license: GPL-3.0-or-later
+  summary: "A BLAST-based genomics toolkit."
