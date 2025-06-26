@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='multiblast',
-    version='2.1.0',
+    name='seqforge',
+    version='1.0.0',
     packages=find_packages(where='bin'),
     package_dir={'': 'bin'},
     include_package_data=True,
@@ -12,18 +12,18 @@ setup(
     ],
     entry_point={
         'console_scripts': [
-            'multiblast = multiblast:main'
+            'seqforge = seqforge:main'
         ]
     },
     author='Elijah R. Bring Horvath',
-    description='A BLAST-based genomics toolkit',
+    description='A multi-use genomics toolkit',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
-    url='https://github.com/ERBringHorvath/multiBLAST',
+    url='https://github.com/ERBringHorvath/SeqForge',
     classifiers=[
         'Programming Language :: Python :: 3',
-        'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
+        'License :: OSI Approved :: MIT',
         'Operating System :: OS Independent'
     ],
-    python_requires='>=3.8'
+    python_requires='>=3.10'
 )
