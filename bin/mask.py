@@ -58,7 +58,7 @@ def load_sequences(sequence_file, output_dir):
         with open(skipped_path, "w") as f:
             for entry in skipped_sequences:
                 f.write(entry + "\n")
-        print(f"\n033\91mSkipped {len(skipped_sequences)} invalid sequences. Logged to: {skipped_path}\033[0m")
+        print(f"\n033[91mSkipped {len(skipped_sequences)} invalid sequences. Logged to: {skipped_path}\033[0m")
 
     if duplicate_sequences:
         print(f"\n\033[91m{len(duplicate_sequences)} duplicate (or reverse complement) sequences were ignored\033[0m")
