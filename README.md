@@ -90,7 +90,7 @@ Add SeqForge to your PATH
 Replace `/Users/user/seqforge/bin` with the actual path to the directory containing the executable. <br />
 Whatever the initial directory, this path should end with `/seqforge/bin`
 
-Save the file and restart your terminal or run `source ~/.bash_profile` (Linux/Unix) or `source ~/.zshrc` (macOS)
+Save the file and restart your terminal or run `source ~/.bashrc` or `~/.bash_profile` (Linux/Unix) or `source ~/.zshrc` (macOS)
 
 **Install Dependencies**
 
