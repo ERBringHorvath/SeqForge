@@ -166,7 +166,7 @@ For instance, if `seqforge query` was called using `--perc 75`, but the `seqforg
 
 # Extract Entire Contig
 
-`seqforge extract-contig`: <br />
+seqforge extract-contig: <br />
 `-c`, `--csv-path`: path to csv results file from `seqforge query` <br />
 `-f`, `--fasta-directory`: path to reference FASTA assemblies <br />
 **These should be the FASTA files the BLAST databases were created from and should have the same basename as the query results files** <br />
@@ -192,7 +192,7 @@ sequence identified by `seqforge query` based on the default or user-defined thr
 
 #Split Multi-FASTA File
 
-`seqforge split-fasta`: <br />
+seqforge split-fasta: <br />
 `-i`, `--input`: input multi-FASTA file <br />
 `-o`, `--output-dir`: output directory for split FASTA files <br />
 `--fragment`: split multi-FASTA file into chunks of <int> sequences <br />
@@ -203,7 +203,7 @@ sequence identified by `seqforge query` based on the default or user-defined thr
 
 # Mask Unitig or Kmer Sequences:
 
-`seqforge mask`: <br />
+seqforge mask: <br />
 `-i`, `--input-dir`: directory containing FASTA files to mask <br />
 `-o`, `--output-dir`: output directory for masked FASTA files <br />
 `-s`, `--sequence-file`: text or FASTA file of unitigs/kmers to mask <br />
