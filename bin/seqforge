@@ -10,6 +10,10 @@ from split_fasta import run_split
 from extract_sequences import run
 from extract_contigs import run_contigs
 from mask import run_mask
+<<<<<<< HEAD
+=======
+from search import run_search, FIELD_ALIASES
+>>>>>>> f5a0636 (test)
 
 def check_query_range(value):
     ivalue = int(value)
@@ -35,7 +39,11 @@ def main():
 
     # Sub-parser for the "makedb" command
     parser_makedb = subparsers.add_parser('makedb', help='Create a BLAST database from a FASTA file.')
+<<<<<<< HEAD
     parser_makedb.add_argument('-f', '--file-directory', required=True, help='Path to FASTA files.')
+=======
+    parser_makedb.add_argument('-f', '--fasta-directory', required=True, help='Path to FASTA files.')
+>>>>>>> f5a0636 (test)
     parser_makedb.add_argument('-d', '--dbtype', choices=['nucl', 'prot'], required=True, help='Type of the database (nucl for nucleotide, prot for protein).')
     parser_makedb.add_argument('-o', '--out', required=True, help='Name for the output database.')
     parser_makedb.set_defaults(func=make_blast_db)
@@ -47,13 +55,23 @@ def main():
     parser_query.add_argument('-T', '--threads', type=int, help='Number of cores to dedicate')
     parser_query.add_argument('-e', '--evalue', type=float, help='E-value threshold.')
     parser_query.add_argument('-o', '--output', required=True, help='Path to directory to store results.')
+<<<<<<< HEAD
     parser_query.add_argument('--perc', type=check_query_range, help='Define percent identity threshold (default = 90)')
     parser_query.add_argument('--cov', type=check_query_range, help="Define query coverage threshold (default = 75)")
+=======
+    parser_query.add_argument('--min-perc', type=check_query_range, help='Define percent identity threshold (default = 90)')
+    parser_query.add_argument('--min-cov', type=check_query_range, help="Define query coverage threshold (default = 75)")
+>>>>>>> f5a0636 (test)
     parser_query.add_argument('--report-strongest-matches', action='store_true', help='Report only the top hit for each query')
     parser_query.add_argument('--nucleotide-query', action='store_true', help='Use blastn for nucelotide queries')
     parser_query.add_argument('--min-seq-len', type=int, help='Minimum sequence length for database searches (use with caution)')
     parser_query.add_argument('--no-alignment-files', action='store_true', help='Do not generate BLAST alignment output files.')
     parser_query.add_argument('--keep-temp-files', action='store_true', help='Keep temporary *_results.txt files in the output directory')
+<<<<<<< HEAD
+=======
+    parser_query.add_argument('--motif', type=str, help='Amino acid motif (e.g., WXWXIP) to search within blast hits. X is treated as a wildcard. Only use with tblastn or blastp queries')
+    parser_query.add_argument('-f', '--fasta-directory', type=str, help='Path to FASTA file or directory of FASTA files used to create the BLAST databases. Required if using --motif' )
+>>>>>>> f5a0636 (test)
     parser_query.set_defaults(func=run_multiblast)
 
     ##Add sub-parser for multi-FASTA file splitter
@@ -98,6 +116,17 @@ def main():
     parser_mask.add_argument("--dry-run", action="store_true", help="Preview of run without making changes")
     parser_mask.set_defaults(func=run_mask)
 
+<<<<<<< HEAD
+=======
+    parser_search = subparsers.add_parser("search", help="Extract metadata from GenBank or JSON files")
+    parser_search.add_argument('-i', '--input', required=True, help="Input file (.json or .gb/.gbk/.genbank)")
+    parser_search.add_argument('-o', '--output', required=True, help="Output file (e.g., .csv, .tsv, .json)")
+    parser_search.add_argument('--all', action='store_true', help='Extract all available metadata')
+    allowed_fields = ', '.join(FIELD_ALIASES.keys())
+    parser_search.add_argument('--fields', nargs='+', metavar="FIELD", help=f"Space-separated list of metadata fields to extract. Allowed fields: {allowed_fields}")
+    parser_search.set_defaults(func=run_search)
+
+>>>>>>> f5a0636 (test)
     args = parser.parse_args()
 
     if hasattr(args, 'func'):
