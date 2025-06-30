@@ -36,9 +36,9 @@ def run_multiblast(args):
     query_path = args.query_files
     threads = args.threads if args.threads else 1
     results_output_dir = args.output
-    evalue_threshold = args.evalue if args.evalue is not None else 0.00001
-    perc_identity_threshold = args.perc if args.perc is not None else 90
-    query_coverage_threshold = args.cov if args.cov is not None else 75
+    evalue_threshold = args.min_evalue if args.min_evalue is not None else 0.00001
+    perc_identity_threshold = args.min_perc if args.min_perc is not None else 90
+    query_coverage_threshold = args.min_cov if args.min_cov is not None else 75
 
     # Handle directories
     if not os.path.exists(db_dir):
