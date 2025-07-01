@@ -41,14 +41,14 @@ ________________________________________________________________________________
 ### <ins>Module 3: Utilities<ins/>
 
 Purpose: General-use tools for various genomic workflows <br/>
-*   split-fasta
+*   split-fasta<br/>
     Split multi-FASTA files into smaller chunks for downstream processing.
     *   Choose fixed sequence count per chunk or split one sequence per file
     *   Optionall compress output for storage/transfer efficiency
-* search
+* search<br/>
     Extract isolation metadata from **GenBank** or **JSON** files.
     *   User-defined or comprehensive field extraction to CSV or TSV
-* mask
+* mask<br/>
     The mask module allows users to selectively **mask (redact)** sequences from FASTA files based on user-supplied kmers or unitigs. this is especially helpful when running kmer/unitig-based GWAS where repetitive or misleading sequences (i.e., assembly artifacts) can inflate associations.
     Features:
     *   Supports input as text (one sequence per line) or multi-FASTA (supports gzipped files)
