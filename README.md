@@ -9,9 +9,9 @@ SeqForge is currently split into three Modules:
 ### <ins>Module 1: multiBLAST+<ins/>
 
 Purpose: Rapid database creation and high-throughput querying <br/>
-*   makedb
+*   makedb <br/>
     Create BLAST-compatible databases (makeblastdb) from a single FASTA file or an entire directory. Supports both nucleotide and protein databases, including gzipped inputs, with multiprocessing support to boost performance on large datasets.
-*   query
+*   query <br/>
     A parallelized BLAST wrapper that allows you to run a set of query sequences (nucleotide or protein) against one or many databases in batch.
     Includes:
     *   Support for blastn, tblastn, and blastp based on input types (auto-detected)
@@ -20,7 +20,7 @@ Purpose: Rapid database creation and high-throughput querying <br/>
     *   Automatic filtering based on identity, coverage and/or e-value thresholds
     *   Output includes both full and filtered results tables, plus alignment files if desired
     *   Motif mining for amino acid queries
-*   Motif support in query
+*   Motif support in query <br/>
     When using blastp (amino acid query against protein database), users may specify an amino acid motif (e.g., WXWXIP) using the `--motif` flag. This performs a regex-based search across all BLAST hits, independent from internally-curated or user-defined pident, query coverage, and e-value thresholds, ensuring detection of conserved motifs even in low-identity or heterologous alignments that might otherwise be filteredout. This is particularly useful for detecting signature domains (e.g., catalytic triads, DNA-binding motifs) in diverse sequence families. 
     
 
@@ -29,9 +29,9 @@ ________________________________________________________________________________
 ### <ins>Module 2: Sequence Investigation<ins/>
 
 Purpose: Extract meaningful biological context from BLAST hits <br/>
-*   extract
-    Extract aligned sequences identified via the multiBLAST+ Query pipeline from original FASTA files.
-    Features:
+*   extract<br/>
+    Extract aligned sequences identified via the multiBLAST+ Query pipeline from original FASTA files.<br/>
+    Features:<br/>
     *   Optional translation of nucleotide hits to protein for full gene alignments
     *   Upstream/downstream padding for context-based analysis
     *   Filtering using percent identity, query coverage, and/or e-value
