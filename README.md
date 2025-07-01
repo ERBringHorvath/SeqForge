@@ -63,7 +63,7 @@ ________________________________________________________________________________
     Elijah R. Bring Horvath, PhD (https://github.com/ERBringHorvath)
 
 **License:** <br />
-    This script is shared under MIT License, which allows for modification and redistribution with attribution.
+    This program is shared under MIT License, which allows for modification and redistribution with attribution.
 
 ## Install NCBI BLAST+
 
