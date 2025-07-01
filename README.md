@@ -21,8 +21,7 @@ Purpose: Rapid database creation and high-throughput querying <br/>
     *   Output includes both full and filtered results tables, plus alignment files if desired
     *   Motif mining for amino acid queries
 *   Motif support in query <br/>
-    When using blastp (amino acid query against protein database), users may specify an amino acid motif (e.g., WXWXIP) using the `--motif` flag. This performs a regex-based search across all BLAST hits, independent from internally-curated or user-defined pident, query coverage, and e-value thresholds, ensuring detection of conserved motifs even in low-identity or heterologous alignments that might otherwise be filteredout. This is particularly useful for detecting signature domains (e.g., catalytic triads, DNA-binding motifs) in diverse sequence families. 
-    
+    When using blastp (amino acid query against protein database), users may specify an amino acid motif (e.g., WXWXIP) using the `--motif` flag. This performs a regex-based search across all BLAST hits, independent from internally-curated or user-defined percent identity, query coverage, and e-value thresholds, ensuring detection of conserved motifs even in low-identity or heterologous alignments that might otherwise be filteredout. This is particularly useful for detecting signature domains (e.g., catalytic triads, DNA-binding motifs) in diverse sequence families. 
 
 SeqForge Module 1 automates the process of running *N* BLAST queries against *N* databases and organizing the results.
 ______________________________________________________________________________________________________________________________________
