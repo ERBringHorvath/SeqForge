@@ -9,9 +9,9 @@ SeqForge is currently split into three Modules:
 ### <ins>Module 1: multiBLAST+<ins/>
 
 Purpose: Rapid database creation and high-throughput querying <br/>
-*   makedb <br/>
+*   makedb
     Create BLAST-compatible databases (makeblastdb) from a single FASTA file or an entire directory. Supports both nucleotide and protein databases, including gzipped inputs, with multiprocessing support to boost performance on large datasets.
-*   query <br/>
+*   query
     A parallelized BLAST wrapper that allows you to run a set of query sequences (nucleotide or protein) against one or many databases in batch.
     Includes:
     *   Support for blastn, tblastn, and blastp based on input types (auto-detected)
@@ -20,17 +20,18 @@ Purpose: Rapid database creation and high-throughput querying <br/>
     *   Automatic filtering based on identity, coverage and/or e-value thresholds
     *   Output includes both full and filtered results tables, plus alignment files if desired
     *   Motif mining for amino acid queries
-*   Motif support in query <br/>
-    When using blastp (amino acid query against protein database), users may specify an amino acid motif (e.g., WXWXIP) using the `--motif` flag. This performs a regex-based search across all BLAST hits, independent from internally-curated or user-defined percent identity, query coverage, and e-value thresholds, ensuring detection of conserved motifs even in low-identity or heterologous alignments that might otherwise be filteredout. This is particularly useful for detecting signature domains (e.g., catalytic triads, DNA-binding motifs) in diverse sequence families. 
+*   Motif support in query
+    When using blastp (amino acid query against protein database), users may specify an amino acid motif (e.g., WXWXIP) using the `--motif` flag. This performs a regex-based search across all BLAST hits, independent from internally-curated or user-defined pident, query coverage, and e-value thresholds, ensuring detection of conserved motifs even in low-identity or heterologous alignments that might otherwise be filteredout. This is particularly useful for detecting signature domains (e.g., catalytic triads, DNA-binding motifs) in diverse sequence families. 
+    
 
 SeqForge Module 1 automates the process of running *N* BLAST queries against *N* databases and organizing the results.
 ______________________________________________________________________________________________________________________________________
 ### <ins>Module 2: Sequence Investigation<ins/>
 
 Purpose: Extract meaningful biological context from BLAST hits <br/>
-*   extract<br/>
-    Extract aligned sequences identified via the multiBLAST+ Query pipeline from original FASTA files.<br/>
-    Features:<br/>
+*   extract
+    Extract aligned sequences identified via the multiBLAST+ Query pipeline from original FASTA files.
+    Features:
     *   Optional translation of nucleotide hits to protein for full gene alignments
     *   Upstream/downstream padding for context-based analysis
     *   Filtering using percent identity, query coverage, and/or e-value
@@ -40,14 +41,14 @@ ________________________________________________________________________________
 ### <ins>Module 3: Utilities<ins/>
 
 Purpose: General-use tools for various genomic workflows <br/>
-*   split-fasta<br/>
+*   split-fasta
     Split multi-FASTA files into smaller chunks for downstream processing.
     *   Choose fixed sequence count per chunk or split one sequence per file
     *   Optionall compress output for storage/transfer efficiency
-* search<br/>
+* search
     Extract isolation metadata from **GenBank** or **JSON** files.
     *   User-defined or comprehensive field extraction to CSV or TSV
-* mask<br/>
+* mask
     The mask module allows users to selectively **mask (redact)** sequences from FASTA files based on user-supplied kmers or unitigs. this is especially helpful when running kmer/unitig-based GWAS where repetitive or misleading sequences (i.e., assembly artifacts) can inflate associations.
     Features:
     *   Supports input as text (one sequence per line) or multi-FASTA (supports gzipped files)
@@ -142,6 +143,9 @@ permissions may need to be changed manually. To do this, you can use the followi
 
 `chmod +x /path/to/seqforge/bin/seqforge`
 
+______________________________________________________________________________________________________________________________________
+______________________________________________________________________________________________________________________________________
+
 # <ins>Module 1: multiBLAST+</ins>
 
 **Building a BLAST+ Database Library**
@@ -172,7 +176,7 @@ seqforge query: <br />
 `--min-seq-len`: define minimum sequence length for short nucleotide sequence queries (use with caution and only with blastn) <br />
 `--no-alignment-files`: suppress alignment file creation <br/>
 `--keep-temp-files`: retain individual *_results.txt files in output directory <br/>
-`--motif`: amino acid motif (e.g., WXWXIP) to search within blastp hits. X is treated as a wildcard. For use with blastp queries <br/>
+`--motif`: amino acid motif (e.g., WXWXIP) to search within blastp hits. X is treated as a wildcard. For use with blastp queryies <br/>
 `-f`, `--fasta-directory`: path to FASTA file(s) used to create BLAST databases. Required if using `--motif`
 
 Example: <br />
@@ -181,6 +185,9 @@ Example: <br />
 
 All SeqForge results are concatenated to `all_results.csv` and either `all_filtered_results.csv` or <br /> 
 `filtered_results.csv` within the output folder designated by `-o, --output`
+
+______________________________________________________________________________________________________________________________________
+______________________________________________________________________________________________________________________________________
 
 # <ins>Module 2: Sequence Investigation</ins>
 
@@ -248,6 +255,9 @@ sequence identified by `seqforge query` based on the default or user-defined thr
 
 This program was designed for use with metagenome mining, as metagenomic assemblies are often too large to explore using a genome browser. If short-read assembly methods are used, contigs harboring genes of interest may be extracted; contigs will likely be more tractible to parsing using a genome browser if manual annotation is needed. 
 
+______________________________________________________________________________________________________________________________________
+______________________________________________________________________________________________________________________________________
+
 # <ins>Module 3: Utilties<ins/>
 
 ## Split multi-FASTA files
@@ -285,6 +295,9 @@ seqforge search: <br/>
 Optional fields:
     accession, organism, strain, isolation_source, host, region, lat_lon, collection_date, <br/> 
     collected_by, tax_id, comment, keywords, sequencing_tech, release_date
+
+______________________________________________________________________________________________________________________________________
+______________________________________________________________________________________________________________________________________
 
 # Citations
 
