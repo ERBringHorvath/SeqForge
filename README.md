@@ -78,8 +78,8 @@ ________________________________________________________________________________
 
 ```mermaid
 graph TD;
-    A{Sanitize}-->B[Database-Creation];
-    B[Database-Creation]-->C[Query];
+    A{Sanitize}-->B(Database-Creation);
+    B(Database-Creation)-->C[Query];
     C[Query]-->D[Extract];
     C[Query]-->E[Extract-Contig];
     A{Sanitize}-->F[FASTA-Metrics];
@@ -93,6 +93,8 @@ graph TD;
     style D fill:#650D89,stroke:#333,stroke-width:1,font-size:15px
     style E fill:#023788,stroke:#333,stroke-width:1,font-size:15px
     style F fill:#fd1d53,stroke:#333,stroke-width:1,font-size:15px
+    style G fill:#fd3777,stroke:#333,stroke-width:1,font-size:15px
+    style H fill:#2e2157,stroke:#333,stroke-width:1,font-size:15px
 ```
 ______________________________________________________________________________________________________________________________________
 ______________________________________________________________________________________________________________________________________
