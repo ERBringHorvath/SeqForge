@@ -82,7 +82,7 @@ graph TD;
     Database-Creation-->Query;
     Query-->Extract;
     Query-->Extract-Contig;
-    A{Sanitize}-->FASTA-Metrics;
+    A{Sanitize}-->B([FASTA-Metrics]);
     A{Sanitize}-->Mask;
     A{Sanitize}-->Split-FASTA;
 
