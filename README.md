@@ -78,13 +78,13 @@ ________________________________________________________________________________
 
 ```mermaid
 graph TD;
-    Sanitize-->Database-Creation;
+    {Sanitize}-->Database-Creation;
     Database-Creation-->Query;
     Query-->Extract;
     Query-->Extract-Contig;
-    Sanitize-->FASTA-Metrics;
-    Sanitize-->Mask;
-    Sanitize-->Split-FASTA;
+    {Sanitize}-->FASTA-Metrics;
+    {Sanitize}-->Mask;
+    {Sanitize}-->Split-FASTA;
 
     %% Custom style for Sanitize node
     style Sanitize fill:#d48074,stroke:#333,stroke-width:4,font-size:30px
