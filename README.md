@@ -14,13 +14,13 @@ Purpose: Rapid database creation and high-throughput querying <br/>
 *   query
     A parallelized BLAST wrapper that allows you to run a set of query sequences (nucleotide or protein) against one or many databases in batch.
     Includes:
-    *   Support for blastn, tblastn, and blastp based on input types (auto-detected)
-    *   Flexible input: single file or directory of FASTA files
-    *   Optional reporting of only strongest match per query
-    *   Automatic filtering based on identity, coverage and/or e-value thresholds
-    *   Output includes both full and filtered results tables, plus alignment files if desired
-    *   Motif mining for amino acid queries
-*   Motif support in query
+    *   Support for blastn, tblastn, and blastp based on input types (auto-detected).
+    *   Flexible input: single file or directory of FASTA files.
+    *   Optional reporting of only strongest match per query.
+    *   Automatic filtering based on identity, coverage and/or e-value thresholds.
+    *   Output includes both full and filtered results tables, plus alignment files if desired.
+    *   Motif mining for amino acid queries.
+*   Motif support in query:
     When using blastp (amino acid query against protein database), users may specify an amino acid motif (e.g., WXWXIP) using the `--motif` flag. This performs a regex-based search across all BLAST hits, independent from internally-curated or user-defined pident, query coverage, and e-value thresholds, ensuring detection of conserved motifs even in low-identity or heterologous alignments that might otherwise be filtered out. This is particularly useful for detecting signature domains (e.g., catalytic triads, DNA-binding motifs) in diverse sequence families. 
     
 
@@ -32,30 +32,55 @@ Purpose: Extract meaningful biological context from BLAST hits <br/>
 *   extract
     Extract aligned sequences identified via the multiBLAST+ Query pipeline from original FASTA files.
     Features:
-    *   Optional translation of nucleotide hits to protein for full gene alignments
-        *    This should only be used with full gene alignments
-    *   Upstream/downstream padding for context-based analysis
-    *   Filtering using percent identity, query coverage, and/or e-value
+    *   Optional translation of nucleotide hits to protein for full gene alignments.
+        *    This should only be used with full gene alignments.
+    *   Upstream/downstream padding for context-based analysis.
+    *   Filtering using percent identity, query coverage, and/or e-value.
 *   extract-contig
     Extract *entire contigs* from reference assemblies based on where BLAST hits occurred. Ideal for identifying genomic context of hits in metagenomic assemblies too large to open via a genome browser.
 ______________________________________________________________________________________________________________________________________
 ### <ins>Module 3: Utilities<ins/>
 
 Purpose: General-use tools for various genomic workflows <br/>
+*   sanitize
+    *   Remove special characters from input files—**required** for all multiBLAST+ analyses.
+    *   Choose to rename files using `--in-place` (strongly recommended).
+    *   Or copy files to a new directory and rename the copies, leaving the original files untouched.
 *   split-fasta
     Split multi-FASTA files into smaller chunks for downstream processing.
-    *   Choose fixed sequence count per chunk or split one sequence per file
-    *   Optionall compress output for storage/transfer efficiency
-* search
+    *   Choose fixed sequence count per chunk or split one sequence per file.
+    *   Optionall compress output for storage/transfer efficiency.
+*   search
     Extract isolation metadata from **GenBank** or **JSON** files.
-    *   User-defined or comprehensive field extraction to CSV or TSV
-* mask
+    *   User-defined or comprehensive field extraction to CSV or TSV.
+*   mask
     The mask module allows users to selectively **mask (redact)** sequences from FASTA files based on user-supplied kmers or unitigs. this is especially helpful when running kmer/unitig-based GWAS where repetitive or misleading sequences (i.e., assembly artifacts) can inflate associations.
     Features:
-    *   Supports input as text (one sequence per line) or multi-FASTA (supports gzipped files)
-    *   Options for soft masking (N), dash-masking (-), or randomized masking (-ATGC- scrambling, fsm-lite compatible)
-    *   Designed for large FASTA datasets with multiprocessing support
+    *   Supports input as text (one sequence per line) or multi-FASTA (supports gzipped files).
+    *   Options for soft masking (N), dash-masking (-), or randomized masking (-ATGC- scrambling, fsm-lite compatible).
+    *   Designed for large FASTA datasets with multiprocessing support.
+*   fasta-metrics
+    Compute common assembly metrics from an input FASTA file or all FASTA files within a directory
+    *   The following metrics are calculated
+        *   Number of contigs
+        *   Genome size (bp)
+        *   Longest contig
+        *   Shortest contig
+        *   GC content (%)
+        *   N count
+        *   N50
+        *   L50
+        *   Lengths of each contig (CSV only)
+______________________________________________________________________________________________________________________________________
+______________________________________________________________________________________________________________________________________
 
+## Recommended Workflow: <br/>
+### Sanitize --> Database Creation --> Query --> Extract <br/>
+###    |                                     --> Extract-Contig <br/>
+###    | <br/>
+###    |-------> FASTA-Metrics <br/>
+###    |-------> Mask <br/>
+###    |-------> Split-FASTA <br/>
 ______________________________________________________________________________________________________________________________________
 ______________________________________________________________________________________________________________________________________
 
@@ -154,6 +179,7 @@ ________________________________________________________________________________
 seqforge makedb: <br />
 `-f`, `--fasta-directory`: path to the directory containing input files in FASTA format <br />
 `-o`, `--out`: path to directory where you want to store your databases
+`-s`, `--sanitize`: remove pipeline-breaking special characters from file names <br/>
 
 Example: <br />
 `seqforge makedb -f /path/to/FASTA/files -o /path/to/results/folder`
@@ -209,6 +235,8 @@ seqforge extract: <br />
 
 **NOTE:** Translation of sequences is optional, however care should be used when translating extracted nucleotide sequences, as BLAST results may not always contain a full CDS. To allow for this, when the `--translate` argument is called, extracted sequences will be trimmed to only include complete codons, which may affect interpretation of results.
 
+**NOTE:** `--up` and `--down` flags are incompatible with `--translate`, as we cannot robustly parse all 6 frames of translation.
+
 **NOTE:** Results files and FASTA reference assemblies <ins>**must**</ins> share the same basename:
 
 Example basename: 'FILE' <br />
@@ -261,7 +289,23 @@ ________________________________________________________________________________
 
 # <ins>Module 3: Utilties<ins/>
 
-## Split multi-FASTA files
+## Sanitize File Names
+
+seqforge sanitize: <br/>
+`-i`, `--input`: FASTA file or directory of FASTA files to be cleaned
+`-e`, `--extension`: extention of files to sanitize; for all standard FASTA formats, simply pass `-e fasta` <br/>
+`-I`, `--in-place`: overwrite problematic file names with names containing no special  characters (recommended) <br/>
+`-S`, `--sanitize-outdir`: path to new directory for files. This option copies file(s) to a new directory and removes special characters from <br/>
+        the copied file names, leaving the original file names intact (storage intensive) <br/>
+`--dry-run`: preview changes without committing <br/>
+
+## FASTA File Metrics
+
+seqforge fasta-metrics: <br/>
+`-f`, `--fasta-directory`: path to FASTA file or directory of FASTA files to be analyzed <br/>
+`-o`, `--output`: optional name for CSV summary (default: fasta_metrics_summary.csv) <br/>
+
+## Split Multi-FASTA files
 
 seqforge split-fasta: <br />
 `-i`, `--input`: input multi-FASTA file <br />
