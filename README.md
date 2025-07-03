@@ -88,7 +88,11 @@ graph TD;
 
     %% Custom style for Sanitize node
     style A fill:#d48074,stroke:#333,stroke-width:4,font-size:30px
-    style B fill:#d40078,stroke:#333,stroke-width:2,fong-size:20px
+    style B fill:#d40078,stroke:#333,stroke-width:2,font-size:20px
+    style C fill:#920075,stroke:#333,stroke-width:1,font-size:15px
+    style D fill:#650D89,stroke:#333,stroke-width:1,font-size:15px
+    style E fill:#023788,stroke:#333,stroke-width:1,font-size:15px
+    style F fill:#fd1d53,stroke:#333,stroke-width:1,font-size:15px
 ```
 ______________________________________________________________________________________________________________________________________
 ______________________________________________________________________________________________________________________________________
