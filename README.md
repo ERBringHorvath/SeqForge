@@ -78,8 +78,8 @@ ________________________________________________________________________________
 
 ```mermaid
 graph TD;
-    A{Sanitize}-->B(Database-Creation);
-    B(Database-Creation)-->C[Query];
+    A{Sanitize}-->B((Database-Creation));
+    B((Database-Creation))-->C[Query];
     C[Query]-->D[Extract];
     C[Query]-->E[Extract-Contig];
     A{Sanitize}-->F[FASTA-Metrics];
