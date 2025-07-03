@@ -9,9 +9,9 @@ SeqForge emphasizes clarity, flexibility, and scale. Each module is standalone b
 ### <ins>Module 1: multiBLAST+<ins/>
 
 Purpose: Rapid database creation and high-throughput querying <br/>
-*   makedb
+*   makedb<br/>
     Create BLAST-compatible databases (makeblastdb) from a single FASTA file or an entire directory. Supports both nucleotide and protein databases, including gzipped inputs, with multiprocessing support to boost performance on large datasets.
-*   query
+*   query<br/>
     A parallelized BLAST wrapper that allows you to run a set of query sequences (nucleotide or protein) against one or many databases in batch.
     Includes:
     *   Support for blastn, tblastn, and blastp based on input types (auto-detected).
@@ -36,30 +36,30 @@ Purpose: Extract meaningful biological context from BLAST hits <br/>
         *    This should only be used with full gene alignments.
     *   Upstream/downstream padding for context-based analysis.
     *   Filtering using percent identity, query coverage, and/or e-value.
-*   extract-contig
+*   extract-contig<br/>
     Extract *entire contigs* from reference assemblies based on where BLAST hits occurred. Ideal for identifying genomic context of hits in metagenomic assemblies too large to open via a genome browser.
 ______________________________________________________________________________________________________________________________________
 ### <ins>Module 3: Utilities<ins/>
 
 Purpose: General-use tools for various genomic workflows <br/>
-*   sanitize
+*   sanitize<br/>
     *   Remove special characters from input files—**required** for all multiBLAST+ analyses.
     *   Choose to rename files using `--in-place` (strongly recommended).
     *   Or copy files to a new directory and rename the copies, leaving the original files untouched.
-*   split-fasta
+*   split-fasta<br/>
     Split multi-FASTA files into smaller chunks for downstream processing.
     *   Choose fixed sequence count per chunk or split one sequence per file.
     *   Optionall compress output for storage/transfer efficiency.
-*   search
+*   search<br/>
     Extract isolation metadata from **GenBank** or **JSON** files.
     *   User-defined or comprehensive field extraction to CSV or TSV.
-*   mask
+*   mask<br/>
     The mask module allows users to selectively **mask (redact)** sequences from FASTA files based on user-supplied kmers or unitigs. this is especially helpful when running kmer/unitig-based GWAS where repetitive or misleading sequences (i.e., assembly artifacts) can inflate associations.
     Features:
     *   Supports input as text (one sequence per line) or multi-FASTA (supports gzipped files).
     *   Options for soft masking (N), dash-masking (-), or randomized masking (-ATGC- scrambling, fsm-lite compatible).
     *   Designed for large FASTA datasets with multiprocessing support.
-*   fasta-metrics
+*   fasta-metrics<br/>
     Compute common assembly metrics from an input FASTA file or all FASTA files within a directory
     *   The following metrics are calculated
         *   Number of contigs
