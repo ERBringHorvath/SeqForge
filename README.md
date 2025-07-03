@@ -29,7 +29,7 @@ ________________________________________________________________________________
 ### <ins>Module 2: Sequence Investigation<ins/>
 
 Purpose: Extract meaningful biological context from BLAST hits <br/>
-*   extract
+*   extract <br/>
     Extract aligned sequences identified via the multiBLAST+ Query pipeline from original FASTA files.
     Features:
     *   Optional translation of nucleotide hits to protein for full gene alignments.
