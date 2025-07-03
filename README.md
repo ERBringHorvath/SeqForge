@@ -78,8 +78,8 @@ ________________________________________________________________________________
 
 ```mermaid
 graph TD;
-    Sanitize-->Database Creation;
-    Database Creation-->Query;
+    Sanitize-->Database-Creation;
+    Database-Creation-->Query;
     Query-->Extract;
     Query-->Extract-Contig;
 ```
