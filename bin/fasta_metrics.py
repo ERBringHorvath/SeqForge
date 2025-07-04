@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2025 Elijah Bring Horvath
+
 import os
 import logging
 from datetime import datetime
