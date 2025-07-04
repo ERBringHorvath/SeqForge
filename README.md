@@ -103,9 +103,10 @@ characters in a filename (e.g., 'GCA_900638215.1.fna, the non-extension period i
 
 To scan your FASTA population, simply run: `seqforge --sanitize -f /path/to/FASTA/file(s) -e fasta --dry-run`.
 This will print any problematic filenames to the console without making changes. If changes are needed, re-run without `--dry-run` 
-using either `--in-place` (recommended) or `--sanitize-outdir <dir>`. See Module 3: Utilities > seqforge sanitize for more details
+using either `--in-place` (recommended) or `--sanitize-outdir <dir>`. See Module 3: Utilities > seqforge sanitize for more details.
 
-Periods, hyphens, colons, semicolons, and whitespace are replaced by '_'. Parenthesis and quotation marks are deleted.
+Periods, hyphens, colons, semicolons, and whitespace are replaced by '_'. Parenthesis and quotation marks are deleted. GCA_900638215.1.fna
+(**non-compliant**) becomes GCA_900638215_1.fna (**compliant**).
 ______________________________________________________________________________________________________________________________________
 ______________________________________________________________________________________________________________________________________
 
