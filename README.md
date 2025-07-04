@@ -98,8 +98,9 @@ graph TD;
 ```
 ______________________________________________________________________________________________________________________________________
 All pipelines should start with a check for special characters in input FASTA file names. To scan your FASTA population, simply run: <br/>
-`seqforge --sanitize -f /path/to/FASTA/file(s) -e fasta --dry-run`. This will print any problematic filenames to the console without
-making changes. If changes are needed, re-run without `--dry-run` using either `--in-pace` (recommended) or `--sanitize-outdir <dir>`
+`seqforge --sanitize -f /path/to/FASTA/file(s) -e fasta --dry-run`. <br/> 
+This will print any problematic filenames to the console without making changes. If changes are needed, re-run without `--dry-run` 
+using either `--in-place` (recommended) or `--sanitize-outdir <dir>`. See Module 3: Utilities > seqforge sanitize for more details
 ______________________________________________________________________________________________________________________________________
 
 **Author:** <br />
