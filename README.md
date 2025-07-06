@@ -4,7 +4,7 @@
 
 SeqForge emphasizes clarity, flexibility, and scale. Each module is standalone but interoperable with others, allowing researchers to plug in just what they need or use the full pipeline. Designed for power users but accessible enough for those just entering the field, SeqForge aims to grow as the field of bacterial genomics and bioinformatics expands.
 
-**SeqForge is currently divided into three modules:**
+## **SeqForge is currently divided into three modules:**
 
 ### <ins>Module 1: multiBLAST+<ins/>
 
