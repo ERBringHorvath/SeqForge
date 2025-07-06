@@ -109,6 +109,18 @@ using either `--in-place` (recommended) or `--sanitize-outdir <dir>`. See Module
 Periods, hyphens, colons, semicolons, and whitespace are replaced by '_'. Parenthesis and quotation marks are deleted. GCA_900638215.1.fna
 (**non-compliant**) becomes GCA_900638215_1.fna (**compliant**).
 ______________________________________________________________________________________________________________________________________
+**Suggested Workspace:** <br/>
+For organization, we suggest generating individual directories for each data type prior to the start of any SeqForge module.
+
+`cd /path/to/working/directory` <br/>
+`mkdir -p FASTA DBs Query Results` where: <br/>
+**DBs:** Output directory to store BLAST databases generated via `seqforge makedb` <br/>
+**FASTA:** Directory of genomes to parse, used to create BLAST databases <br/>
+**Query:** Directory containing query file(s) to use with `seqforge query` <br/>
+**Results:** Directory where multiBLAST+ results will be stored
+
+We additionally recommend generating output directories for any additional SeqForge modules used. 
+______________________________________________________________________________________________________________________________________
 ______________________________________________________________________________________________________________________________________
 
 **Author:** <br />
