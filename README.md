@@ -110,10 +110,11 @@ Periods, hyphens, colons, semicolons, and whitespace are replaced by '_'. Parent
 (**non-compliant**) becomes GCA_900638215_1.fna (**compliant**).
 ______________________________________________________________________________________________________________________________________
 **Suggested Workspace:** <br/>
-For organization, we suggest generating individual directories for each data type prior to the start of any SeqForge module.
+For organization, we suggest generating individual directories for each data type prior to the start of any SeqForge module:
 
 `cd /path/to/working/directory` <br/>
-`mkdir -p FASTA DBs Query Results` where: <br/>
+`mkdir -p FASTA DBs Query Results` **where:**
+
 **DBs:** Output directory to store BLAST databases generated via `seqforge makedb` <br/>
 **FASTA:** Directory of genomes to parse, used to create BLAST databases <br/>
 **Query:** Directory containing query file(s) to use with `seqforge query` <br/>
