@@ -2,13 +2,18 @@ from setuptools import setup, find_packages
 
 setup(
     name='seqforge',
-    version='1.0.0',
+    version='0.0.1',
     packages=find_packages(where='bin'),
     package_dir={'': 'bin'},
     include_package_data=True,
     install_requires=[
         'pandas',
-        'biopython'
+        'biopython',
+        'tqdm',
+        'logomaker',
+        'numpy',
+        'seaborn',
+        'matplotlib'
     ],
     entry_point={
         'console_scripts': [
