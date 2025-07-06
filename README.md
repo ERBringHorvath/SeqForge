@@ -218,11 +218,12 @@ ________________________________________________________________________________
 
 seqforge makedb: <br />
 `-f`, `--fasta-directory`: path to the directory containing input files in FASTA format <br />
-`-o`, `--out`: path to directory where you want to store your databases
+`-o`, `--out`: path to directory where you want to store your databases <br/>
+`-T`, `--threads`: number of cores to dedicate for multiprocessing <br/>
 `-s`, `--sanitize`: remove pipeline-breaking special characters from file names <br/>
 
 Example: <br />
-`seqforge makedb -f /path/to/FASTA/files -o /path/to/results/folder`
+`seqforge makedb -f /path/to/FASTA/files -o /path/to/results/folder -T 4`
 
 **Database type is automatically detected during database creation** <br/>
 .fasta, .fa, .fas, .ffn, .fna == nucleotide <br/>
@@ -235,7 +236,7 @@ seqforge query: <br />
 `-q`, `--query_files`: path to directory containing query files in amino acid FASTA format <br />
 `-e`, `--evalue`: maximum e-value cutoff, default 0.00001 <br />
 `-o`, `--output`: path to directory to store results
-`-T`, `--threads`: number of cores to dedicate for multi-threading <br />
+`-T`, `--threads`: number of cores to dedicate for multiprocessing <br />
 `--report-strongest-match`: report only the single strongest match for each query <br />
 `--min-perc`: define minimum percent identity threshold. Default = 90 <br />
 `--min-cov`: define minimum query coverage threshold. Default = 75 <br />
@@ -248,12 +249,24 @@ seqforge query: <br />
 `--visualize`: generate heatmap of BLAST hits and sequence logo of motif hits if `--motif` returns matches <br/>
 `--pdf`: override PNG output of visualize and instead generated a PDF (use in combination with `--visualize`)
 
-Example: <br />
+Basic example: <br />
 `seqforge query -T 8 -d /path/to/blast/database/files -q /path/to/query/files/` <br /> 
 `-o /path/to/results/folder`
 
-All SeqForge results are concatenated to `all_results.csv` and either `all_filtered_results.csv` or <br /> 
+Witch's Brew: <br/>
+`seqforge query -T 8 \` <br/>
+`-d /path/to/blast/databases \` <br/>
+`-q /path/to/query/files \` <br/>
+`-o /path/to/results/directory \` <br/>
+`--min-perc 75` `--min-cov 70 --evalue 0.001 \` <br/>
+`--report-strongest-matches \` <br/>
+`--motif WXWXIP -f /path/to/FASTA/files \` <br/>
+`--visualize`
+
+All multiBLAST+ results are concatenated to `all_results.csv` and either `all_filtered_results.csv` or <br /> 
 `filtered_results.csv` within the output folder designated by `-o, --output`
+
+Plots are saved to the current working directory. Tabulated motif hits are saved in the results directory as `motif_matches.csv`
 
 ______________________________________________________________________________________________________________________________________
 ______________________________________________________________________________________________________________________________________
@@ -267,7 +280,7 @@ seqforge extract: <br />
 `-f`, `--fasta_directory`: path to reference FASTA assemblies <br />
 &nbsp;&nbsp;&nbsp;&nbsp;These should be the FASTA files the BLAST databases were created from and should have the same basename as the query results files <br />
 `-o`, `--output_fasta`: output file to contain sequences, defaults to current working directory <br />
-`-T`, `--threads`: number of cores to dedicate, default is 1 <br />
+`-T`, `--threads`: number of cores to dedicate for multiprocessing <br />
 `--min-evalue`: maximum e-value threshold, default = 0.00001 <br />
 `--min-perc`: minimum percent identity threshold. Default = 90 <br />
 `--min-cov`: minimum query coverage threshold. Default = 75 <br />
@@ -290,8 +303,15 @@ If SeqForge is used for database creation and queries, matching basenames should
 **Example usage:** <br />
 `seqforge extract -c /path/to/results/file -f /path/to/reference/FASTA/files -T 8 -o sequences.fa`
 
+**Witch's Brew:** <br/>
+`seqforge extract -T 8 \` <br/>
+`-c /path/to/results/file -f /path/to/reference/FASTA/files \` <br/>
+`-o sequences.fa` <br/>
+`--min-perc 75 --min-cov 70 --evalue 0.001 \` <br/>
+`--up 1200 --down 1200`
+
 **NOTE:** <br />
-Results file should be `all_results.csv`, `all_filtered_results.csv`, or `filtered_results.csv`, which are automatically generated using `seqforge query`
+Results file needs to be `all_results.csv`, `all_filtered_results.csv`, or `filtered_results.csv`, which are automatically generated using `seqforge query`
 
 If percent identity and query coverage were set manually during `seqforge query`, these values will need to be reflected when using `mutliblast extract` using `--min-perc` and/or `--min-cov` <br />
 For instance, if `seqforge query` was called using `--perc 75`, but the `seqforge extract` minimum percent identity is left at its default value (90), the appropriate sequences may not be extracted, as they may fall beneath the internally curated `--min-perc` theshold. 
@@ -370,7 +390,7 @@ seqforge mask: <br />
 seqforge mask was designed to mask noisy sequences from GWAS kmer-association analyses. 'Noise' might be overrepresented sequences, sequencing/assembly artifacts, etc.
 
 **Example Usage:** <br />
-`seqforge mask -i /path/to/genome/FASTA/files -o /path/to/output/dir -s kmers.txt -T 8`
+`seqforge mask -i /path/to/genome/FASTA/files -o /path/to/output/dir -s kmers.txt -T 8 -v --dash`
 
 ## Extract Sequence Metadata from JSON/GenBank Files
 
@@ -383,6 +403,8 @@ Optional fields:
     accession, organism, strain, isolation_source, host, region, lat_lon, collection_date, <br/> 
     collected_by, tax_id, comment, keywords, sequencing_tech, release_date
 
+**Example usage:** <br/>
+`seqforge search -i /path/to/input.(json | gbk) -o metadata.csv --fields accession isolation_source host region`
 ______________________________________________________________________________________________________________________________________
 ______________________________________________________________________________________________________________________________________
 
