@@ -23,8 +23,7 @@ Purpose: Rapid database creation and high-throughput querying <br/>
     *   Visualization of gene hits and sequence matches (hi-res PNG or PDF)
 *   Motif support in query: <br/>
     When using blastp (amino acid query against protein database), users may specify an amino acid motif (e.g., WXWXIP) using the `--motif` flag. This performs a regex-based search across all BLAST hits,             independent from internally-curated or user-defined pident, query coverage, and e-value thresholds, ensuring detection of conserved motifs even in low-identity or heterologous alignments that might otherwise     be filtered out. This is particularly useful for detecting signature domains (e.g., catalytic triads, DNA-binding motifs) in diverse sequence families.
-*   BLAST hits and motif matches may be visualized using the `--visualize` flag. BLAST hits across genomes are represented by heatmap, where each cell is graded based on percent identity. If visualization is run along side a motif search, motif matches will be visualized as a sequence logo representing amino acid frequencies. 
-    
+*   BLAST hits and motif matches may be visualized using the `--visualize` flag. BLAST hits across genomes are represented by heatmap, where the color intensity of each individual cell reflects that query's          percent identity within a specific genome. If `--visualize` is combined with `--motif`, motif matches will be illustrated as a sequence logo representing amino acid frequencies. The `--visualize` flag must       be run with `--report-strongest-matches`
 
 SeqForge Module 1 automates the process of running *N* BLAST queries against *N* databases and organizing the results.
 ______________________________________________________________________________________________________________________________________
