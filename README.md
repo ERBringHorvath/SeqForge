@@ -113,7 +113,7 @@ ________________________________________________________________________________
 For organization, we suggest generating individual directories for each data type prior to the start of any SeqForge module:
 
 `cd /path/to/working/directory` <br/>
-`mkdir -p FASTA DBs Query Results` **where:**
+`mkdir -p FASTA DBs Query Results`, **where:**
 
 **DBs:** Output directory to store BLAST databases generated via `seqforge makedb` <br/>
 **FASTA:** Directory of genomes to parse, used to create BLAST databases <br/>
