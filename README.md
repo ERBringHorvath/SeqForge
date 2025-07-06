@@ -100,7 +100,7 @@ graph TD;
 ______________________________________________________________________________________________________________________________________
 **All pipelines** should start with a check for special characters in input FASTA file names. Special characters are defined as any 
 character aside from a-z, A-Z, 0-9 and underscores. The BLAST+ architecture cannot parse anything but these; inclusion of special
-characters in a filename (e.g., GCA_900638215**.**1.fna, the non-extension period is pipeline-breaking) will result in database creation failure.
+characters in a filename (e.g., GCA_900638215 **.** 1.fna, the non-extension period is pipeline-breaking) will result in database creation failure.
 
 To scan your FASTA population, simply run: `seqforge --sanitize -f /path/to/FASTA/file(s) -e fasta --dry-run`.
 This will print any problematic filenames to the console without making changes. If changes are needed, re-run without `--dry-run` 
