@@ -4,3 +4,4 @@ numpy>=2.2.0
 seaborn>=0.13.2
 matplotlib>=3.10.3
 tqdm>=4.67.1
+logomaker>=0.8.7
