@@ -147,11 +147,11 @@ Or using Conda:
 
 2. Create Conda environment
 
-`conda create -n blast`
+`conda create -n seqforge`
 
 3. Activate Conda envrionment
 
-`source activate blast`
+`source activate seqforge`
 
 4. Install BLAST+
 
