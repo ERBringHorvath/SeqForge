@@ -93,14 +93,14 @@ graph TD;
     style Z fill:#11d393,stroke:#fff5ee,stroke-width:4,font-size:30,color:#454545
     style A fill:#d48074,stroke:#fff5ee,stroke-width:3,font-size:26px
     style B fill:#d40078,stroke:#FCF5E5,stroke-width:2,font-size:22px
-    style C fill:#920075,stroke:#333,stroke-width:1,font-size:15px
-    style D fill:#650D89,stroke:#333,stroke-width:1,font-size:15px
-    style E fill:#023788,stroke:#333,stroke-width:1,font-size:15px
-    style F fill:#fd1d53,stroke:#333,stroke-width:1,font-size:15px
-    style G fill:#fd3777,stroke:#333,stroke-width:1,font-size:15px
-    style H fill:#2e2157,stroke:#333,stroke-width:1,font-size:15px
+    style C fill:#920075,stroke:#333,stroke-width:1,font-size:18px
+    style D fill:#650D89,stroke:#333,stroke-width:1,font-size:18px
+    style E fill:#023788,stroke:#333,stroke-width:1,font-size:18px
+    style F fill:#fd1d53,stroke:#333,stroke-width:1,font-size:18px
+    style G fill:#fd3777,stroke:#333,stroke-width:1,font-size:18px
+    style H fill:#2e2157,stroke:#333,stroke-width:1,font-size:18px
     style I fill:#11c9d3,stroke:#333,stroke-width:1,font-size:22px,color:#454545
-    style J fill:#6e1515,stroke:#333,stroke-width:1,font-size:15px
+    style J fill:#6e1515,stroke:#333,stroke-width:1,font-size:18px
 ```
 ______________________________________________________________________________________________________________________________________
 **All pipelines** should start with a check for special characters in input FASTA file names. Special characters are defined as any 
