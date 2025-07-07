@@ -103,7 +103,7 @@ def run_visualization(filtered_df, args):
     out_path = os.path.join(output_dir, out_file)
 
     plt.savefig(out_path, dpi=300 if out_ext == "png" else None)
-    print(f"\n\033[92mIdentity heatmap saved to {out_path}\033[0m\n")
+    print(f"\n\033[92mIdentity heatmap saved to {out_path}\033[0m")
 
 
 def run_sequence_logo(motif_df, args):
