@@ -100,7 +100,7 @@ graph TD;
     style G fill:#fd3777,stroke:#333,stroke-width:1,font-size:15px
     style H fill:#2e2157,stroke:#333,stroke-width:1,font-size:15px
     style I fill:#11c9d3,stroke:#333,stroke-width:1,font-size:22px,color:#454545
-    style J fill:#11d393,stroke:#333,stroke-width:1,font-size:15px
+    style J fill:#6e1515,stroke:#333,stroke-width:1,font-size:15px
 ```
 ______________________________________________________________________________________________________________________________________
 **All pipelines** should start with a check for special characters in input FASTA file names. Special characters are defined as any 
