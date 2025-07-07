@@ -97,7 +97,7 @@ graph TD;
     style F fill:#fd1d53,stroke:#333,stroke-width:1,font-size:15px
     style G fill:#fd3777,stroke:#333,stroke-width:1,font-size:15px
     style H fill:#2e2157,stroke:#333,stroke-width:1,font-size:15px
-    style I fill:#11c9d3,stroke:#333,stroke-width:1,font-size:15px
+    style I fill:#11c9d3,stroke:#333,stroke-width:1,font-size:22px,color:#c1c1c1
     style J fill:#11d393,stroke:#333,stroke-width:1,font-size:15px
 ```
 ______________________________________________________________________________________________________________________________________
