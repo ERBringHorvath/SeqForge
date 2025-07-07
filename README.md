@@ -239,7 +239,7 @@ Example: <br />
 seqforge query: <br />
 `-d`, `--database`: path to directory containing BLAST+ databases <br />
 `-q`, `--query_files`: path to directory containing query files in amino acid FASTA format <br />
-`-e`, `--evalue`: maximum e-value cutoff, default 0.00001 <br />
+`-e`, `--min-evalue`: maximum e-value cutoff, default 0.00001 <br />
 `-o`, `--output`: path to directory to store results
 `-T`, `--threads`: number of cores to dedicate for multiprocessing <br />
 `--report-strongest-match`: report only the single strongest match for each query <br />
@@ -263,7 +263,7 @@ Witch's Brew: <br/>
 `-d /path/to/blast/databases \` <br/>
 `-q /path/to/query/files \` <br/>
 `-o /path/to/results/directory \` <br/>
-`--min-perc 75` `--min-cov 70 --evalue 0.001 \` <br/>
+`--min-perc 75` `--min-cov 70 --min-evalue 0.001 \` <br/>
 `--report-strongest-matches \` <br/>
 `--motif WXWXIP -f /path/to/FASTA/files \` <br/>
 `--visualize`
@@ -312,7 +312,7 @@ If SeqForge is used for database creation and queries, matching basenames should
 `seqforge extract -T 8 \` <br/>
 `-c /path/to/results/file -f /path/to/reference/FASTA/files \` <br/>
 `-o sequences.fa` <br/>
-`--min-perc 75 --min-cov 70 --evalue 0.001 \` <br/>
+`--min-perc 75 --min-cov 70 --min-evalue 0.001 \` <br/>
 `--up 1200 --down 1200`
 
 **NOTE:** <br />
