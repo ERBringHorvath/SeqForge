@@ -90,7 +90,7 @@ graph TD;
     I[.json/.gb/.gbk]-->J[Search];
 
     %% Custom style for Sanitize node
-    style Z fill:#11d393,stroke:#fff5ee,stroke-width:4,font-size:30
+    style Z fill:#11d393,stroke:#000000,stroke-width:4,font-size:30
     style A fill:#d48074,stroke:#fff5ee,stroke-width:3,font-size:26px
     style B fill:#d40078,stroke:#FCF5E5,stroke-width:2,font-size:22px
     style C fill:#920075,stroke:#333,stroke-width:1,font-size:15px
