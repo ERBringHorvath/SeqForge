@@ -79,7 +79,7 @@ ________________________________________________________________________________
 
 ```mermaid
 graph TD;
-    Z{{FASTA Files}}-->A{Sanitize};
+    Z{{FASTA}}-->A{Sanitize};
     A{Sanitize}-->B{{Database-Creation}};
     B{{Database-Creation}}-->C[Query];
     C[Query]-->D[Extract];
@@ -87,10 +87,10 @@ graph TD;
     A{Sanitize}-->F[FASTA-Metrics];
     A{Sanitize}-->G[Mask];
     A{Sanitize}-->H[Split-FASTA];
-    I[.json/.gb/.gbk]-->J[Search];
+    I[JSON/GenBank]-->J[Search];
 
     %% Custom style for Sanitize node
-    style Z fill:#11d393,stroke:#fff5ee,stroke-width:4,font-size:30,color:#000000
+    style Z fill:#11d393,stroke:#fff5ee,stroke-width:4,font-size:30,color:#454545
     style A fill:#d48074,stroke:#fff5ee,stroke-width:3,font-size:26px
     style B fill:#d40078,stroke:#FCF5E5,stroke-width:2,font-size:22px
     style C fill:#920075,stroke:#333,stroke-width:1,font-size:15px
