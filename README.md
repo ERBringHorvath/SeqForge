@@ -239,7 +239,7 @@ Example: <br />
 seqforge query: <br />
 `-d`, `--database`: path to directory containing BLAST+ databases <br />
 `-q`, `--query_files`: path to directory containing query files in amino acid FASTA format <br />
-`-e`, `--min-evalue`: maximum e-value cutoff, default 0.00001 <br />
+`-e`, `--evalue`: maximum e-value cutoff, default 0.00001 <br />
 `-o`, `--output`: path to directory to store results
 `-T`, `--threads`: number of cores to dedicate for multiprocessing <br />
 `--report-strongest-match`: report only the single strongest match for each query <br />
@@ -286,7 +286,7 @@ seqforge extract: <br />
 &nbsp;&nbsp;&nbsp;&nbsp;These should be the FASTA files the BLAST databases were created from and should have the same basename as the query results files <br />
 `-o`, `--output_fasta`: output file to contain sequences, defaults to current working directory <br />
 `-T`, `--threads`: number of cores to dedicate for multiprocessing <br />
-`--min-evalue`: maximum e-value threshold, default = 0.00001 <br />
+`--evalue`: maximum e-value threshold, default = 0.00001 <br />
 `--min-perc`: minimum percent identity threshold. Default = 90 <br />
 `--min-cov`: minimum query coverage threshold. Default = 75 <br />
 `--translate`: translates extracted nucleotide sequence(s) <br/>
@@ -331,7 +331,7 @@ seqforge extract-contig: <br />
 &nbsp;&nbsp;&nbsp;&nbsp;These should be the FASTA files the BLAST databases were created from and should have the same basename as the query results files <br />
 `-o`, `--output_fasta`: output file to contain sequences, defaults to current working directory <br />
 `-T`, `--threads`: number of cores to dedicate, default is 1 <br />
-`--min-evalue`: maximum e-value threshold, default = 0.00001 <br />
+`--evalue`: maximum e-value threshold, default = 0.00001 <br />
 `--min-perc`: minimum percent identity threshold. Default = 90 <br />
 `--min-cov`: minimum query coverage threshold. Default = 75 <br />
 
