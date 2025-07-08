@@ -250,7 +250,7 @@ def run_multiblast(args):
         logger.info(msg)
     else:
         msg = f"All results saved to {results_output_dir}"
-        print(f"\n\033[92m{msg}\033[0m\n")
+        print(f"\n\033[92m{msg}\033[0m")
         logger.info(msg)
 
     filtered_df = df[(df['evalue'] <= evalue_threshold) &
