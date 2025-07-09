@@ -209,7 +209,7 @@ Save the file and restart your terminal or run `source ~/.bashrc` or `~/.bash_pr
 `seqforge --help` <br />
 `seqforge --version`
 
-NOTE: Permissions should automatically be applied during installation. If you get a `permission denied` message when running `seqforge` <br />
+NOTE: Permissions should automatically be applied during installation. If you get a `permission denied` message when running `seqforge`
 permissions may need to be changed manually. To do this, you can use the following command:
 
 `chmod +x /path/to/seqforge/bin/seqforge`
