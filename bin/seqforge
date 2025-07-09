@@ -29,7 +29,7 @@ def check_extract_range(value):
 def main():
 
     parser = argparse.ArgumentParser(prog='seqforge', description='SeqForge: A genomics toolkit.')
-    parser.add_argument('-v', '--version', action='version', version='%(prog)s 0.0.1')
+    parser.add_argument('-v', '--version', action='version', version='%(prog)s 0.2.0')
     subparsers = parser.add_subparsers(dest='command', help='Available commands')
 
     # Sub-parser for the "makedb" command
