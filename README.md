@@ -295,7 +295,7 @@ seqforge extract: <br />
 
 **NOTE:** Translation of sequences is optional, however care should be used when translating extracted nucleotide sequences, as BLAST results may not always contain a full CDS. To allow for this, when the `--translate` argument is called, extracted sequences will be trimmed to only include complete codons, which may affect interpretation of results.
 
-**NOTE:** `--up` and `--down` flags are incompatible with `--translate`, as we cannot robustly parse all 6 frames of translation.
+**NOTE:** `--up` and `--down` flags are incompatible with `--translate`, as 6-frame translation is not currenlty supported.
 
 **NOTE:** Results files and FASTA reference assemblies <ins>**must**</ins> share the same basename:
 
