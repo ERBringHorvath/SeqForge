@@ -24,6 +24,10 @@ Purpose: Rapid database creation and high-throughput querying <br/>
 *   Motif support in query: <br/>
     When using blastp (amino acid query against protein database), users may specify one or more amino acid motif(s) (e.g., WXWXIP) using the `--motif` flag. This performs a regex-based search across all BLAST hits,             independent from internally-curated or user-defined pident, query coverage, and e-value thresholds, ensuring detection of conserved motifs even in low-identity or heterologous alignments that might otherwise     be filtered out. This is particularly useful for detecting signature domains (e.g., catalytic triads, DNA-binding motifs) in diverse sequence families.
 *   BLAST hits and motif matches may be visualized using the `--visualize` flag. BLAST hits across genomes are represented by a heatmap, where the color intensity of each individual cell reflects that query's percent identity within a specific genome. For queries that return > 1 hit per genome, only  the strongest hit will be used to construct the heatmap. If `--visualize` is combined with `--motif`, motif matches will be illustrated as a sequence logo representing amino acid frequencies.
+______________________________________________________________________________________________________________________________________
+Example Plots:
+
+<img width="21240" height="4457" alt="query_identity_heatmap" src="https://github.com/user-attachments/assets/d07c9521-c99f-4ddf-8f14-6e43f92d7340" />
 
 <img width="2970" height="716" alt="motif_1_logo" src="https://github.com/user-attachments/assets/92142974-6c20-4bb1-8c20-b7be5951787f" />
 
