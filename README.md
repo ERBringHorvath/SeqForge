@@ -206,6 +206,23 @@ Save the file and restart your terminal or run `source ~/.bashrc` or `~/.bash_pr
 
 **Verify SeqForge Installation**
 
+`seqforge --module-health`
+
+You should see: <br/>
+Module Status Report:
+ - makedb: Available
+ - query: Available
+ - split_fasta: Available
+ - extract_sequences: Available
+ - extract_contigs: Available
+ - mask: Available
+ - search: Available
+ - sanitize: Available
+ - fasta_metrics: Available
+
+If there is a problem, the status will read 'Broken or Missing'.
+
+Help menu and version: <br/>
 `seqforge --help` <br />
 `seqforge --version`
 
