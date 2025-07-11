@@ -23,9 +23,7 @@ Purpose: Rapid database creation and high-throughput querying <br/>
     *   Visualization of gene hits and sequence matches (hi-res PNG or PDF)
 *   Motif support in query: <br/>
     When using blastp (amino acid query against protein database), users may specify one or more amino acid motif(s) (e.g., WXWXIP) using the `--motif` flag. This performs a regex-based search across all BLAST hits,             independent from internally-curated or user-defined pident, query coverage, and e-value thresholds, ensuring detection of conserved motifs even in low-identity or heterologous alignments that might otherwise     be filtered out. This is particularly useful for detecting signature domains (e.g., catalytic triads, DNA-binding motifs) in diverse sequence families.
-*   BLAST hits and motif matches may be visualized using the `--visualize` flag. BLAST hits across genomes are represented by heatmap, where the color intensity of each individual cell reflects that query's          percent identity within a specific genome. If `--visualize` is combined with `--motif`, motif matches will be illustrated as a sequence logo representing amino acid frequencies. The `--visualize` flag must       be run with `--report-strongest-matches`
-
-SeqForge Module 1 automates the process of running *N* BLAST queries against *N* databases and organizing the results.
+*   BLAST hits and motif matches may be visualized using the `--visualize` flag. BLAST hits across genomes are represented by a heatmap, where the color intensity of each individual cell reflects that query's percent identity within a specific genome. For queries that return > 1 hit per genome, only  the strongest hit will be used to construct the heatmap. If `--visualize` is combined with `--motif`, motif matches will be illustrated as a sequence logo representing amino acid frequencies.
 ______________________________________________________________________________________________________________________________________
 ### <ins>Module 2: Sequence Investigation<ins/>
 
