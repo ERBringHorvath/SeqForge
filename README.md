@@ -22,7 +22,7 @@ Purpose: Rapid database creation and high-throughput querying <br/>
     *   Motif mining for amino acid queries.
     *   Visualization of gene hits and sequence matches (hi-res PNG or PDF)
 *   Motif support in query: <br/>
-    When using blastp (amino acid query against protein database), users may specify an amino acid motif (e.g., WXWXIP) using the `--motif` flag. This performs a regex-based search across all BLAST hits,             independent from internally-curated or user-defined pident, query coverage, and e-value thresholds, ensuring detection of conserved motifs even in low-identity or heterologous alignments that might otherwise     be filtered out. This is particularly useful for detecting signature domains (e.g., catalytic triads, DNA-binding motifs) in diverse sequence families.
+    When using blastp (amino acid query against protein database), users may specify one or more amino acid motif(s) (e.g., WXWXIP) using the `--motif` flag. This performs a regex-based search across all BLAST hits,             independent from internally-curated or user-defined pident, query coverage, and e-value thresholds, ensuring detection of conserved motifs even in low-identity or heterologous alignments that might otherwise     be filtered out. This is particularly useful for detecting signature domains (e.g., catalytic triads, DNA-binding motifs) in diverse sequence families.
 *   BLAST hits and motif matches may be visualized using the `--visualize` flag. BLAST hits across genomes are represented by heatmap, where the color intensity of each individual cell reflects that query's          percent identity within a specific genome. If `--visualize` is combined with `--motif`, motif matches will be illustrated as a sequence logo representing amino acid frequencies. The `--visualize` flag must       be run with `--report-strongest-matches`
 
 SeqForge Module 1 automates the process of running *N* BLAST queries against *N* databases and organizing the results.
@@ -283,14 +283,11 @@ Witch's Brew: <br/>
 `-o /path/to/results/directory \` <br/>
 `--min-perc 75` `--min-cov 70 --evalue 0.001 \` <br/>
 `--report-strongest-matches \` <br/>
-`--motif WXWXIP -f /path/to/FASTA/files \` <br/>
+`--motif HXXH GHXXGE -f /path/to/FASTA/files \` <br/>
 `--visualize`
 
-All Genome Search results are concatenated to `all_results.csv` and either `all_filtered_results.csv` or <br /> 
-`filtered_results.csv` within the output folder designated by `-o, --output`
-
-Plots are saved to the current working directory. Tabulated motif hits are saved in the results directory as `motif_matches.csv`
-
+All Query results are concatenated to `all_results.csv` and either `all_filtered_results.csv` or `filtered_results.csv`. 
+All plots and files are saved to the output directory specified by `--output`.
 ______________________________________________________________________________________________________________________________________
 ______________________________________________________________________________________________________________________________________
 
@@ -420,6 +417,8 @@ seqforge mask was designed to mask noisy sequences from GWAS kmer-association an
 seqforge search: <br/>
 `-i`, `--input`: input file (.json or .gb/.gbk)<br/>
 `-o`, `--output`: output file (e.g., .csv, .tsv, .json) <br/>
+`--json`: parse only JSON files in an input directory <br/>
+`--gb`: parse only GenBank files in an input directory <br/>
 `--all`: extract all available metadata <br/>
 `--fields`: space-separated list of metadata fields to extract <br/>
 Optional fields:
@@ -427,7 +426,8 @@ Optional fields:
     collected_by, tax_id, comment, keywords, sequencing_tech, release_date
 
 **Example usage:** <br/>
-`seqforge search -i /path/to/input.(json | gbk) -o metadata.csv --fields accession isolation_source host region`
+`seqforge search -i /path/to/input.(json | gbk) -o metadata.csv --fields accession isolation_source host region` <br/>
+`seqforge search -i /path/to/input/files -o metadata.csv --all --json`
 ______________________________________________________________________________________________________________________________________
 ______________________________________________________________________________________________________________________________________
 
