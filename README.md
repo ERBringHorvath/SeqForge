@@ -24,6 +24,8 @@ Purpose: Rapid database creation and high-throughput querying <br/>
 *   Motif support in query: <br/>
     When using blastp (amino acid query against protein database), users may specify one or more amino acid motif(s) (e.g., WXWXIP) using the `--motif` flag. This performs a regex-based search across all BLAST hits,             independent from internally-curated or user-defined pident, query coverage, and e-value thresholds, ensuring detection of conserved motifs even in low-identity or heterologous alignments that might otherwise     be filtered out. This is particularly useful for detecting signature domains (e.g., catalytic triads, DNA-binding motifs) in diverse sequence families.
 *   BLAST hits and motif matches may be visualized using the `--visualize` flag. BLAST hits across genomes are represented by a heatmap, where the color intensity of each individual cell reflects that query's percent identity within a specific genome. For queries that return > 1 hit per genome, only  the strongest hit will be used to construct the heatmap. If `--visualize` is combined with `--motif`, motif matches will be illustrated as a sequence logo representing amino acid frequencies.
+
+
 ______________________________________________________________________________________________________________________________________
 ### <ins>Module 2: Sequence Investigation<ins/>
 
@@ -437,3 +439,7 @@ SeqForge (https://github.com/ERBringHorvath/SeqForge)
 Cite NCBI BLAST+: <br />
 Camancho C, Coulouris G, Avagyan V, Ma N, Papadopoulos J, Bealer K, Madden TL, **2009**. <br />
 BLAST+: architecture and applications. *BMC Bioinformatics*, 10, 421. doi:10.1186/1471-2105-10-421
+
+Cite Logomaker: <br/>
+Ammar Tareen, Justin B Kinney, **2020** <br/>
+Logomaker: beautiful sequence logos in Python. **Bioinformatics**, 36, 7, 2272–2274, doi.org/10.1093/bioinformatics/btz921
