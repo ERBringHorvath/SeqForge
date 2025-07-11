@@ -209,6 +209,7 @@ Save the file and restart your terminal or run `source ~/.bashrc` or `~/.bash_pr
 `seqforge --module-health`
 
 You should see: <br/>
+```
 Module Status Report:
  - makedb: Available
  - query: Available
@@ -219,7 +220,7 @@ Module Status Report:
  - search: Available
  - sanitize: Available
  - fasta_metrics: Available
-
+```
 If there is a problem, the status will read 'Broken or Missing'.
 
 Help menu and version: <br/>
