@@ -6,7 +6,7 @@ SeqForge emphasizes clarity, flexibility, and scale. Each module is standalone b
 
 ### **SeqForge is currently divided into three modules:**
 
-### <ins>Module 1: multiBLAST+<ins/>
+### <ins>Module 1: SequenceFinder<ins/>
 
 Purpose: Rapid database creation and high-throughput querying <br/>
 *   makedb<br/>
@@ -31,7 +31,7 @@ ________________________________________________________________________________
 
 Purpose: Extract meaningful biological context from BLAST hits <br/>
 *   extract <br/>
-    Extract aligned sequences identified via the multiBLAST+ Query pipeline from original FASTA files.
+    Extract aligned sequences identified via the SequenceFinder Query pipeline from original FASTA files.
     Features:
     *   Optional translation of nucleotide hits to protein for full gene alignments.
         *    This should only be used with full gene alignments.
@@ -44,7 +44,7 @@ ________________________________________________________________________________
 
 Purpose: General-use tools for various genomic workflows <br/>
 *   sanitize<br/>
-    *   Remove special characters from input files—**required** for all multiBLAST+ analyses.
+    *   Remove special characters from input files—**required** for all SequenceFinder analyses.
     *   Choose to rename files using `--in-place` (strongly recommended).
     *   Or copy files to a new directory and rename the copies, leaving the original files untouched.
 *   split-fasta<br/>
@@ -123,7 +123,7 @@ For organization, we suggest generating individual directories for each data typ
 **DBs:** Output directory to store BLAST databases generated via `seqforge makedb` <br/>
 **FASTA:** Directory of genomes to parse, used to create BLAST databases <br/>
 **Query:** Directory containing query file(s) to use with `seqforge query` <br/>
-**Results:** Directory where multiBLAST+ results will be stored
+**Results:** Directory where SequenceFinder results will be stored
 
 We additionally recommend generating output directories for any additional SeqForge modules used. 
 ______________________________________________________________________________________________________________________________________
@@ -235,7 +235,7 @@ permissions may need to be changed manually. To do this, you can use the followi
 ______________________________________________________________________________________________________________________________________
 ______________________________________________________________________________________________________________________________________
 
-# <ins>Module 1: multiBLAST+</ins>
+# <ins>Module 1: SequenceFinder</ins>
 
 **Building a BLAST+ Database Library**
 
@@ -286,7 +286,7 @@ Witch's Brew: <br/>
 `--motif WXWXIP -f /path/to/FASTA/files \` <br/>
 `--visualize`
 
-All multiBLAST+ results are concatenated to `all_results.csv` and either `all_filtered_results.csv` or <br /> 
+All SequenceFinder results are concatenated to `all_results.csv` and either `all_filtered_results.csv` or <br /> 
 `filtered_results.csv` within the output folder designated by `-o, --output`
 
 Plots are saved to the current working directory. Tabulated motif hits are saved in the results directory as `motif_matches.csv`
