@@ -214,9 +214,9 @@ Save the file and restart your terminal or run `source ~/.bashrc` or `~/.bash_pr
 `seqforge --module-health`
 
 You should see: <br/>
-```diff
+```
 Module Status Report:
- - makedb: + Available
+ - makedb: Available
  - query: Available
  - split_fasta: Available
  - extract_sequences: Available
