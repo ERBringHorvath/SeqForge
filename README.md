@@ -313,7 +313,7 @@ seqforge extract: <br />
 **Required arguments:** <br/>
 `-c`, `--csv-oath`: path to results csv file from `seqforge query` <br />
 `-f`, `--fasta_directory`: path to reference FASTA assemblies <br />
-&nbsp;&nbsp;&nbsp;&nbsp;These should be the FASTA files the BLAST databases were created from and should have the same basename as the query results files <br />
+These should be the FASTA files the BLAST databases were created from and should have the same basename as the query results files <br />
 `-o`, `--output_fasta`: output file to contain sequences, defaults to current working directory
 
 **Optional arguments:** <br/>
@@ -332,8 +332,8 @@ seqforge extract: <br />
 **NOTE:** Results files and FASTA reference assemblies <ins>**must**</ins> share the same basename:
 
 Example basename: 'FILE' <br />
-&nbsp;&nbsp;&nbsp;&nbsp;Example FASTA: FILE.fasta <br />
-&nbsp;&nbsp;&nbsp;&nbsp;Example results file: FILE_results.txt
+Example FASTA: FILE.fasta <br />
+Example results file: FILE_results.txt
 
 If SeqForge is used for database creation and queries, matching basenames should be generated automatically
 
@@ -362,7 +362,7 @@ seqforge extract-contig: <br />
 **Required arguments:** <br/>
 `-c`, `--csv-path`: path to csv results file from `seqforge query` <br />
 `-f`, `--fasta_directory`: path to reference FASTA assemblies <br />
-&nbsp;&nbsp;&nbsp;&nbsp;These should be the FASTA files the BLAST databases were created from and should have the same basename as the query results files <br />
+These should be the FASTA files the BLAST databases were created from and should have the same basename as the query results files <br />
 `-o`, `--output_fasta`: output file to contain sequences, defaults to current working directory
 
 **Optional arguments:** <br/>
@@ -374,8 +374,8 @@ seqforge extract-contig: <br />
 **NOTE:** Results files and FASTA reference assemblies <ins>**must**</ins> share the same basename for both `seqforge extract` and `seqforge extract-contig`:
 
 Example basename: 'FILE' <br />
-&nbsp;&nbsp;&nbsp;&nbsp;Example FASTA: FILE.fasta <br />
-&nbsp;&nbsp;&nbsp;&nbsp;Example results file: FILE_results.txt
+Example FASTA: FILE.fasta <br />
+Example results file: FILE_results.txt
 
 If SeqForge is used for database creation and queries, matching basenames are handled automatically
 
