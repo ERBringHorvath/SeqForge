@@ -249,7 +249,7 @@ Required arguments: <br/>
 `-f`, `--fasta-directory`: path to the directory containing input files in FASTA format <br />
 `-o`, `--out`: path to directory where you want to store your databases <br/>
 Optional arguments: <br/>
-`-T`, `--threads`: number of cores to dedicate for multiprocessing (default = 4) <br/>
+`-T`, `--threads`: number of cores to dedicate for multiprocessing (default = 8) <br/>
 `-s`, `--sanitize`: remove pipeline-breaking special characters from file names <br/>
 
 Example: <br />
