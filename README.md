@@ -249,11 +249,11 @@ Required arguments: <br/>
 `-f`, `--fasta-directory`: path to the directory containing input files in FASTA format <br />
 `-o`, `--out`: path to directory where you want to store your databases <br/>
 Optional arguments: <br/>
-`-T`, `--threads`: number of cores to dedicate for multiprocessing (default = 8) <br/>
+`-T`, `--threads`: number of cores to dedicate for multiprocessing (default = 4) <br/>
 `-s`, `--sanitize`: remove pipeline-breaking special characters from file names <br/>
 
 Example: <br />
-`seqforge makedb -f /path/to/FASTA/files -o /path/to/results/folder -T 4`
+`seqforge makedb -f /path/to/FASTA/files -o /path/to/results/folder -T 8`
 
 **Database type is automatically detected during database creation** <br/>
 .fasta, .fa, .fas, .ffn, .fna == nucleotide <br/>
