@@ -278,7 +278,7 @@ seqforge query: <br />
 `--min-seq-len`: define minimum sequence length for short nucleotide sequence queries (use with caution and only with `--nucleotide-query`) <br />
 `--no-alignment-files`: suppress alignment file creation <br/>
 `--keep-temp-files`: retain individual *_results.txt files in output directory <br/>
-`--motif`: amino acid motif (e.g., WXWXIP) to search within blastp hits. X is treated as a wildcard. For use with blastp queryies <br/>
+`--motif`: amino acid motif (e.g., WXWXIP) to search within blastp hits. X is treated as a wildcard. Only for use with blastp queries <br/>
 `-f`, `--fasta-directory`: path to FASTA file(s) used to create BLAST databases. Required if using `--motif` <br/>
 `--visualize`: generate heatmap of BLAST hits and sequence logo of motif hits if `--motif` returns matches <br/>
 `--pdf`: override PNG output of visualize and instead generated a PDF (use in combination with `--visualize`)
