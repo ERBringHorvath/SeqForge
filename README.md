@@ -247,7 +247,8 @@ ________________________________________________________________________________
 seqforge makedb: <br/>
 **Required arguments:** <br/>
 `-f`, `--fasta-directory`: path to the directory containing input files in FASTA format <br />
-`-o`, `--out`: path to directory where you want to store your databases <br/>
+`-o`, `--out`: path to directory where you want to store your databases
+
 **Optional arguments:** <br/>
 `-T`, `--threads`: number of cores to dedicate for multiprocessing (default = 4) <br/>
 `-s`, `--sanitize`: remove pipeline-breaking special characters from file names <br/>
