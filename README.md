@@ -244,10 +244,12 @@ ________________________________________________________________________________
 
 **Building a BLAST+ Database Library**
 
-seqforge makedb: <br />
+seqforge makedb: <br/>
+Required arguments: <br/>
 `-f`, `--fasta-directory`: path to the directory containing input files in FASTA format <br />
 `-o`, `--out`: path to directory where you want to store your databases <br/>
-`-T`, `--threads`: number of cores to dedicate for multiprocessing <br/>
+Optional arguments: <br/>
+`-T`, `--threads`: number of cores to dedicate for multiprocessing (default = 4) <br/>
 `-s`, `--sanitize`: remove pipeline-breaking special characters from file names <br/>
 
 Example: <br />
@@ -260,15 +262,18 @@ Example: <br />
 **Querying a database library**
 
 seqforge query: <br />
+Required arguments: <br/>
 `-d`, `--database`: path to directory containing BLAST+ databases <br />
 `-q`, `--query_files`: path to directory containing query files in amino acid FASTA format <br />
-`-e`, `--evalue`: maximum e-value cutoff, default 0.00001 <br />
-`-o`, `--output`: path to directory to store results
-`-T`, `--threads`: number of cores to dedicate for multiprocessing <br />
+`-o`, `--output`: path to directory to store results <br/>
+Required for nucleotide queries: <br/>
+`--nucleotide-query`: use blastn for queries in nucleotide FASTA format <br />
+Optional arguments: <br/>
+`-T`, `--threads`: number of cores to dedicate for multiprocessing (default = 4) <br />
 `--report-strongest-match`: report only the single strongest match for each query <br />
 `--min-perc`: define minimum percent identity threshold. Default = 90 <br />
 `--min-cov`: define minimum query coverage threshold. Default = 75 <br />
-`--nucleotide-query`: use blastn for queries in nucleotide FASTA format <br />
+`-e`, `--evalue`: maximum e-value cutoff, default 0.00001 <br />
 `--min-seq-len`: define minimum sequence length for short nucleotide sequence queries (use with caution and only with blastn) <br />
 `--no-alignment-files`: suppress alignment file creation <br/>
 `--keep-temp-files`: retain individual *_results.txt files in output directory <br/>
@@ -281,7 +286,7 @@ Basic example: <br />
 `seqforge query -T 8 -d /path/to/blast/database/files -q /path/to/query/files/` <br /> 
 `-o /path/to/results/folder`
 
-Witch's Brew: <br/>
+**Witches' Brew:** <br/>
 `seqforge query -T 8 \` <br/>
 `-d /path/to/blast/databases \` <br/>
 `-q /path/to/query/files \` <br/>
@@ -301,11 +306,13 @@ ________________________________________________________________________________
 ## Extract Sequences from a SeqForge Query
 
 seqforge extract: <br />
+Required arguments: <br/>
 `-c`, `--csv-oath`: path to results csv file from `seqforge query` <br />
 `-f`, `--fasta_directory`: path to reference FASTA assemblies <br />
 &nbsp;&nbsp;&nbsp;&nbsp;These should be the FASTA files the BLAST databases were created from and should have the same basename as the query results files <br />
 `-o`, `--output_fasta`: output file to contain sequences, defaults to current working directory <br />
-`-T`, `--threads`: number of cores to dedicate for multiprocessing <br />
+Optional arguments: <br/>
+`-T`, `--threads`: number of cores to dedicate for multiprocessing (default = 1) <br />
 `--evalue`: maximum e-value threshold, default = 0.00001 <br />
 `--min-perc`: minimum percent identity threshold. Default = 90 <br />
 `--min-cov`: minimum query coverage threshold. Default = 75 <br />
@@ -328,7 +335,7 @@ If SeqForge is used for database creation and queries, matching basenames should
 **Example usage:** <br />
 `seqforge extract -c /path/to/results/file -f /path/to/reference/FASTA/files -T 8 -o sequences.fa`
 
-**Witch's Brew:** <br/>
+**Witches' Brew:** <br/>
 `seqforge extract -T 8 \` <br/>
 `-c /path/to/results/file -f /path/to/reference/FASTA/files \` <br/>
 `-o sequences.fa` <br/>
@@ -346,10 +353,12 @@ For instance, if `seqforge query` was called using `--perc 75`, but the `seqforg
 ## Extract Entire Contig ##
 
 seqforge extract-contig: <br />
+Required arguments: <br/>
 `-c`, `--csv-path`: path to csv results file from `seqforge query` <br />
 `-f`, `--fasta_directory`: path to reference FASTA assemblies <br />
 &nbsp;&nbsp;&nbsp;&nbsp;These should be the FASTA files the BLAST databases were created from and should have the same basename as the query results files <br />
 `-o`, `--output_fasta`: output file to contain sequences, defaults to current working directory <br />
+Optional arguments: <br/>
 `-T`, `--threads`: number of cores to dedicate, default is 1 <br />
 `--evalue`: maximum e-value threshold, default = 0.00001 <br />
 `--min-perc`: minimum percent identity threshold. Default = 90 <br />
@@ -403,10 +412,12 @@ seqforge split-fasta: <br />
 ## Mask Unitig/Kmer Sequences 
 
 seqforge mask: <br />
+Required arguments: <br/>
 `-i`, `--input-dir`: path to FASTA files to be masked <br />
 `-o`, `--output-dir`: output directory for masked FASTA files <br />
 `-s`, `--sequence-files`: text or FASTA file of unitigs/kmers to mask (can be gzipped) <br />
-`-T`, `--threads`: number of threads to use for masking <br />
+Optional arguments: <br/>
+`-T`, `--threads`: number of threads to use for masking (default = 1) <br />
 `-v`, `--verbose`: print detailed match information <br />
 `--dash`: use '-' instead of 'N' (default) for masking <br />
 `--scramble`: mask as -[ATGC]- (random string of ATGC flanked by dashes, fsm-lite compatible <br />
@@ -420,7 +431,7 @@ seqforge mask was designed to mask noisy sequences from GWAS kmer-association an
 ## Extract Sequence Metadata from JSON/GenBank Files
 
 seqforge search: <br/>
-`-i`, `--input`: input file (.json or .gb/.gbk)<br/>
+`-i`, `--input`: input file(s) (.json or .gb/.gbk)<br/>
 `-o`, `--output`: output file (e.g., .csv, .tsv, .json) <br/>
 `--json`: parse only JSON files in an input directory <br/>
 `--gb`: parse only GenBank files in an input directory <br/>
