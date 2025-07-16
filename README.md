@@ -22,7 +22,7 @@ Purpose: Rapid database creation and high-throughput querying <br/>
     *   Motif mining for amino acid queries.
     *   Visualization of gene hits and sequence matches (hi-res PNG or PDF)
 *   Motif support in query: <br/>
-    When using blastp (amino acid query against protein database), users may specify one or more amino acid motif(s) (e.g., WXWXIP) using the `--motif` flag. This performs a regex-based search across all BLAST hits,             independent from internally-curated or user-defined pident, query coverage, and e-value thresholds, ensuring detection of conserved motifs even in low-identity or heterologous alignments that might otherwise     be filtered out. This is particularly useful for detecting signature domains (e.g., catalytic triads, DNA-binding motifs) in diverse sequence families.
+    When using blastp (amino acid query against protein database), users may specify one or more amino acid motif(s) (e.g., WXWXIP (single motif) | XAXH GHXXGE (multiple motifs, space-separated list)) using the `--motif` flag. This performs a regex-based search across all BLAST hits,             independent from internally-curated or user-defined pident, query coverage, and e-value thresholds, ensuring detection of conserved motifs even in low-identity or heterologous alignments that might otherwise     be filtered out. This is particularly useful for detecting signature domains (e.g., catalytic triads, DNA-binding motifs) in diverse sequence families.
 *   BLAST hits and motif matches may be visualized using the `--visualize` flag. BLAST hits across genomes are represented by a heatmap, where the color intensity of each individual cell reflects that query's percent identity within a specific genome. For queries that return > 1 hit per genome, only  the strongest hit will be used to construct the heatmap. If `--visualize` is combined with `--motif`, motif matches will be illustrated as a sequence logo representing amino acid frequencies. Plots may be saved as either a high resolution PNG or in PDF format (recommended). 
 ______________________________________________________________________________________________________________________________________
 Example Plots:
@@ -266,9 +266,11 @@ seqforge query: <br />
 **Required arguments:** <br/>
 `-d`, `--database`: path to directory containing BLAST+ databases <br />
 `-q`, `--query_files`: path to directory containing query files in amino acid FASTA format <br />
-`-o`, `--output`: path to directory to store results <br/>
+`-o`, `--output`: path to directory to store results
+
 **Required for nucleotide queries (blasn):** <br/>
-`--nucleotide-query`: use blastn for queries in nucleotide FASTA format <br />
+`--nucleotide-query`: use blastn for queries in nucleotide FASTA format
+
 **Optional arguments:** <br/>
 `-T`, `--threads`: number of cores to dedicate for multiprocessing (default = 4) <br />
 `--report-strongest-match`: report only the single strongest match for each query <br />
@@ -278,7 +280,7 @@ seqforge query: <br />
 `--min-seq-len`: define minimum sequence length for short nucleotide sequence queries (use with caution and only with `--nucleotide-query`) <br />
 `--no-alignment-files`: suppress alignment file creation <br/>
 `--keep-temp-files`: retain individual *_results.txt files in output directory <br/>
-`--motif`: amino acid motif (e.g., WXWXIP) to search within blastp hits. X is treated as a wildcard. Only for use with blastp queries <br/>
+`--motif`: amino acid motif (e.g., WXWXIP or space-separated list) to search within blastp hits. X is treated as a wildcard. Only for use with blastp queries <br/>
 `-f`, `--fasta-directory`: path to FASTA file(s) used to create BLAST databases. Required if using `--motif` <br/>
 `--visualize`: generate heatmap of BLAST hits and sequence logo of motif hits if `--motif` returns matches <br/>
 `--pdf`: override PNG output of visualize and instead generated a PDF (use in combination with `--visualize`)
@@ -311,7 +313,8 @@ seqforge extract: <br />
 `-c`, `--csv-oath`: path to results csv file from `seqforge query` <br />
 `-f`, `--fasta_directory`: path to reference FASTA assemblies <br />
 &nbsp;&nbsp;&nbsp;&nbsp;These should be the FASTA files the BLAST databases were created from and should have the same basename as the query results files <br />
-`-o`, `--output_fasta`: output file to contain sequences, defaults to current working directory <br />
+`-o`, `--output_fasta`: output file to contain sequences, defaults to current working directory
+
 **Optional arguments:** <br/>
 `-T`, `--threads`: number of cores to dedicate for multiprocessing (default = 1) <br />
 `--evalue`: maximum e-value threshold, default = 0.00001 <br />
@@ -359,7 +362,8 @@ seqforge extract-contig: <br />
 `-c`, `--csv-path`: path to csv results file from `seqforge query` <br />
 `-f`, `--fasta_directory`: path to reference FASTA assemblies <br />
 &nbsp;&nbsp;&nbsp;&nbsp;These should be the FASTA files the BLAST databases were created from and should have the same basename as the query results files <br />
-`-o`, `--output_fasta`: output file to contain sequences, defaults to current working directory <br />
+`-o`, `--output_fasta`: output file to contain sequences, defaults to current working directory
+
 **Optional arguments:** <br/>
 `-T`, `--threads`: number of cores to dedicate, default is 1 <br />
 `--evalue`: maximum e-value threshold, default = 0.00001 <br />
@@ -420,7 +424,8 @@ seqforge mask: <br />
 **Required arguments:** <br/>
 `-i`, `--input-dir`: path to FASTA files to be masked <br />
 `-o`, `--output-dir`: output directory for masked FASTA files <br />
-`-s`, `--sequence-files`: text or FASTA file of unitigs/kmers to mask (can be gzipped) <br />
+`-s`, `--sequence-files`: text or FASTA file of unitigs/kmers to mask (can be gzipped)
+
 **Optional arguments:** <br/>
 `-T`, `--threads`: number of threads to use for masking (default = 1) <br />
 `-v`, `--verbose`: print detailed match information <br />
@@ -442,8 +447,9 @@ seqforge search: <br/>
 `--json`: parse only JSON files in an input directory <br/>
 `--gb`: parse only GenBank files in an input directory <br/>
 `--all`: extract all available metadata <br/>
-`--fields`: space-separated list of metadata fields to extract <br/>
-**Optional fields:** <br/>
+`--fields`: space-separated list of metadata fields to extract
+
+**Available fields:** <br/>
     accession, organism, strain, isolation_source, host, region, lat_lon, collection_date, <br/> 
     collected_by, tax_id, comment, keywords, sequencing_tech, release_date
 
