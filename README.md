@@ -275,7 +275,7 @@ Optional arguments: <br/>
 `--min-perc`: define minimum percent identity threshold. Default = 90 <br />
 `--min-cov`: define minimum query coverage threshold. Default = 75 <br />
 `-e`, `--evalue`: maximum e-value cutoff, default 0.00001 <br />
-`--min-seq-len`: define minimum sequence length for short nucleotide sequence queries (use with caution and only with blastn) <br />
+`--min-seq-len`: define minimum sequence length for short nucleotide sequence queries (use with caution and only with `--nucleotide-query`) <br />
 `--no-alignment-files`: suppress alignment file creation <br/>
 `--keep-temp-files`: retain individual *_results.txt files in output directory <br/>
 `--motif`: amino acid motif (e.g., WXWXIP) to search within blastp hits. X is treated as a wildcard. For use with blastp queryies <br/>
