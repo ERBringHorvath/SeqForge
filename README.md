@@ -245,10 +245,10 @@ ________________________________________________________________________________
 **Building a BLAST+ Database Library**
 
 seqforge makedb: <br/>
-Required arguments: <br/>
+**Required arguments:** <br/>
 `-f`, `--fasta-directory`: path to the directory containing input files in FASTA format <br />
 `-o`, `--out`: path to directory where you want to store your databases <br/>
-Optional arguments: <br/>
+**Optional arguments:** <br/>
 `-T`, `--threads`: number of cores to dedicate for multiprocessing (default = 4) <br/>
 `-s`, `--sanitize`: remove pipeline-breaking special characters from file names <br/>
 
@@ -263,13 +263,13 @@ ________________________________________________________________________________
 **Querying a database library**
 
 seqforge query: <br />
-Required arguments: <br/>
+**Required arguments:** <br/>
 `-d`, `--database`: path to directory containing BLAST+ databases <br />
 `-q`, `--query_files`: path to directory containing query files in amino acid FASTA format <br />
 `-o`, `--output`: path to directory to store results <br/>
-Required for nucleotide queries: <br/>
+**Required for nucleotide queries (blasn):** <br/>
 `--nucleotide-query`: use blastn for queries in nucleotide FASTA format <br />
-Optional arguments: <br/>
+**Optional arguments:** <br/>
 `-T`, `--threads`: number of cores to dedicate for multiprocessing (default = 4) <br />
 `--report-strongest-match`: report only the single strongest match for each query <br />
 `--min-perc`: define minimum percent identity threshold. Default = 90 <br />
@@ -307,12 +307,12 @@ ________________________________________________________________________________
 ## Extract Sequences from a SeqForge Query
 
 seqforge extract: <br />
-Required arguments: <br/>
+**Required arguments:** <br/>
 `-c`, `--csv-oath`: path to results csv file from `seqforge query` <br />
 `-f`, `--fasta_directory`: path to reference FASTA assemblies <br />
 &nbsp;&nbsp;&nbsp;&nbsp;These should be the FASTA files the BLAST databases were created from and should have the same basename as the query results files <br />
 `-o`, `--output_fasta`: output file to contain sequences, defaults to current working directory <br />
-Optional arguments: <br/>
+**Optional arguments:** <br/>
 `-T`, `--threads`: number of cores to dedicate for multiprocessing (default = 1) <br />
 `--evalue`: maximum e-value threshold, default = 0.00001 <br />
 `--min-perc`: minimum percent identity threshold. Default = 90 <br />
@@ -355,12 +355,12 @@ ________________________________________________________________________________
 ## Extract Entire Contig ##
 
 seqforge extract-contig: <br />
-Required arguments: <br/>
+**Required arguments:** <br/>
 `-c`, `--csv-path`: path to csv results file from `seqforge query` <br />
 `-f`, `--fasta_directory`: path to reference FASTA assemblies <br />
 &nbsp;&nbsp;&nbsp;&nbsp;These should be the FASTA files the BLAST databases were created from and should have the same basename as the query results files <br />
 `-o`, `--output_fasta`: output file to contain sequences, defaults to current working directory <br />
-Optional arguments: <br/>
+**Optional arguments:** <br/>
 `-T`, `--threads`: number of cores to dedicate, default is 1 <br />
 `--evalue`: maximum e-value threshold, default = 0.00001 <br />
 `--min-perc`: minimum percent identity threshold. Default = 90 <br />
@@ -417,11 +417,11 @@ ________________________________________________________________________________
 ## Mask Unitig/Kmer Sequences 
 
 seqforge mask: <br />
-Required arguments: <br/>
+**Required arguments:** <br/>
 `-i`, `--input-dir`: path to FASTA files to be masked <br />
 `-o`, `--output-dir`: output directory for masked FASTA files <br />
 `-s`, `--sequence-files`: text or FASTA file of unitigs/kmers to mask (can be gzipped) <br />
-Optional arguments: <br/>
+**Optional arguments:** <br/>
 `-T`, `--threads`: number of threads to use for masking (default = 1) <br />
 `-v`, `--verbose`: print detailed match information <br />
 `--dash`: use '-' instead of 'N' (default) for masking <br />
@@ -443,7 +443,7 @@ seqforge search: <br/>
 `--gb`: parse only GenBank files in an input directory <br/>
 `--all`: extract all available metadata <br/>
 `--fields`: space-separated list of metadata fields to extract <br/>
-Optional fields:
+**Optional fields:** <br/>
     accession, organism, strain, isolation_source, host, region, lat_lon, collection_date, <br/> 
     collected_by, tax_id, comment, keywords, sequencing_tech, release_date
 
