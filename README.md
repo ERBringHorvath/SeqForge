@@ -258,6 +258,7 @@ Example: <br />
 **Database type is automatically detected during database creation** <br/>
 .fasta, .fa, .fas, .ffn, .fna == nucleotide <br/>
 .faa == protein 
+______________________________________________________________________________________________________________________________________
 
 **Querying a database library**
 
@@ -349,6 +350,7 @@ If percent identity and query coverage were set manually during `seqforge query`
 For instance, if `seqforge query` was called using `--perc 75`, but the `seqforge extract` minimum percent identity is left at its default value (90), the appropriate sequences may not be extracted, as they may fall beneath the internally curated `--min-perc` theshold. 
 
 `seqforge extract` will generate a multi-FASTA file of all sequences identified by `seqforge queryP`/`query` based on the default or user-defined e-value cutoff.
+______________________________________________________________________________________________________________________________________
 
 ## Extract Entire Contig ##
 
@@ -394,12 +396,14 @@ seqforge sanitize: <br/>
 `-S`, `--sanitize-outdir`: path to new directory for files. This option copies file(s) to a new directory and removes special characters from <br/>
         the copied file names, leaving the original file names intact (storage intensive) <br/>
 `--dry-run`: preview changes without committing <br/>
+______________________________________________________________________________________________________________________________________
 
 ## FASTA File Metrics
 
 seqforge fasta-metrics: <br/>
 `-f`, `--fasta-directory`: path to FASTA file or directory of FASTA files to be analyzed <br/>
 `-o`, `--output`: optional name for CSV summary (default: fasta_metrics_summary.csv) <br/>
+______________________________________________________________________________________________________________________________________
 
 ## Split Multi-FASTA files
 
@@ -408,6 +412,7 @@ seqforge split-fasta: <br />
 `-o`, `--output-dir`: output directory for split FASTA files <br />
 `--fragment`: split multi-FASTA file into defined <int> of sequences each <br />
 `--compress`: compress output files as .gz <br />
+______________________________________________________________________________________________________________________________________
 
 ## Mask Unitig/Kmer Sequences 
 
@@ -427,6 +432,7 @@ seqforge mask was designed to mask noisy sequences from GWAS kmer-association an
 
 **Example Usage:** <br />
 `seqforge mask -i /path/to/genome/FASTA/files -o /path/to/output/dir -s kmers.txt -T 8 -v --dash`
+______________________________________________________________________________________________________________________________________
 
 ## Extract Sequence Metadata from JSON/GenBank Files
 
