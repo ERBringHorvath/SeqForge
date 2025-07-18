@@ -63,7 +63,7 @@ def load_sequences(sequence_file, output_dir, logger):
             for entry in skipped_sequences:
                 f.write(entry + "\n")
         msg = f"Skipped {len(skipped_sequences)} invalid sequences. Logged to: {skipped_path}"
-        print(f"\n033[91m{msg}\033[0m")
+        print(f"\n\033[91m{msg}\033[0m")
         logger.info(msg)
 
     if duplicate_sequences:
