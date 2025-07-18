@@ -20,7 +20,6 @@ safe_import('query', 'run_multiblast')
 safe_import('split_fasta', 'run_split')
 safe_import('extract_sequences', 'run')
 safe_import('extract_contigs', 'run_contigs')
-safe_import('mask', 'run_mask')
 safe_import('search', 'run_search')
 safe_import('sanitize', 'run_sanitize')
 safe_import('fasta_metrics', 'run_metrics')
@@ -108,18 +107,6 @@ def main():
     if 'extract_contigs' in available_modules:
         parser_extract_contig.set_defaults(func=available_modules['extract_contigs'])
 
-    parser_mask = subparsers.add_parser("mask", help="Mask sequences from FASTA files using unitig/kmer sequences")
-    parser_mask.add_argument("-i", "--input-dir", required=True, help="Directory of FASTA files to be masked")
-    parser_mask.add_argument("-o", "--output-dir", required=True, help="Output directory for masked FASTA files")
-    parser_mask.add_argument("-s", "--sequence-file", required=True, help="Text or FASTA file of unitigs/kmers (can be gzipped)")
-    parser_mask.add_argument('-T', '--threads', type=int, default=1, help="Number of threads to use for masking.")
-    parser_mask.add_argument("-v", "--verbose", action="store_true", help="Print detailed match information")
-    parser_mask.add_argument("--dash", action="store_true", help="Use '-' instead of 'N' for masking")
-    parser_mask.add_argument("--scramble", action="store_true", help="Mask as -[ACGT]- scramble (fsm-lite compatible)")
-    parser_mask.add_argument("--dry-run", action="store_true", help="Preview of run without making changes")
-    if 'mask' in available_modules:
-        parser_mask.set_defaults(func=available_modules['mask'])
-
     parser_search = subparsers.add_parser("search", help="Extract metadata from GenBank or JSON files")
     parser_search.add_argument('-i', '--input', required=True, help="Input file (.json or .gb/.gbk/.genbank)")
     parser_search.add_argument('-o', '--output', required=True, help="Output file (e.g., .csv, .tsv, .json)")
@@ -151,7 +138,7 @@ def main():
     if args.module_health:
         print("\n\033[96mModule Status Report:\033[0m")
         for name in ['makedb', 'query', 'split_fasta', 'extract_sequences', 'extract_contigs',
-                     'mask', 'search', 'sanitize', 'fasta_metrics']:
+                     'search', 'sanitize', 'fasta_metrics']:
             status = "Available" if name in available_modules else "Broken or Missing"
             if status == "Available":
                 print(f" - {name}: \033[92m{status}\033[0m")
@@ -166,7 +153,6 @@ def main():
         'run_split': "FASTA Splitter",
         'run': "Sequence Extraction",
         'run_contigs': "Contig Extraction",
-        'run_mask': "Sequence Masking",
         'run_search': "Metadata Search",
         'run_sanitize': "Sanitize",
         'run_metrics': "FASTA Metrics"
