@@ -59,12 +59,6 @@ Purpose: General-use tools for various genomic workflows <br/>
 *   search<br/>
     Extract isolation metadata from **GenBank** or **JSON** files.
     *   User-defined or comprehensive field extraction to CSV or TSV.
-*   mask<br/>
-    The mask module allows users to selectively **mask (redact)** sequences from FASTA files based on user-supplied kmers or unitigs. this is especially helpful when running kmer/unitig-based GWAS where repetitive or misleading sequences (i.e., assembly artifacts) can inflate associations.
-    Features:
-    *   Supports input as text (one sequence per line) or multi-FASTA (supports gzipped files).
-    *   Options for soft masking (N), dash-masking (-), or randomized masking (-ATGC- scrambling, fsm-lite compatible).
-    *   Designed for large FASTA datasets with multiprocessing support.
 *   fasta-metrics<br/>
     Compute common assembly metrics from an input FASTA file or all FASTA files within a directory
     *   The following metrics are calculated
@@ -90,7 +84,6 @@ graph TD;
     C[Query]-->D[Extract];
     C[Query]-->E[Extract-Contig];
     A{Sanitize}-->F[FASTA-Metrics];
-    A{Sanitize}-->G[Mask];
     A{Sanitize}-->H[Split-FASTA];
     I[JSON/GenBank]-->J[Search];
 
@@ -102,7 +95,6 @@ graph TD;
     style D fill:#650D89,stroke:#333,stroke-width:1,font-size:18px
     style E fill:#023788,stroke:#333,stroke-width:1,font-size:18px
     style F fill:#fd1d53,stroke:#333,stroke-width:1,font-size:18px
-    style G fill:#fd3777,stroke:#333,stroke-width:1,font-size:18px
     style H fill:#2e2157,stroke:#333,stroke-width:1,font-size:18px
     style I fill:#11c9d3,stroke:#333,stroke-width:1,font-size:22px,color:#454545
     style J fill:#6e1515,stroke:#333,stroke-width:1,font-size:18px
@@ -417,27 +409,6 @@ seqforge split-fasta: <br />
 `-o`, `--output-dir`: output directory for split FASTA files <br />
 `--fragment`: split multi-FASTA file into defined <int> of sequences each <br />
 `--compress`: compress output files as .gz <br />
-______________________________________________________________________________________________________________________________________
-
-## Mask Unitig/Kmer Sequences 
-
-seqforge mask: <br />
-**Required arguments:** <br/>
-`-i`, `--input-dir`: path to FASTA files to be masked <br />
-`-o`, `--output-dir`: output directory for masked FASTA files <br />
-`-s`, `--sequence-files`: text or FASTA file of unitigs/kmers to mask (can be gzipped)
-
-**Optional arguments:** <br/>
-`-T`, `--threads`: number of threads to use for masking (default = 1) <br />
-`-v`, `--verbose`: print detailed match information <br />
-`--dash`: use '-' instead of 'N' (default) for masking <br />
-`--scramble`: mask as -[ATGC]- (random string of ATGC flanked by dashes, fsm-lite compatible <br />
-`--dry-run`: preview run without making changes <br />
-
-seqforge mask was designed to mask noisy sequences from GWAS kmer-association analyses. 'Noise' might be overrepresented sequences, sequencing/assembly artifacts, etc.
-
-**Example Usage:** <br />
-`seqforge mask -i /path/to/genome/FASTA/files -o /path/to/output/dir -s kmers.txt -T 8 -v --dash`
 ______________________________________________________________________________________________________________________________________
 
 ## Extract Sequence Metadata from JSON/GenBank Files
