@@ -40,7 +40,7 @@ def main():
 
     parser = argparse.ArgumentParser(prog='seqforge', description='SeqForge: A genomics toolkit.')
     parser.add_argument('--module-health', action='store_true', help='Check status of SeqForge Modules')
-    parser.add_argument('-v', '--version', action='version', version='%(prog)s 0.3.5')
+    parser.add_argument('-v', '--version', action='version', version='%(prog)s 0.3.7')
     subparsers = parser.add_subparsers(dest='command', help='Available commands')
 
     # Sub-parser for the "makedb" command
@@ -67,6 +67,8 @@ def main():
     parser_query.add_argument('--no-alignment-files', action='store_true', help='Do not generate BLAST alignment output files.')
     parser_query.add_argument('--keep-temp-files', action='store_true', help='Keep temporary *_results.txt files in the output directory')
     parser_query.add_argument('--motif', type=str, nargs='+', help='Amino acid motif (e.g., WXWXIP) to search within blast hits. X is treated as a wildcard. Only use with tblastn or blastp queries')
+    parser_query.add_argument('--motif-fasta-out', action='store_true', help='Export motif match source gene as FASTA file(s)')
+    parser_query.add_argument('--motif-only', action='store_true', help="For use with --motif-fasta-out, output only the motif string")    
     parser_query.add_argument('-f', '--fasta-directory', type=str, help='Path to FASTA file or directory of FASTA files used to create the BLAST databases. Required if using --motif' )
     parser_query.add_argument('--visualize', action='store_true', help="visualize query results")
     parser_query.add_argument('--pdf', action='store_true', help='Output figure to PDF instead of PNG')
