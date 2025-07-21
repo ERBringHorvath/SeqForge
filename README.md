@@ -27,11 +27,11 @@ Purpose: Rapid database creation and high-throughput querying <br/>
     *    Example:
             *    Query files: AT_domain.faa, KS_domain.faa
             *    Motifs: GHXXGE, TAXXSS
-            *    Unlinked Query motif search:
-                *    `seqforge query -d <DB_DIR> -q <Query_DIR> -o <RESULTS_DIR> -f <FASTA_DIR> --motif GHXXGE TAXXSS`
+            *    Unlinked Query motif search: <br/>
+            `seqforge query -d <DB_DIR> -q <Query_DIR> -o <RESULTS_DIR> -f <FASTA_DIR> --motif GHXXGE TAXXSS`
                     * This results in all queries being searched for each motif
-            *    Linked Query motif search:
-                *    `seqforge query seqforge query -d <DB_DIR> -q <Query_DIR> -o <RESULTS_DIR> -f <FASTA_DIR> --motif GHXXGE{AT_domain} TAXXSS{KS_domain}`
+            *    Linked Query motif search: <br/>
+            `seqforge query seqforge query -d <DB_DIR> -q <Query_DIR> -o <RESULTS_DIR> -f <FASTA_DIR> --motif GHXXGE{AT_domain} TAXXSS{KS_domain}`
                 *    This results in only AT_domain.faa being searched for GHXXGE and only KS_domain.faa being searched for TAXXSS.
                 *    The exact query file basename should be placed within brackets as a part of the motif string. 
 *   BLAST hits and motif matches may be visualized using the `--visualize` flag. BLAST hits across genomes are represented by a heatmap, where the color intensity of each individual cell reflects that query's percent identity within a specific genome. For queries that return > 1 hit per genome, only  the strongest hit will be used to construct the heatmap. If `--visualize` is combined with `--motif`, motif matches will be illustrated as a sequence logo representing amino acid frequencies. Plots may be saved as either a high resolution PNG or in PDF format (recommended). 
