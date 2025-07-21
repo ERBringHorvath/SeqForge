@@ -274,6 +274,8 @@ seqforge query: <br />
 `--no-alignment-files`: suppress alignment file creation <br/>
 `--keep-temp-files`: retain individual *_results.txt files in output directory <br/>
 `--motif`: amino acid motif (e.g., WXWXIP or space-separated list) to search within blastp hits. X is treated as a wildcard. Only for use with blastp queries <br/>
+`--motif-fasta-out`: export motif query alignments to FASTA <br/>
+`--motif-only`: for use with `--motif-fasta-out`; export only motif string to FASTA <br/>
 `-f`, `--fasta-directory`: path to FASTA file(s) used to create BLAST databases. Required if using `--motif` <br/>
 `--visualize`: generate heatmap of BLAST hits and sequence logo of motif hits if `--motif` returns matches <br/>
 `--pdf`: override PNG output of visualize and instead generated a PDF (use in combination with `--visualize`)
