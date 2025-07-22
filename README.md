@@ -302,8 +302,8 @@ Basic example: <br />
 `-o /path/to/results/directory \` <br/>
 `--min-perc 75` `--min-cov 70 --evalue 0.001 \` <br/>
 `--report-strongest-matches \` <br/>
-`--motif HXXH GHXXGE -f /path/to/FASTA/files \` <br/>
-`--visualize --pdf`
+`--motif TAXXSS{query1} GHXXGE{query2} -f /path/to/FASTA/files \` <br/>
+`--motif-fasta-out --visualize --pdf`
 
 All Query results are concatenated to `all_results.csv` and either `all_filtered_results.csv` or `filtered_results.csv`. 
 All plots and files are saved to the output directory specified by `--output`.
