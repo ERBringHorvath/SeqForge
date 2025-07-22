@@ -82,7 +82,7 @@ def run_visualization(filtered_df, args):
     plt.xlabel("Genome", fontsize=x_title)
     plt.ylabel("Query", fontsize=y_title)
     plt.xticks(rotation=45, ha='right', fontsize=x_fontsize)
-    plt.yticks(fontsize=y_fontsize)
+    plt.yticks(fontsize=y_fontsize, rotation=0)
     plt.title("BLAST Query Hits (Avg % Identity)\nStrongest hit per query per genome", fontsize=x_fontsize)
     plt.tight_layout()
 
