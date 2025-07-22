@@ -66,7 +66,7 @@ Purpose: General-use tools for various genomic workflows <br/>
 *   split-fasta<br/>
     Split multi-FASTA files into smaller chunks for downstream processing.
     *   Choose fixed sequence count per chunk or split one sequence per file.
-    *   Optionall compress output for storage/transfer efficiency.
+    *   Optional compress output for storage/transfer efficiency.
 *   search<br/>
     Extract isolation metadata from **GenBank** or **JSON** files.
     *   User-defined or comprehensive field extraction to CSV or TSV.
