@@ -400,7 +400,7 @@ ________________________________________________________________________________
 ## Sanitize File Names
 
 seqforge sanitize: <br/>
-`-i`, `--input`: FASTA file or directory of FASTA files to be cleaned
+`-i`, `--input`: FASTA file or directory of FASTA files to be cleaned <br/>
 `-e`, `--extension`: extention of files to sanitize; for all standard FASTA formats, simply pass `-e fasta` <br/>
 `-I`, `--in-place`: overwrite problematic file names with names containing no special  characters (recommended) <br/>
 `-S`, `--sanitize-outdir`: path to new directory for files. This option copies file(s) to a new directory and removes special characters from <br/>
