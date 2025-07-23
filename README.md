@@ -323,7 +323,7 @@ These should be the FASTA files the BLAST databases were created from and should
 
 **Optional arguments:** <br/>
 `-T`, `--threads`: number of cores to dedicate for multiprocessing (default = 1) <br />
-`--evalue`: maximum e-value threshold, default = 0.00001 <br />
+`-e`, `--evalue`: maximum e-value threshold, default = 0.00001 <br />
 `--min-perc`: minimum percent identity threshold. Default = 90 <br />
 `--min-cov`: minimum query coverage threshold. Default = 75 <br />
 `--translate`: translates extracted nucleotide sequence(s) <br/>
@@ -372,7 +372,7 @@ These should be the FASTA files the BLAST databases were created from and should
 
 **Optional arguments:** <br/>
 `-T`, `--threads`: number of cores to dedicate, default is 1 <br />
-`--evalue`: maximum e-value threshold, default = 0.00001 <br />
+`-e`, `--evalue`: maximum e-value threshold, default = 0.00001 <br />
 `--min-perc`: minimum percent identity threshold. Default = 90 <br />
 `--min-cov`: minimum query coverage threshold. Default = 75 <br />
 
