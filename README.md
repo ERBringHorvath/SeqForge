@@ -316,10 +316,10 @@ ________________________________________________________________________________
 
 seqforge extract: <br />
 **Required arguments:** <br/>
-`-c`, `--csv-oath`: path to results csv file from `seqforge query` <br />
-`-f`, `--fasta_directory`: path to reference FASTA assemblies <br />
+`-c`, `--csv-path`: path to results csv file from `seqforge query` <br />
+`-f`, `--fasta-directory`: path to reference FASTA assemblies <br />
 These should be the FASTA files the BLAST databases were created from and should have the same basename as the query results files <br />
-`-o`, `--output_fasta`: output file to contain sequences, defaults to current working directory
+`-o`, `--output-fasta`: output file to contain sequences, defaults to current working directory
 
 **Optional arguments:** <br/>
 `-T`, `--threads`: number of cores to dedicate for multiprocessing (default = 1) <br />
@@ -366,9 +366,9 @@ ________________________________________________________________________________
 seqforge extract-contig: <br />
 **Required arguments:** <br/>
 `-c`, `--csv-path`: path to csv results file from `seqforge query` <br />
-`-f`, `--fasta_directory`: path to reference FASTA assemblies <br />
+`-f`, `--fasta-directory`: path to reference FASTA assemblies <br />
 These should be the FASTA files the BLAST databases were created from and should have the same basename as the query results files <br />
-`-o`, `--output_fasta`: output file to contain sequences, defaults to current working directory
+`-o`, `--output-fasta`: output file to contain sequences, defaults to current working directory
 
 **Optional arguments:** <br/>
 `-T`, `--threads`: number of cores to dedicate, default is 1 <br />
