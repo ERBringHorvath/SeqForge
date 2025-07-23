@@ -420,7 +420,7 @@ ________________________________________________________________________________
 seqforge split-fasta: <br />
 `-i`, `--input`: input multi-FASTA file <br />
 `-o`, `--output-dir`: output directory for split FASTA files <br />
-`--fragment`: split multi-FASTA file into defined <int> of sequences each <br />
+`--fragment`: split multi-FASTA file into defined chunks of *n* sequences each <br />
 `--compress`: compress output files as .gz <br />
 ______________________________________________________________________________________________________________________________________
 
