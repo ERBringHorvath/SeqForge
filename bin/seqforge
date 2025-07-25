@@ -40,7 +40,7 @@ def main():
 
     parser = argparse.ArgumentParser(prog='seqforge', description='SeqForge: A genomics toolkit.')
     parser.add_argument('--module-health', action='store_true', help='Check status of SeqForge Modules')
-    parser.add_argument('-v', '--version', action='version', version='%(prog)s 0.4.1')
+    parser.add_argument('-v', '--version', action='version', version='%(prog)s 0.4.2')
     subparsers = parser.add_subparsers(dest='command', help='Available commands')
 
     # Sub-parser for the "makedb" command
@@ -132,6 +132,7 @@ def main():
     parser_fasta_metrics = subparsers.add_parser("fasta-metrics", help="Compute FASTA file statistics (e.g., N50, GC Content, etc.)")
     parser_fasta_metrics.add_argument('-f', '--fasta-directory', required=True, help="Path to FASTA file or directory of FASTA files")
     parser_fasta_metrics.add_argument('-o', '--output', default=None, help="Optional name for CSV summary (default: fasta_metrics_summary.csv)")
+    parser_fasta_metrics.add_argument('-M', '--min-contig-size', type=int, default=500, help="Minimum contig size (in bp) to include for calculation of all reported metrics (default = 500)")
     if 'fasta_metrics' in available_modules:
         parser_fasta_metrics.set_defaults(func=available_modules['fasta_metrics'])
 
