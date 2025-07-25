@@ -77,10 +77,12 @@ Purpose: General-use tools for various genomic workflows <br/>
         *   Genome size (bp)
         *   Longest contig
         *   Shortest contig
+        *   Basic contig size distribution
+        *   Total length of contigs ≥ 1 kb
         *   GC content (%)
         *   N count
-        *   N50
-        *   L50
+        *   N50, N90
+        *   L50, L90
         *   Lengths of each contig (CSV only)
 ______________________________________________________________________________________________________________________________________
 ______________________________________________________________________________________________________________________________________
