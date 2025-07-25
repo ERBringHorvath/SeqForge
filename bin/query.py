@@ -5,7 +5,7 @@ import os
 import subprocess
 import csv
 import pandas as pd
-from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
+from concurrent.futures import ProcessPoolExecutor
 from itertools import islice
 import re
 from Bio import SeqIO
@@ -206,7 +206,7 @@ def run_motif_search(df, fasta_path, motif_regexes, results_output_dir, threads)
     row_chunks = chunkify(rows, max(1, len(rows) // max(1, threads)))
 
     results, warnings = [], []
-    with ThreadPoolExecutor(max_workers=threads) as executor:
+    with ProcessPoolExecutor(max_workers=threads) as executor:
         futures = [executor.submit(search_motif_block, chunk, fasta_records, motif_regexes)
                    for chunk in row_chunks]
         for future in futures:
