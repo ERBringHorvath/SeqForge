@@ -8,6 +8,8 @@ from datetime import datetime
 import re
 from concurrent.futures import ProcessPoolExecutor
 
+from utils.file_handler import collect_fasta_files, cleanup_temp_dir
+
 # Valid FASTA extensions
 FASTA_EXTENSIONS = (".fasta", ".faa", ".fna", ".ffn", ".fa", ".fas",
                     ".fasta.gz", ".faa.gz", ".fna.gz", ".ffn.gz", ".fa.gz", ".fas.gz")
@@ -84,19 +86,11 @@ def run_make_blast_db(args):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-    # Gather files
-    files_to_process = []
-    if os.path.isdir(input_path):
-        files_to_process = [
-            os.path.join(input_path, f)
-            for f in os.listdir(input_path)
-            if f.endswith(FASTA_EXTENSIONS)
-        ]
-    elif os.path.isfile(input_path) and input_path.endswith(FASTA_EXTENSIONS):
-        files_to_process = [input_path]
-    else:
-        print(f"\n\033[91mError: No valid FASTA file(s) found at {input_path}\033[0m")
-        logger.error("No valid FASTA files found")
+    try:
+        files_to_process, temp_dir = collect_fasta_files(input_path, sanitize_flag=args.sanitize)
+    except ValueError as e:
+        print(f"\n\033[91mError: {e}\033[0m")
+        logger.error(str(e))
         return
 
     filenames_only = [os.path.basename(f) for f in files_to_process]
@@ -120,6 +114,8 @@ def run_make_blast_db(args):
 
     with ProcessPoolExecutor(max_workers=threads) as executor:
         executor.map(makeblastdb_single, files_to_process, [output_dir]*len(files_to_process))
+
+    cleanup_temp_dir(temp_dir, args.keep_temp_files, logger=logger)
 
     print("\n\033[92mDatabases successfully created\033[0m")
     logger.info("Finished creating BLAST databases")
