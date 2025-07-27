@@ -14,6 +14,8 @@ from Bio.SeqRecord import SeqRecord
 from datetime import datetime
 import logging
 
+from utils.file_handler import collect_fasta_files, cleanup_temp_dir
+
 FASTA_EXTS = ('.fa', '.fna', '.fas', '.ffn', '.fasta', '.faa')
 
 def chunkify(iterable, n):
@@ -21,30 +23,23 @@ def chunkify(iterable, n):
     it = iter(iterable)
     return iter(lambda: list(islice(it, n)), [])
 
-def collect_fasta_files(path, valid_exts):
-    if os.path.isdir(path):
-        return [os.path.join(path, f) for f in os.listdir(path) if f.endswith(tuple(valid_exts))]
-    elif os.path.isfile(path) and path.endswith(tuple(valid_exts)):
-        return [path]
-    else:
-        return []
-    
 def export_motif_fasta(motif_df, output_dir, fasta_path=None, motif_only=False):
     if motif_df.empty:
         print("\033[93mNo motif matches to write FASTA files for.\033[0m")
         return
 
     fasta_records = {}
-    valid_exts = FASTA_EXTS
     if not motif_only and fasta_path:
-        if os.path.isdir(fasta_path):
-            for file in os.listdir(fasta_path):
-                if file.endswith(valid_exts):
-                    for record in SeqIO.parse(os.path.join(fasta_path, file), "fasta"):
-                        fasta_records[record.id] = str(record.seq).upper()
-        elif os.path.isfile(fasta_path):
-            for record in SeqIO.parse(fasta_path, "fasta"):
+        try:
+            fasta_files, temp_dir = collect_fasta_files(fasta_path)
+        except ValueError:
+            fasta_files, temp_dir = [], None
+
+        for file in fasta_files:
+            for record in SeqIO.parse(file, "fasta"):
                 fasta_records[record.id] = str(record.seq).upper()
+
+        cleanup_temp_dir(temp_dir, keep=False)
 
     motif_cols = [col for col in motif_df.columns if col.startswith("motif_") and not col.endswith("_pattern")]
 
@@ -191,15 +186,17 @@ def search_motif_block(rows, fasta_records, motif_regexes):
 
 def run_motif_search(df, fasta_path, motif_regexes, results_output_dir, threads):
     fasta_records = {}
-    valid_exts = FASTA_EXTS
-    if os.path.isdir(fasta_path):
-        for file in os.listdir(fasta_path):
-            if file.endswith(valid_exts):
-                for record in SeqIO.parse(os.path.join(fasta_path, file), "fasta"):
-                    fasta_records[record.id] = str(record.seq).upper()
-    elif os.path.isfile(fasta_path):
-        for record in SeqIO.parse(fasta_path, "fasta"):
+    try:
+        fasta_files, temp_dir = collect_fasta_files(fasta_path)
+    except ValueError as e:
+        print(f"\n\033[91mError: {e}\033[0m")
+        return pd.DataFrame()
+    
+    for file in fasta_files:
+        for record in SeqIO.parse(file, "fasta"):
             fasta_records[record.id] = str(record.seq).upper()
+    
+    cleanup_temp_dir(temp_dir, keep=False)
 
     #Parallel search
     rows = [row for _, row in df.iterrows()]
@@ -269,11 +266,16 @@ def run_multiblast(args):
     if not os.path.exists(results_output_dir):
         os.makedirs(results_output_dir)
 
-    valid_exts = FASTA_EXTS
-    query_files = collect_fasta_files(query_path, valid_exts)
+    try:
+        query_files, temp_dir = collect_fasta_files(query_path)
+    except ValueError as e:
+        print(f"\n\033[91mError: {e}\033[0m")
+        logger.error(str(e))
+        return
+    
     if not query_files:
-        print(f"\033[91mError: No valid query FASTA file(s) found at {query_path}\033[0m")
-        logger.warning("No valid query FASTA files found.")
+        print(f"\033[91mError: No valid FASTA file(s) found at {query_path}\033[0m")
+        logger.warning("No valid FASTA files found")
         return
 
     db_basenames = set()
@@ -328,29 +330,36 @@ def run_multiblast(args):
         #Prepare motif list, allow {basename} filtering
         query_basenames = [os.path.splitext(os.path.basename(f))[0] for f in query_files]
         valid_motifs = []
+
         for raw_motif in args.motif:
             target_basename = None
-            if '{' in raw_motif and raw_motif.endswith('}'):
+            if (('{' in raw_motif and raw_motif.endswith(('}', ']'))) or 
+                ('[' in raw_motif and raw_motif.endswith((']', '}')))):
                 try:
-                    motif_str, target_basename = raw_motif.split('{', 1)
-                    target_basename = target_basename.rstrip('}')
+                    if '{' in raw_motif:
+                        motif_str, target_basename = raw_motif.split('{', 1)
+                        target_basename = target_basename.rstrip('}]')
+                    else:
+                        motif_str, target_basename = raw_motif.split('[', 1)
+                        target_basename = target_basename.rstrip('}]')
+
                     motif = motif_str.upper()
-                    if target_basename not in query_basenames:
+
+                    if not target_basename or target_basename not in query_basenames:
                         print(f"\033[93mWarning: Motif '{motif}' restricted to '{target_basename}', "
-                              f"but no query file matched. Skipping.\033[0m")
+                              f"but no query file matched. Skipping\033[0m")
                         continue
+
                 except ValueError:
-                    print(f"\033[91mInvalid motif format '{raw_motif}' (use MOTIF{{basename}})\033[0m")
+                    print(f"\033[91mInvalid motif format '{raw_motif}' "
+                          f"use MOTIF{{basename}} or MOTIF[basename]\033[0m")
                     continue
-            else:
-                motif = raw_motif.upper()
 
             if len(motif) < 4 or len(re.findall(r"[^X]", motif)) < 2:
                 print(f"\033[91mInvalid motif '{motif}': must have ≥4 characters and ≥2 non-'X'\033[0m")
                 continue
 
-            regex = re.compile(motif.replace("X", "."), re.IGNORECASE)
-            valid_motifs.append((motif, regex, target_basename))
+            valid_motifs.append((motif, re.compile(motif.replace("X", "."), re.IGNORECASE), target_basename))
 
         if not valid_motifs:
             print("\033[91mNo valid motifs provided. Exiting.\033[0m")
@@ -459,9 +468,10 @@ def run_multiblast(args):
             from visualize import run_sequence_logo
             run_sequence_logo(motif_df, args)
 
+    cleanup_temp_dir(temp_dir, keep=getattr(args, 'keep_temp_files', False), logger=logger)
+
     end_time = datetime.now()
     print(f"Query completed at {end_time.strftime('%Y-%m-%d %H:%M:%S')}")
     logger.info(f"Total runtime: {str(end_time - start_time)}")
     print(f"Total runtime: {str(end_time - start_time)}")
     return filtered_df
-
