@@ -40,7 +40,7 @@ def main():
 
     parser = argparse.ArgumentParser(prog='seqforge', description='SeqForge: A genomics toolkit.')
     parser.add_argument('--module-health', action='store_true', help='Check status of SeqForge Modules')
-    parser.add_argument('-v', '--version', action='version', version='%(prog)s 0.4.2')
+    parser.add_argument('-v', '--version', action='version', version='%(prog)s 0.5.0')
     subparsers = parser.add_subparsers(dest='command', help='Available commands')
 
     # Sub-parser for the "makedb" command
@@ -49,6 +49,7 @@ def main():
     parser_makedb.add_argument('-o', '--output-dir', required=True, help='Name for the output database.')
     parser_makedb.add_argument('-T', '--threads', type=int, help="Number of cores to dedicate for multi-processing")
     parser_makedb.add_argument('-s', '--sanitize', action='store_true', help="Permanently remove special characters from FASTA file(s)")
+    parser_makedb.add_argument('--keep-temp-files', action="store_true", help="Keep extracted temporary files for debugging")
     if 'makedb' in available_modules:
         parser_makedb.set_defaults(func=available_modules['makedb'])
 
