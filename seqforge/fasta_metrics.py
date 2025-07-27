@@ -7,6 +7,8 @@ from datetime import datetime
 import pandas as pd
 from Bio import SeqIO
 
+from utils.file_handler import collect_fasta_files, cleanup_temp_dir
+
 def run_metrics(args):
 
     def calculate_nx_lx(lengths, threshold=0.5):
@@ -26,6 +28,7 @@ def run_metrics(args):
         
         lengths = [len(record.seq) for record in records if len(record.seq) >= min_contig_size]
         if not lengths:
+            # Return a row of zeros for empty or filtered files
             return {
                 "Filename": os.path.basename(filepath),
                 "Num_Contigs": 0,
@@ -40,8 +43,8 @@ def run_metrics(args):
                 "GC_Content(%)": 0,
                 "N_Count": 0,
                 "N50": 0,
-                "L50": 0,
                 "N90": 0,
+                "L50": 0,
                 "L90": 0,
                 "Contig_Lengths": ''
             }
@@ -61,6 +64,7 @@ def run_metrics(args):
         contigs_100kb = sum(1 for l in lengths if l >= 100000)
         total_length_1kb = sum(l for l in lengths if l >= 1000)
 
+        # Use '|' to separate contig lengths (avoids CSV delimiter confusion)
         contig_lengths_str = '|'.join(str(length) for length in sorted(lengths, reverse=True))
 
         return {
@@ -83,6 +87,7 @@ def run_metrics(args):
             "Contig_Lengths": contig_lengths_str
         }
 
+    # Setup logging
     logger = logging.getLogger("metrics")
     logger.setLevel(logging.INFO)
     logger.propagate = False
@@ -100,42 +105,37 @@ def run_metrics(args):
     print(f"Metrics analysis started at {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
     logger.info(f"Metrics analysis started at {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
 
-    input_path = os.path.abspath(args.fasta_directory)
-    if not os.path.exists(input_path):
-        msg = f"Error: The specified input does not exist: {args.fasta_directory}"
+    # Collect all FASTA files (handles directories, single files, and compressed archives)
+    try:
+        fasta_files, temp_dir = collect_fasta_files(args.fasta_directory)
+    except ValueError as e:
+        msg = f"Error: {e}"
         print(f"\n\033[91m{msg}\033[0m")
         logger.warning(msg)
         return
-    
-    fasta_files = []
-    if os.path.isfile(input_path):
-        fasta_files.append(input_path)
-    else:
-        for f in os.listdir(input_path):
-            if f.endswith((".fasta", ".fa", ".fna", ".ffn", ".fas", ".faa")):
-                fasta_files.append(os.path.join(input_path, f))
 
-    if not fasta_files:
-        msg = "No FASTA files found for processing."
-        print(f"\n\033[93m{msg}\033[0m")
-        logger.warning(msg)
-        return
-    
     metrics = []
     for file in fasta_files:
         result = compute_fasta_metrics(file, min_contig_size=args.min_contig_size)
         if result:
             metrics.append(result)
 
+    # Build the output DataFrame
     df = pd.DataFrame(metrics)
-    print_df = df.drop(columns=['Contig_Lengths', 'Num_Contigs_≥1kb', 'Num_Contigs_≥10kb', 'Num_Contigs_≥50kb', 'Num_Contigs_≥100kb'], errors='ignore')
+    # Console-friendly summary (omit clutter-heavy fields)
+    print_df = df.drop(columns=['Contig_Lengths', 'Num_Contigs_≥1kb', 'Num_Contigs_≥10kb',
+                                'Num_Contigs_≥50kb', 'Num_Contigs_≥100kb'], errors='ignore')
     print("\n\033[92mFASTA Metrics Summary:\033[0m")
     print(print_df.to_string(index=False))
 
+    # Write full CSV summary
     output_file = args.output or "fasta_metrics_summary.csv"
     df.to_csv(output_file, index=False)
     print(f"\n\033[92mSummary written to: {output_file}\033[0m")
     logger.info(f"Summary written to: {output_file}")
+
+    # Clean up any extracted archive temp files
+    cleanup_temp_dir(temp_dir, keep=False, logger=logger)
 
     end_time = datetime.now()
     logger.info(f"Metrics analysis completed at {end_time.strftime('%Y-%m-%d %H:%M:%S')}")
