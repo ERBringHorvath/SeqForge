@@ -79,7 +79,7 @@ def process_sequence_entry(row, fasta_map, translate,
 def extract_sequences_from_csv(csv_path, fasta_input, output_fasta,
                                translate=False, evalue=1e-5,
                                min_perc=90.0, min_cov=75.0,
-                               up=0, down=0, *, logger):
+                               up=0, down=0, *, keep_temp_files=False, logger=None):
     df = pd.read_csv(csv_path)
     sequences = []
 
@@ -115,11 +115,11 @@ def extract_sequences_from_csv(csv_path, fasta_input, output_fasta,
 
     # Write extracted sequences
     SeqIO.write(sequences, output_fasta, "fasta")
-    print(f"\n\033[92mExtracted {len(sequences)} sequences to {output_fasta}\033[0m\n")
+    print(f"\033[92mExtracted {len(sequences)} sequences to {output_fasta}\033[0m\n")
     logger.info(f"Extracted {len(sequences)} sequences to {output_fasta}")
 
     # Clean up temp directory from archive extraction (if any)
-    cleanup_temp_dir(temp_dir, keep=False, logger=logger)
+    cleanup_temp_dir(temp_dir, keep=keep_temp_files, logger=logger)
 
 def run(args):
     logger = logging.getLogger("extract")
@@ -159,6 +159,7 @@ def run(args):
         min_cov=args.min_cov,
         up=args.up,
         down=args.down,
+        keep_temp_files=args.keep_temp_files,
         logger=logger
     )
 

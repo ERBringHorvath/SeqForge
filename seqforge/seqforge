@@ -96,6 +96,7 @@ def main():
     parser_extract.add_argument('--translate', action='store_true', help='Translate extracted nucleotide sequence using the standard genetic code.')
     parser_extract.add_argument('--up', type=int, default=0, help="Extract additional basepairs upstream of aligned sequence")
     parser_extract.add_argument('--down', type=int, default=0, help="Extract additional basepairs downstream of aligned sequence")
+    parser_extract.add_argument('--keep-temp-files', action='store_true', help='Keep extracted temporary files for debugging (only with archive submission)')
     if 'extract_sequences' in available_modules:
         parser_extract.set_defaults(func=available_modules['extract_sequences'])
 
@@ -107,6 +108,7 @@ def main():
     parser_extract_contig.add_argument('-e', '--evalue', type=float, default=1e-5, help="Minimum e-value threshold")
     parser_extract_contig.add_argument('--min-perc', type=check_extract_range, default=90, help="Minimum percent identity threshold")
     parser_extract_contig.add_argument('--min-cov', type=check_extract_range, default=75, help="Minimum query coverage threshold")
+    parser_extract_contig.add_argument('--keep-temp-files', action='store_true', help='Keep extracted temporary files for debugging (only with archive submission)')
     if 'extract_contigs' in available_modules:
         parser_extract_contig.set_defaults(func=available_modules['extract_contigs'])
 
@@ -134,6 +136,7 @@ def main():
     parser_fasta_metrics.add_argument('-f', '--fasta-directory', required=True, help="Path to FASTA file or directory of FASTA files")
     parser_fasta_metrics.add_argument('-o', '--output', default=None, help="Optional name for CSV summary (default: fasta_metrics_summary.csv)")
     parser_fasta_metrics.add_argument('-M', '--min-contig-size', type=int, default=500, help="Minimum contig size (in bp) to include for calculation of all reported metrics (default = 500)")
+    parser_fasta_metrics.add_argument('--keep-temp-files', action='store_true', help='Keep extracted temporary files for debugging (only with archive submission)')
     if 'fasta_metrics' in available_modules:
         parser_fasta_metrics.set_defaults(func=available_modules['fasta_metrics'])
 

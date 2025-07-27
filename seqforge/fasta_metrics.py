@@ -135,7 +135,7 @@ def run_metrics(args):
     logger.info(f"Summary written to: {output_file}")
 
     # Clean up any extracted archive temp files
-    cleanup_temp_dir(temp_dir, keep=False, logger=logger)
+    cleanup_temp_dir(temp_dir, keep=args.keep_temp_files, logger=logger)
 
     end_time = datetime.now()
     logger.info(f"Metrics analysis completed at {end_time.strftime('%Y-%m-%d %H:%M:%S')}")

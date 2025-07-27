@@ -53,7 +53,7 @@ def process_contig_entry(row, fasta_map, evalue, min_perc, min_cov,
     return None
 
 def extract_contigs_from_csv(csv_path, fasta_input, output_fasta, evalue=1e-5,
-                             min_perc=90.0, min_cov=75.0, *, logger):
+                             min_perc=90.0, min_cov=75.0, *, keep_temp_files=False, logger=None):
     df = pd.read_csv(csv_path)
     contigs = []
     extracted_contigs = set()
@@ -90,11 +90,11 @@ def extract_contigs_from_csv(csv_path, fasta_input, output_fasta, evalue=1e-5,
 
     # Write results
     SeqIO.write(contigs, output_fasta, "fasta")
-    print(f"\n\033[92mExtracted {len(contigs)} unique contigs to {output_fasta}\033[0m")
+    print(f"\033[92mExtracted {len(contigs)} unique contigs to {output_fasta}\033[0m")
     logger.info(f"Extracted {len(contigs)} unique contigs to {output_fasta}")
 
     # Clean up any extracted archive temp files
-    cleanup_temp_dir(temp_dir, keep=False, logger=logger)
+    cleanup_temp_dir(temp_dir, keep=keep_temp_files, logger=logger)
 
 def run_contigs(args):
     logger = logging.getLogger("extract-contig")
@@ -119,6 +119,7 @@ def run_contigs(args):
         evalue=args.evalue,
         min_perc=args.min_perc,
         min_cov=args.min_cov,
+        keep_temp_files=args.keep_temp_files,
         logger=logger
     )
 
