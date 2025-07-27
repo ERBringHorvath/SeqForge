@@ -203,7 +203,7 @@ Add SeqForge to your PATH
 1. Open your profile in a text editor. This might be `~/.bash_profile` or `~/.zshrc`
 2. Add the following line to the end of the file:
 
-`export PATH=$PATH:/Users/user/seqforge/bin`
+`export PATH=$PATH:/Users/user/SeqForge/seqforge`
 
 Replace `/Users/user/seqforge/bin` with the actual path to the directory containing the executable. <br />
 Whatever the initial directory, this path should end with `/seqforge/bin`
