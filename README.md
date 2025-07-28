@@ -80,8 +80,8 @@ Purpose: General-use tools for various genomic workflows <br/>
 *   fasta-metrics<br/>
     Compute common assembly metrics from an input FASTA file or all FASTA files within a directory
     *   The following metrics are calculated
-        *   Number of contigs
         *   Genome size (bp)
+        *   Number of contigs
         *   Longest contig
         *   Shortest contig
         *   Basic contig size distribution
