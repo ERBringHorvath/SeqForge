@@ -257,6 +257,7 @@ seqforge makedb: <br/>
 **Optional arguments:** <br/>
 `-T`, `--threads`: number of cores to dedicate for multiprocessing (default = 4) <br/>
 `-s`, `--sanitize`: remove pipeline-breaking special characters from file names <br/>
+`--keep-temp-files`: for archive submission; retains temporary directory generated at /tmp/seqforge_fasta_extract_*
 
 Example: <br />
 `seqforge makedb -f /path/to/FASTA/files -o /path/to/results/folder -T 8`
@@ -305,7 +306,8 @@ Basic example: <br />
 `--min-perc 75` `--min-cov 70 --evalue 0.001 \` <br/>
 `--report-strongest-matches \` <br/>
 `--motif TAXXSS{query1} GHXXGE{query2} -f /path/to/FASTA/files \` <br/>
-`--motif-fasta-out --visualize --pdf`
+`--motif-fasta-out --visualize --pdf \` <br/>
+`--motif-fasta-out`
 
 All Query results are concatenated to `all_results.csv` and either `all_filtered_results.csv` or `filtered_results.csv`. 
 All plots and files are saved to the output directory specified by `--output`.
@@ -330,7 +332,8 @@ These should be the FASTA files the BLAST databases were created from and should
 `--min-cov`: minimum query coverage threshold. Default = 75 <br />
 `--translate`: translates extracted nucleotide sequence(s) <br/>
 `--up`: extract additional basepairs upstream of aligned sequence <br/>
-`--down`: extract additional basepairs downstream of aligned sequence
+`--down`: extract additional basepairs downstream of aligned sequence <br/>
+`--keep-temp-files`: for archive submission; retains temporary directory generated at /tmp/seqforge_fasta_extract_*
 
 **NOTE:** Translation of sequences is optional, however care should be used when translating extracted nucleotide sequences, as BLAST results may not always contain a full CDS. To allow for this, when the `--translate` argument is called, extracted sequences will be trimmed to only include complete codons, which may affect interpretation of results.
 
@@ -377,6 +380,7 @@ These should be the FASTA files the BLAST databases were created from and should
 `-e`, `--evalue`: maximum e-value threshold, default = 0.00001 <br />
 `--min-perc`: minimum percent identity threshold. Default = 90 <br />
 `--min-cov`: minimum query coverage threshold. Default = 75 <br />
+`--keep-temp-files`: for archive submission; retains temporary directory generated at /tmp/seqforge_fasta_extract_*
 
 **NOTE:** Results files and FASTA reference assemblies <ins>**must**</ins> share the same basename for both `seqforge extract` and `seqforge extract-contig`:
 
@@ -415,6 +419,8 @@ ________________________________________________________________________________
 seqforge fasta-metrics: <br/>
 `-f`, `--fasta-directory`: path to FASTA file or directory of FASTA files to be analyzed <br/>
 `-o`, `--output`: optional name for CSV summary (default: fasta_metrics_summary.csv) <br/>
+`-M`, `--min-contig-size`: minimum contig size to include for all calculations (default = 500) <br/>
+`--keep-temp-files`: for archive submission; retains temporary directory generated at /tmp/seqforge_fasta_extract_*
 ______________________________________________________________________________________________________________________________________
 
 ## Split Multi-FASTA files
