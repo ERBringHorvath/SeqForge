@@ -4,26 +4,33 @@
 
 SeqForge emphasizes clarity, flexibility, and scale. Each module is standalone but interoperable with others, allowing researchers to plug in just what they need or use the full pipeline. Designed for power users but accessible enough for those just entering the field, SeqForge aims to grow as the field of bacterial genomics and bioinformatics expands.
 
+### Note on FASTA file submission:
+
+All FASTA-handling modules support the following inputs:
+*    Single FASTA file (.fa, .fna, .faa, .ffn, .fas, .fasta)
+*    Single compressed FASTA file (.gz, .zip)
+*    Directory of FASTA files
+*    Archive of FASTA files (.zip, .tar, .tar.gz, .tgz)
+
 ### **SeqForge is currently divided into three modules:**
 
 ### <ins>Module 1: Genome Search<ins/>
 
 Purpose: Rapid database creation and high-throughput querying <br/>
 *   makedb<br/>
-    Create BLAST-compatible databases (makeblastdb) from a single FASTA file or an entire directory. Supports both nucleotide and protein databases, including gzipped inputs, with multiprocessing support to boost performance on large datasets.
+    Create BLAST-compatible databases (makeblastdb). Supports both nucleotide and protein databases, with multiprocessing support to boost performance on large datasets.
 *   query<br/>
     A parallelized BLAST wrapper that allows you to run a set of query sequences (nucleotide or protein) against one or many databases in batch.
     Includes:
     *   Support for blastn, tblastn, and blastp based on input types (auto-detected).
-    *   Flexible input: single file or directory of FASTA files.
-    *   Optional reporting of only strongest match per query.
+    *   Optional reporting of only strongest match per query per genome.
     *   Automatic filtering based on identity, coverage and/or e-value thresholds.
     *   Output includes both full and filtered results tables, plus alignment files if desired.
     *   Motif mining for amino acid queries.
     *   Visualization of gene hits and sequence matches (hi-res PNG or PDF)
 *   Motif support in query: <br/>
-    When using blastp (amino acid query against protein database), users may specify one or more amino acid motif(s) (e.g., WXWXIP (single motif) | XAXH GHXXGE (multiple motifs, space-separated list)) using the `--motif` flag. This performs a regex-based search across all BLAST hits,             independent from internally-curated or user-defined pident, query coverage, and e-value thresholds, ensuring detection of conserved motifs even in low-identity or heterologous alignments that might otherwise     be filtered out. This is particularly useful for detecting signature domains (e.g., catalytic triads, DNA-binding motifs) in diverse sequence families. Whole query matches or just the motif string may be exported to FASTA using `--motif-fasta-out` with or without `--motif-only`.
-    *    For focused motif investigations across multiple queries, each motif's associated query file may be specified in the command string. This will result in only that query file being parsed for motif matches.
+    When using blastp (amino acid query against protein database), users may specify one or more amino acid motif(s) (e.g., WXWXIP (single motif) | XAXH GHXXGE (multiple motifs, space-separated list)) using the `--motif` flag. This performs a regex-based search across all BLAST hits, independent from internally-curated or user-defined percent identity, query coverage, and e-value thresholds, ensuring detection of conserved motifs even in low-identity or heterologous alignments that might otherwise be filtered out. This is particularly useful for detecting signature domains (e.g., catalytic triads, DNA-binding motifs) in diverse sequence families. Whole query matches or just the motif string may be exported to FASTA using `--motif-fasta-out` with or without `--motif-only`.
+    *    For focused motif investigations across multiple queries, each motif's associated query file may be linked in the command string. This will result in only that query file being parsed for motif matches.
     *    Example:
             *    Query files: AT_domain.faa, KS_domain.faa
             *    Motifs: GHXXGE, TAXXSS
@@ -188,11 +195,11 @@ If not already installed, install [Git](https://github.com/git-guides/install-gi
 
 ## **Clone SeqForge from source**
 
-We suggest installing SeqForge within your Home folder, such as `/Users/user/` 
+We suggest installing SeqForge within your Home folder, such as `/home/user/` 
 
 Change directory to desired installation path
 
-`cd /Users/user`
+`cd /home/user`
 
 Clone SeqForge from the repository
 
@@ -205,10 +212,10 @@ Add SeqForge to your PATH
 
 `export PATH=$PATH:/home/user/SeqForge/seqforge`
 
-Replace `/Users/user/seqforge/bin` with the actual path to the directory containing the executable. <br />
-Whatever the initial directory, this path should end with `/seqforge/bin`
+Replace `/home/user/SeqForge/seqforge` with the actual path to the directory containing the executable. <br />
+Whatever the initial directory, this path should end with `/SeqForge/seqforge`
 
-Save the file and restart your terminal or run `source ~/.bashrc` or `~/.bash_profile` (Linux/Unix) or `source ~/.zshrc` (macOS)
+Save the file and restart your terminal or run `source ~/.bashrc` or `~/.bash_profile` (Linux/macOS) or `source ~/.zshrc` (macOS)
 
 **Install Dependencies**
 
@@ -216,7 +223,7 @@ Save the file and restart your terminal or run `source ~/.bashrc` or `~/.bash_pr
 
 **Verify SeqForge Installation**
 
-`seqforge --module-health`
+`seqforge --module-health` <br/>
 
 You should see: <br/>
 ```
@@ -231,16 +238,20 @@ Module Status Report:
  - sanitize: Available
  - fasta_metrics: Available
 ```
-If there is a problem, the status will read 'Broken or Missing'.
+If there is a problem, the status will read 'Broken or Missing' <br/>
+Submit issues [here](https://github.com/ERBringHorvath/SeqForge/issues)
 
 Help menu and version: <br/>
 `seqforge --help` <br />
 `seqforge --version`
 
-NOTE: Permissions should automatically be applied during installation. If you get a `permission denied` message when running `seqforge`
-permissions may need to be changed manually. To do this, you can use the following command:
+Indifivual module help: <br/>
+`seqforge <module> -h`
 
-`chmod +x /path/to/seqforge/bin/seqforge`
+NOTE: Permissions should automatically be applied during installation. If you get a `permission denied` message when running `seqforge`
+permissions may need to be changed manually. To do this, you can use the following command (requires administrator privileges):
+
+`chmod +x /path/to/SeqForge/seqforge/seqforge`
 
 ______________________________________________________________________________________________________________________________________
 ______________________________________________________________________________________________________________________________________
@@ -256,13 +267,13 @@ seqforge makedb: <br/>
 
 **Optional arguments:** <br/>
 `-T`, `--threads`: number of cores to dedicate for multiprocessing (default = 4) <br/>
-`-s`, `--sanitize`: remove pipeline-breaking special characters from file names <br/>
+`-s`, `--sanitize`: remove pipeline-breaking special characters from file names (renames in-place) <br/>
 `--keep-temp-files`: for archive submission; retains temporary directory generated at /tmp/seqforge_fasta_extract_*
 
 Example: <br />
 `seqforge makedb -f /path/to/FASTA/files -o /path/to/results/folder -T 8`
 
-**Database type is automatically detected during database creation** <br/>
+**Database type is automatically detected during database creation following standard FASTA extension practices** <br/>
 .fasta, .fa, .fas, .ffn, .fna == nucleotide <br/>
 .faa == protein 
 ______________________________________________________________________________________________________________________________________
@@ -335,7 +346,7 @@ These should be the FASTA files the BLAST databases were created from and should
 `--down`: extract additional basepairs downstream of aligned sequence <br/>
 `--keep-temp-files`: for archive submission; retains temporary directory generated at /tmp/seqforge_fasta_extract_*
 
-**NOTE:** Translation of sequences is optional, however care should be used when translating extracted nucleotide sequences, as BLAST results may not always contain a full CDS. To allow for this, when the `--translate` argument is called, extracted sequences will be trimmed to only include complete codons, which may affect interpretation of results.
+**NOTE:** Translation of sequences is optional, however care should be used when translating extracted nucleotide sequences, as BLAST results may not always contain a full CDS. To allow for this, when the `--translate` argument is called, extracted sequences will be trimmed to only include complete codons, which may affect interpretation of results. Generally, BLAST+ will return sequence coordinates in the correct frame; this has been tested and no mistranslations have been logged, but there are always exceptions. 
 
 **NOTE:** `--up` and `--down` flags are incompatible with `--translate`, as 6-frame translation is not currenlty supported.
 
@@ -345,7 +356,7 @@ Example basename: 'FILE' <br />
 Example FASTA: FILE.fasta <br />
 Example results file: FILE_results.txt
 
-If SeqForge is used for database creation and queries, matching basenames should be generated automatically
+If SeqForge is used for database creation and queries, matching basenames will be generated automatically
 
 **Example usage:** <br />
 `seqforge extract -c /path/to/results/file -f /path/to/reference/FASTA/files -T 8 -o sequences.fa`
