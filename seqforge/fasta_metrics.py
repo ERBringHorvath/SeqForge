@@ -28,7 +28,7 @@ def run_metrics(args):
         
         lengths = [len(record.seq) for record in records if len(record.seq) >= min_contig_size]
         if not lengths:
-            # Return a row of zeros for empty or filtered files
+            #Return a row of zeros for empty or filtered files
             return {
                 "Filename": os.path.basename(filepath),
                 "Num_Contigs": 0,
@@ -64,7 +64,7 @@ def run_metrics(args):
         contigs_100kb = sum(1 for l in lengths if l >= 100000)
         total_length_1kb = sum(l for l in lengths if l >= 1000)
 
-        # Use '|' to separate contig lengths (avoids CSV delimiter confusion)
+        #Use '|' to separate contig lengths (avoids CSV delimiter confusion, ease of wrangling later)
         contig_lengths_str = '|'.join(str(length) for length in sorted(lengths, reverse=True))
 
         return {
@@ -87,7 +87,6 @@ def run_metrics(args):
             "Contig_Lengths": contig_lengths_str
         }
 
-    # Setup logging
     logger = logging.getLogger("metrics")
     logger.setLevel(logging.INFO)
     logger.propagate = False
@@ -105,7 +104,7 @@ def run_metrics(args):
     print(f"Metrics analysis started at {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
     logger.info(f"Metrics analysis started at {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
 
-    # Collect all FASTA files (handles directories, single files, and compressed archives)
+    #Collect all FASTA files
     try:
         fasta_files, temp_dir = collect_fasta_files(args.fasta_directory)
     except ValueError as e:
@@ -120,21 +119,19 @@ def run_metrics(args):
         if result:
             metrics.append(result)
 
-    # Build the output DataFrame
     df = pd.DataFrame(metrics)
-    # Console-friendly summary (omit clutter-heavy fields)
+    #Console-friendly summary (omit clutter-heavy fields)
     print_df = df.drop(columns=['Contig_Lengths', 'Num_Contigs_≥1kb', 'Num_Contigs_≥10kb',
                                 'Num_Contigs_≥50kb', 'Num_Contigs_≥100kb'], errors='ignore')
     print("\n\033[92mFASTA Metrics Summary:\033[0m")
     print(print_df.to_string(index=False))
 
-    # Write full CSV summary
     output_file = args.output or "fasta_metrics_summary.csv"
     df.to_csv(output_file, index=False)
     print(f"\n\033[92mSummary written to: {output_file}\033[0m")
     logger.info(f"Summary written to: {output_file}")
 
-    # Clean up any extracted archive temp files
+    #Clean up any extracted archive temp files
     cleanup_temp_dir(temp_dir, keep=args.keep_temp_files, logger=logger)
 
     end_time = datetime.now()
