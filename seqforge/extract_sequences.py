@@ -13,7 +13,7 @@ from utils.file_handler import collect_fasta_files, cleanup_temp_dir
 def process_sequence_entry(row, fasta_map, translate,
                            evalue, min_perc, min_cov,
                            up, down, *, logger):
-    # filter by BLAST thresholds
+
     if (float(row['evalue']) > evalue or
         float(row['pident']) < min_perc or
         float(row['query_coverage']) < min_cov):
@@ -21,7 +21,6 @@ def process_sequence_entry(row, fasta_map, translate,
               f"pident: {row['pident']} cov: {row['query_coverage']} evalue: {row['evalue']})\033[0m")
         return None
 
-    # locate the correct FASTA file from pre-built map
     original_fasta = fasta_map.get(row['database'])
     if not original_fasta:
         msg = f"No matching FASTA file found for {row['database']}"
@@ -29,7 +28,7 @@ def process_sequence_entry(row, fasta_map, translate,
         logger.warning(msg)
         return None
 
-    # parse and extract region
+    #parse and extract region
     for seq_record in SeqIO.parse(original_fasta, "fasta"):
         if seq_record.id != row['sseqid']:
             continue
@@ -41,7 +40,7 @@ def process_sequence_entry(row, fasta_map, translate,
         ideal_start = low - up
         ideal_end = high + down
 
-        # clamp to contig boundaries
+        #clamp to contig boundaries
         region_start = max(1, low  - up)
         region_end   = min(contig_len, high + down)
 
@@ -57,11 +56,10 @@ def process_sequence_entry(row, fasta_map, translate,
                            f"{seq_record.id} truncated at contig end (only {contig_len-high} bp available)")
 
         subseq = seq_record.seq[region_start-1:region_end]
-        # reverse-complement if hit on negative strand
+        #reverse-complement if hit on negative strand
         if sstart > send:
             subseq = subseq.reverse_complement()
 
-        # optional translation (trim to codon boundary)
         if translate:
             trim_len = len(subseq) - (len(subseq) % 3)
             subseq = subseq[:trim_len].translate()
@@ -70,7 +68,6 @@ def process_sequence_entry(row, fasta_map, translate,
         description = "translated" if translate else "nucleotide"
         return SeqIO.SeqRecord(subseq, id=header_id, description=description)
 
-    # no matching record ID found
     msg = f"Sequence ID {row['sseqid']} not found in {original_fasta}"
     print(f"\033[91m{msg}\033[0m")
     logger.warning(msg)
@@ -83,7 +80,7 @@ def extract_sequences_from_csv(csv_path, fasta_input, output_fasta,
     df = pd.read_csv(csv_path)
     sequences = []
 
-    # Collect all FASTA files (directory, single file, or archive)
+    #Collect all FASTA files (file_handler)
     try:
         fasta_files, temp_dir = collect_fasta_files(fasta_input)
     except ValueError as e:
@@ -91,13 +88,11 @@ def extract_sequences_from_csv(csv_path, fasta_input, output_fasta,
         logger.error(str(e))
         return
 
-    # Build a lookup map for quick database → FASTA resolution
     fasta_map = {}
     for f in fasta_files:
         base = os.path.splitext(os.path.basename(f))[0]
         fasta_map[base] = f
 
-    # Parallel processing
     with concurrent.futures.ProcessPoolExecutor() as executor:
         futures = [
             executor.submit(
@@ -113,12 +108,11 @@ def extract_sequences_from_csv(csv_path, fasta_input, output_fasta,
             if result:
                 sequences.append(result)
 
-    # Write extracted sequences
     SeqIO.write(sequences, output_fasta, "fasta")
     print(f"\033[92mExtracted {len(sequences)} sequences to {output_fasta}\033[0m\n")
     logger.info(f"Extracted {len(sequences)} sequences to {output_fasta}")
 
-    # Clean up temp directory from archive extraction (if any)
+    #Clean up temp directory from archive extraction if archive input
     cleanup_temp_dir(temp_dir, keep=keep_temp_files, logger=logger)
 
 def run(args):
