@@ -11,10 +11,10 @@ FASTA_EXTENSIONS = ['.fasta', '.fa', '.fna', '.ffn', '.fas', '.faa']
 
 def sanitize_filename(filename):
     name, ext = os.path.splitext(filename)
-    name = name.replace('.', '_')
-    name = re.sub(r'[-:;\s]', '_', name)
-    name = re.sub(r"[()'`\"‘’“”]", '', name)
-    name = re.sub(r'_+', '_', name)
+    name = name.replace('.', '_') #underscore
+    name = re.sub(r'[-:;\s]', '_', name) #underscore
+    name = re.sub(r"[()'`\"‘’“”]", '', name) #delete
+    name = re.sub(r'_+', '_', name) #multi underscore to underscore
     return name + ext
 
 def run_sanitize(args):
@@ -35,6 +35,7 @@ def run_sanitize(args):
 
     input_path = os.path.abspath(args.input)
 
+    #arg wrangling
     if not os.path.exists(input_path):
         msg = f"Error: The specified input does not exist: {args.input}"
         print(f"\n\033[91m{msg}\033[0m")
@@ -105,6 +106,7 @@ def run_sanitize(args):
         print(f" {original} -> {new}")
         logger.info(f"Renaming: {original} -> {new}")
 
+    #preview of changes
     if args.dry_run:
         print("\n\033[93mDry run mode: No files were changed.\033[0m")
         logger.info("Dry run mode: No files were changed.")
