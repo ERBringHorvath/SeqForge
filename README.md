@@ -182,7 +182,7 @@ If these commands run without error, BLAST is correctly installed. If an error o
 ## SeqForge Installation
 
 If not already installed, install [Git](https://github.com/git-guides/install-git) <br />
-* Linux/Unix systems should have this installed by default <br />
+* Linux/macOS systems should have this installed by default <br />
 * To test installation, open the terminal and type `git --version` <br />
 * For macOS users, you should see something like `git version 2.37.1 (Apple Git-137.1)`
 
