@@ -57,7 +57,7 @@ def run_visualization(filtered_df, args):
 
     figsize, x_fontsize, y_fontsize, legend_fontsize, legend_title_size, y_title, x_title = get_dynamic_plot_settings(num_queries, num_genomes)
 
-    # Plotting
+    #Plotting
     plt.figure(figsize=figsize)
     cmap = sns.color_palette("plasma_r", as_cmap=True)
     cmap.set_bad(color='white')
@@ -77,8 +77,6 @@ def run_visualization(filtered_df, args):
     cbar.ax.tick_params(labelsize=legend_fontsize)
     cbar.set_label("Average % Identity", fontsize=legend_title_size)
 
-    # plt.figtext(0.01, 0.01, "Strongest hit per query per genome",
-    #             horizontalalignment='left', fontsize=y_fontsize, style='italic')
     plt.xlabel("Genome", fontsize=x_title)
     plt.ylabel("Query", fontsize=y_title)
     plt.xticks(rotation=45, ha='right', fontsize=x_fontsize)
@@ -86,7 +84,7 @@ def run_visualization(filtered_df, args):
     plt.title("BLAST Query Hits (Avg % Identity)\nStrongest hit per query per genome", fontsize=x_fontsize)
     plt.tight_layout()
 
-    # Output format
+    #Output format (default to png @ 300 dpi)
     output_dir = args.output if hasattr(args, 'output') else '.'
     out_ext = "pdf" if getattr(args, "pdf", False) else "png"
     out_file = f"query_identity_heatmap.{out_ext}"
@@ -98,7 +96,7 @@ def run_visualization(filtered_df, args):
           f"\033[92mIdentity heatmap saved to {out_path}\033[0m\n"
           f"\033[92mHeatmap data matrix saved to {output_dir}heatmap_matrix.csv\033[0m")
 
-
+#For --motif only
 def run_sequence_logo(motif_df, args):
     import os
     import pandas as pd
@@ -109,7 +107,7 @@ def run_sequence_logo(motif_df, args):
     output_dir = args.output if hasattr(args, 'output') else '.'
     out_ext = "pdf" if getattr(args, "pdf", False) else "png"
 
-    # Detect motif columns
+    #Detect motif columns
     motif_cols = [col for col in motif_df.columns if col.startswith("motif_") and not col.endswith("_pattern")]
     if not motif_cols:
         print("\033[91mNo motif columns found for visualization.\033[0m")
@@ -141,7 +139,7 @@ def run_sequence_logo(motif_df, args):
             print(f"\033[91mSkipping {motif_col}: Not all motifs are the same length\033[0m")
             continue
 
-        # Count amino acids at each position
+        #Count amino acids at each position
         position_counts = [Counter() for _ in range(motif_len)]
         for motif in motifs:
             for i, aa in enumerate(motif):
@@ -152,12 +150,11 @@ def run_sequence_logo(motif_df, args):
             orient='columns'
         ).fillna(0)
 
-        # Normalize and format
+        #Normalize and format
         df_logo = df_logo.div(df_logo.sum(axis=0), axis=1).fillna(0).T
         df_logo.index.name = "amino_acid"
         df_logo.columns.name = "position"
 
-        # Color scheme
         color_scheme = {
             'A': '#f222ff', 'C': '#ff2975', 'D': 'red', 'E': 'red',
             'F': 'blue', 'G': '#8c1eff', 'H': 'purple', 'I': '#bb496c',
