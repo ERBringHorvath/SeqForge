@@ -19,7 +19,7 @@ from utils.file_handler import collect_fasta_files, cleanup_temp_dir
 FASTA_EXTS = ('.fa', '.fna', '.fas', '.ffn', '.fasta', '.faa')
 
 def chunkify(iterable, n):
-    """Split iterable into chunks of size n."""
+    #Split iterable into chunks of size n for motif mining
     it = iter(iterable)
     return iter(lambda: list(islice(it, n)), [])
 
