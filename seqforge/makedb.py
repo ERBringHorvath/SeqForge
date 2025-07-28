@@ -10,7 +10,7 @@ from concurrent.futures import ProcessPoolExecutor
 
 from utils.file_handler import collect_fasta_files, cleanup_temp_dir
 
-# Valid FASTA extensions
+#Valid FASTA extensions
 FASTA_EXTENSIONS = (".fasta", ".faa", ".fna", ".ffn", ".fa", ".fas",
                     ".fasta.gz", ".faa.gz", ".fna.gz", ".ffn.gz", ".fa.gz", ".fas.gz")
 
@@ -78,6 +78,7 @@ def run_make_blast_db(args):
     logger.info("Starting Database Creation")
     start_time = datetime.now()
 
+    #wrangle args
     input_path = args.fasta_directory
     output_dir = args.output_dir
     threads = args.threads if args.threads else 4
