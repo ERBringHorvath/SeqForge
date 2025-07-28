@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2025 Elijah Bring Horvath
+
 import os
 import tempfile
 import shutil
@@ -20,20 +23,25 @@ def collect_fasta_files(input_path, sanitize_flag=False):
             "\033[92mSuggested workflow: decompress archive, run 'seqforge sanitize -i <directory> -e fasta --in-place'\033[0m\n"
             "\033[96mRe-compress with 'tar -zcvf archive.tar.gz <directory>'\033[0m"
         )
+    
+    def is_valid_fasta(filename):
+        if filename.startswith('.') or filename.startswith('._') or filename.startswith('__MACOSX'):
+            return False
+        return filename.endswith(FASTA_EXTENSIONS)
 
     #Directory of FASTAs
     if os.path.isdir(input_path):
         fasta_files = [
             os.path.join(input_path, f)
             for f in os.listdir(input_path)
-            if f.endswith(FASTA_EXTENSIONS)
+            if is_valid_fasta(f)
         ]
         if not fasta_files:
             raise ValueError(f"No FASTA files found in directory: {input_path}")
         return fasta_files, None
     
     #Single FASTA file (compressed or not)
-    if os.path.isfile(input_path) and input_path.endswith(FASTA_EXTENSIONS):
+    if os.path.isfile(input_path) and is_valid_fasta(os.path.basename(input_path)):
         return [input_path], None
     
     if os.path.isfile(input_path) and input_path.endswith((".zip", ".tar", ".tar.gz", ".tgz")):
@@ -53,7 +61,7 @@ def collect_fasta_files(input_path, sanitize_flag=False):
         fasta_files = []
         for root, _, files in os.walk(temp_dir):
             for file in files:
-                if file.endswith(FASTA_EXTENSIONS):
+                if is_valid_fasta(file):
                     fasta_files.append(os.path.join(root, file))
 
         if not fasta_files:
