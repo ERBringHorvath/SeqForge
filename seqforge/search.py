@@ -11,6 +11,7 @@ import logging
 from datetime import datetime
 from shared.constants import FIELD_ALIASES
 
+#replace whitespace with underscore
 def normalize_key(key):
     return re.sub(r'\W+', '_', key.strip().lower())
 
@@ -21,64 +22,6 @@ def flatten_biosample_attributes(attributes):
         value = attr.get("value", "not_specified")
         flat[name] = value
     return flat
-
-# def parse_json(json_file, extract_all, fields, logger):
-#     with open(json_file) as f:
-#         data = json.load(f)
-
-#     if 'reports' not in data:
-#         print("\033[91mError: JSON format invalid. Expected 'reports' key.\033[0m")
-#         return []
-
-#     reports = data['reports']
-#     metadata = []
-#     for report in reports:
-#         try:
-#             biosample_attrs = report['assembly_info']['biosample']['attributes']
-#             flat_attrs = flatten_biosample_attributes(biosample_attrs)
-
-#             # Add top-level metadata with prefixed keys to prevent collisions
-#             flat_attrs["top_accession"] = report.get("accession", "not_specified")
-#             flat_attrs["top_organism"] = (
-#                 report.get("organism", {}).get("organism_name") or
-#                 report["assembly_info"]["biosample"].get("description", {}).get("organism", {}).get("organism_name") or
-#                 "not_specified"
-#             )
-#             flat_attrs["top_tax_id"] = (
-#                 report.get("organism", {}).get("tax_id") or
-#                 report["assembly_info"]["biosample"].get("description", {}).get("organism", {}).get("tax_id") or
-#                 "not_specified"
-#             )
-#             flat_attrs["top_release_date"] = report.get("annotation_info", {}).get("release_date", "not_specified")
-
-#             entry = {}
-
-#             if extract_all:
-#                 entry.update(flat_attrs)
-#             else:
-#                 for field in fields:
-#                     aliases = FIELD_ALIASES.get(field, [field])
-#                     found = False
-#                     for alias in aliases:
-#                         if alias in flat_attrs:
-#                             entry[field] = flat_attrs[alias]
-#                             found = True
-#                             break
-#                     if not found:
-#                         entry[field] = 'not_specified'
-
-#             metadata.append(entry)
-
-#         except KeyError as e:
-#             msg = f"KeyError for report: {report.get('accession', 'unknown')} - {e}"
-#             print(f"\033[93m{msg}\033[0m")
-#             logger.warning(msg)
-#         except Exception as e:
-#             msg = f"Unexpected error: {e}"
-#             print(f"\033[91m{msg}\033[0m")
-#             logger.warning(f"Unexpected error: {e}")
-
-#     return metadata
 
 def parse_json(json_input, extract_all, fields, logger):
     json_files = []
@@ -232,7 +175,6 @@ def run_search(args):
         logger.warning(msg)
         return
 
-    #ext = os.path.splitext(args.input)[-1].lower()
     ext = None
     if os.path.isdir(args.input):
         ext = 'dir'
