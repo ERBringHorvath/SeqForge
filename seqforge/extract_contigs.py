@@ -13,7 +13,7 @@ from utils.file_handler import collect_fasta_files, cleanup_temp_dir
 
 def process_contig_entry(row, fasta_map, evalue, min_perc, min_cov,
                          extracted_contigs, lock, *, logger):
-    # Filter by BLAST thresholds
+    
     if float(row['evalue']) > evalue or float(row['pident']) < min_perc or float(row['query_coverage']) < min_cov:
         msg = (f"Skipping sequence ({row['database']} query: {row['query_file_name']} "
                f"pident: {row['pident']} query coverage: {row['query_coverage']} "
@@ -24,13 +24,12 @@ def process_contig_entry(row, fasta_map, evalue, min_perc, min_cov,
 
     contig_key = (row['database'], row['sseqid'])
 
-    # Skip duplicates
+    #Skip duplicates
     with lock:
         if contig_key in extracted_contigs:
             return None
         extracted_contigs.add(contig_key)
 
-    # Get the FASTA file for this database
     original_fasta = fasta_map.get(row['database'])
     if not original_fasta:
         msg = f"No matching FASTA file found for {row['database']}"
@@ -59,7 +58,7 @@ def extract_contigs_from_csv(csv_path, fasta_input, output_fasta, evalue=1e-5,
     extracted_contigs = set()
     lock = Lock()
 
-    # Collect all FASTA files (directory, single file, or archive)
+    #Collect all FASTA files (file_handler)
     try:
         fasta_files, temp_dir = collect_fasta_files(fasta_input)
     except ValueError as e:
@@ -67,13 +66,12 @@ def extract_contigs_from_csv(csv_path, fasta_input, output_fasta, evalue=1e-5,
         logger.error(str(e))
         return
 
-    # Build a lookup map for quick database → FASTA resolution
+    #Build a lookup map for quick database to FASTA resolution
     fasta_map = {}
     for f in fasta_files:
         base = os.path.splitext(os.path.basename(f))[0]
         fasta_map[base] = f
 
-    # Parallel processing
     with concurrent.futures.ThreadPoolExecutor() as executor:
         futures = [
             executor.submit(
@@ -88,12 +86,11 @@ def extract_contigs_from_csv(csv_path, fasta_input, output_fasta, evalue=1e-5,
             if result:
                 contigs.append(result)
 
-    # Write results
     SeqIO.write(contigs, output_fasta, "fasta")
     print(f"\033[92mExtracted {len(contigs)} unique contigs to {output_fasta}\033[0m")
     logger.info(f"Extracted {len(contigs)} unique contigs to {output_fasta}")
 
-    # Clean up any extracted archive temp files
+    #Clean up any extracted archive temp files (/tmp/)
     cleanup_temp_dir(temp_dir, keep=keep_temp_files, logger=logger)
 
 def run_contigs(args):
