@@ -52,7 +52,7 @@ def run_split(args):
     total_records = len(records)
 
     if fragment_size:
-        num_chunks = ceil(total_records / fragment_size)
+        num_chunks = ceil(total_records / fragment_size) #round to closest int
         digits = len(str(num_chunks))
         msg = f"Splitting {total_records} sequences into {num_chunks} file(s) of ~{fragment_size} each"
         print(f"\n\033[94m{msg}\033[0m")
