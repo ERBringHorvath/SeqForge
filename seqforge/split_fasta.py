@@ -26,6 +26,7 @@ def run_split(args):
     print(f"Split-FASTA started at {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
     logger.info(f"Split-FASTA started at {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
 
+    #arg wrangling
     input_file = args.input
     output_dir = args.output_dir
     fragment_size = args.fragment
