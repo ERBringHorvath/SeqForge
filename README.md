@@ -30,7 +30,7 @@ Purpose: Rapid database creation and high-throughput querying <br/>
     *   Visualization of gene hits and sequence matches (hi-res PNG or PDF)
 *   Motif support in query: <br/>
     When using blastp (amino acid query against protein database), users may specify one or more amino acid motif(s) (e.g., WXWXIP (single motif) | XAXH GHXXGE (multiple motifs, space-separated list)) using the `--motif` flag. This performs a regex-based search across all BLAST hits, independent from internally-curated or user-defined percent identity, query coverage, and e-value thresholds, ensuring detection of conserved motifs even in low-identity or heterologous alignments that might otherwise be filtered out. This is particularly useful for detecting signature domains (e.g., catalytic triads, DNA-binding motifs) in diverse sequence families. Whole query matches or just the motif string may be exported to FASTA using `--motif-fasta-out` with or without `--motif-only`.
-    *    For focused motif investigations across multiple queries, each motif's associated query file may be linked in the command string. This will result in only that query file being parsed for motif matches.
+    *    For focused motif investigations across multiple queries, each motif's associated query file may be linked in the command string. This will result in only results associated with that query file being parsed for motif matches.
     *    Example:
             *    Query files: AT_domain.faa, KS_domain.faa
             *    Motifs: GHXXGE, TAXXSS
