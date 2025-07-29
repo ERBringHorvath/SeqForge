@@ -76,7 +76,9 @@ def process_sequence_entry(row, fasta_map, translate,
 def extract_sequences_from_csv(csv_path, fasta_input, output_fasta,
                                translate=False, evalue=1e-5,
                                min_perc=90.0, min_cov=75.0,
-                               up=0, down=0, *, keep_temp_files=False, logger=None):
+                               up=0, down=0, *, keep_temp_files=False, logger=None,
+                               threads):
+    
     df = pd.read_csv(csv_path)
     sequences = []
 
@@ -93,13 +95,15 @@ def extract_sequences_from_csv(csv_path, fasta_input, output_fasta,
         base = os.path.splitext(os.path.basename(f))[0]
         fasta_map[base] = f
 
-    with concurrent.futures.ProcessPoolExecutor() as executor:
+    with concurrent.futures.ProcessPoolExecutor(max_workers=threads) as executor:
+        # up = int(up)
+        # down = int(down)
         futures = [
             executor.submit(
                 process_sequence_entry,
                 row, fasta_map, translate,
                 evalue, min_perc, min_cov,
-                up, down, logger=logger
+                int(up), int(down), logger=logger
             )
             for _, row in df.iterrows()
         ]
@@ -151,10 +155,11 @@ def run(args):
         evalue=args.evalue,
         min_perc=args.min_perc,
         min_cov=args.min_cov,
-        up=args.up,
-        down=args.down,
+        up=int(args.up),
+        down=int(args.down),
         keep_temp_files=args.keep_temp_files,
-        logger=logger
+        logger=logger,
+        threads=args.threads if args.threads else 4
     )
 
     end_time = datetime.now()
