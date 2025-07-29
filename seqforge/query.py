@@ -355,6 +355,10 @@ def run_multiblast(args):
                           f"use MOTIF{{basename}} or MOTIF[basename]\033[0m")
                     continue
 
+            else:
+                motif = raw_motif.upper()
+                target_basename = None
+
             if len(motif) < 4 or len(re.findall(r"[^X]", motif)) < 2:
                 print(f"\033[91mInvalid motif '{motif}': must have ≥ 4 characters and ≥ 2 non-'X'\033[0m")
                 continue
