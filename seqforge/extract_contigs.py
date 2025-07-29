@@ -38,12 +38,13 @@ def process_contig_entry(row, fasta_map, evalue, min_perc, min_cov,
         return None
 
     found = False
-    for seq_record in SeqIO.parse(original_fasta, "fasta"):
-        if seq_record.id == row['sseqid']:
-            found = True
-            header_id = f"{seq_record.id}_{row['database']}_{row['query_file_name']}_full_contig"
-            description = "full contig extracted"
-            return SeqIO.SeqRecord(seq_record.seq, id=header_id, description=description)
+    with open(original_fasta, "r") as handle:
+        for seq_record in SeqIO.parse(handle, "fasta"):
+            if seq_record.id == row['sseqid']:
+                found = True
+                header_id = f"{seq_record.id}_{row['database']}_{row['query_file_name']}_full_contig"
+                description = "full contig extracted"
+                return SeqIO.SeqRecord(seq_record.seq, id=header_id, description=description)
 
     if not found:
         msg = f"Sequence ID {row['sseqid']} not found in {original_fasta}"

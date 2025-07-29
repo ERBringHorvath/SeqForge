@@ -40,7 +40,7 @@ def main():
 
     parser = argparse.ArgumentParser(prog='seqforge', description='SeqForge: A genomics toolkit.')
     parser.add_argument('--module-health', action='store_true', help='Check status of SeqForge Modules')
-    parser.add_argument('-v', '--version', action='version', version='%(prog)s 0.5.1')
+    parser.add_argument('-v', '--version', action='version', version='%(prog)s 0.5.2')
     subparsers = parser.add_subparsers(dest='command', help='Available commands')
 
     # Sub-parser for the "makedb" command

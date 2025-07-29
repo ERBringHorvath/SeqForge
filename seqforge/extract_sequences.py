@@ -29,44 +29,45 @@ def process_sequence_entry(row, fasta_map, translate,
         return None
 
     #parse and extract region
-    for seq_record in SeqIO.parse(original_fasta, "fasta"):
-        if seq_record.id != row['sseqid']:
-            continue
+    with open(original_fasta, "r") as handle:
+        for seq_record in SeqIO.parse(handle, "fasta"):
+            if seq_record.id != row['sseqid']:
+                continue
 
-        sstart, send = int(row['sstart']), int(row['send'])
-        low, high = min(sstart, send), max(sstart, send)
-        contig_len = len(seq_record.seq)
+            sstart, send = int(row['sstart']), int(row['send'])
+            low, high = min(sstart, send), max(sstart, send)
+            contig_len = len(seq_record.seq)
 
-        ideal_start = low - up
-        ideal_end = high + down
+            ideal_start = low - up
+            ideal_end = high + down
 
-        #clamp to contig boundaries
-        region_start = max(1, low  - up)
-        region_end   = min(contig_len, high + down)
+            #clamp to contig boundaries
+            region_start = max(1, low  - up)
+            region_end   = min(contig_len, high + down)
 
-        if ideal_start < 1:
-            print(f"\033[93mWarning: Requested upstream extension of {up} bp for "
-                  f"{seq_record.id} truncated at contig start (only {low-1} bp available)\033[0m")
-            logger.warning(f"Warning: Requested upstream extension of {up} bp for "
-                           f"{seq_record.id} truncated at contig start (only {low-1} bp available)")
-        if ideal_end > contig_len:
-            print(f"\033[93mWarning: Requested downstream extension of {down} bp for "
-                  f"{seq_record.id} truncated at contig end (only {contig_len-high} bp available)\033[0m")
-            logger.warning(f"Warning: Requested downstream extension of {down} bp for "
-                           f"{seq_record.id} truncated at contig end (only {contig_len-high} bp available)")
+            if ideal_start < 1:
+                print(f"\033[93mWarning: Requested upstream extension of {up} bp for "
+                    f"{seq_record.id} truncated at contig start (only {low-1} bp available)\033[0m")
+                logger.warning(f"Warning: Requested upstream extension of {up} bp for "
+                            f"{seq_record.id} truncated at contig start (only {low-1} bp available)")
+            if ideal_end > contig_len:
+                print(f"\033[93mWarning: Requested downstream extension of {down} bp for "
+                    f"{seq_record.id} truncated at contig end (only {contig_len-high} bp available)\033[0m")
+                logger.warning(f"Warning: Requested downstream extension of {down} bp for "
+                            f"{seq_record.id} truncated at contig end (only {contig_len-high} bp available)")
 
-        subseq = seq_record.seq[region_start-1:region_end]
-        #reverse-complement if hit on negative strand
-        if sstart > send:
-            subseq = subseq.reverse_complement()
+            subseq = seq_record.seq[region_start-1:region_end]
+            #reverse-complement if hit on negative strand
+            if sstart > send:
+                subseq = subseq.reverse_complement()
 
-        if translate:
-            trim_len = len(subseq) - (len(subseq) % 3)
-            subseq = subseq[:trim_len].translate()
+            if translate:
+                trim_len = len(subseq) - (len(subseq) % 3)
+                subseq = subseq[:trim_len].translate()
 
-        header_id   = f"{seq_record.id}_{row['database']}_{row['query_file_name']}_region"
-        description = "translated" if translate else "nucleotide"
-        return SeqIO.SeqRecord(subseq, id=header_id, description=description)
+            header_id   = f"{seq_record.id}_{row['database']}_{row['query_file_name']}_region"
+            description = "translated" if translate else "nucleotide"
+            return SeqIO.SeqRecord(subseq, id=header_id, description=description)
 
     msg = f"Sequence ID {row['sseqid']} not found in {original_fasta}"
     print(f"\033[91m{msg}\033[0m")
