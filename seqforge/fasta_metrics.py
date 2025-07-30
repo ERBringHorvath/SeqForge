@@ -21,17 +21,24 @@ def run_metrics(args):
                 return length, i + 1
         return 0, 0
     
+    def calculate_auN(lengths):
+        total = sum(lengths)
+
+        return sum(l * l for l in lengths) / total if total > 0 else 0
+    
     def compute_fasta_metrics(filepath, min_contig_size=500):
         records = list(SeqIO.parse(filepath, "fasta"))
         if not records:
             return None
         
+        all_lengths = [len(record.seq) for record in records]
         lengths = [len(record.seq) for record in records if len(record.seq) >= min_contig_size]
         if not lengths:
             #Return a row of zeros for empty or filtered files
             return {
                 "Filename": os.path.basename(filepath),
                 "Num_Contigs": 0,
+                "Num_Contigs_≥0bp": 0,
                 "Num_Contigs_≥1kb": 0,
                 "Num_Contigs_≥10kb": 0,
                 "Num_Contigs_≥50kb": 0,
@@ -58,6 +65,9 @@ def run_metrics(args):
         n50, l50 = calculate_nx_lx(lengths, threshold=0.5)
         n90, l90 = calculate_nx_lx(lengths, threshold=0.9)
 
+        auN_value = calculate_auN(lengths)
+
+        contigs_0bp = len(all_lengths)
         contigs_1kb = sum(1 for l in lengths if l >= 1000)
         contigs_10kb = sum(1 for l in lengths if l >= 10000)
         contigs_50kb = sum(1 for l in lengths if l >= 50000)
@@ -70,6 +80,7 @@ def run_metrics(args):
         return {
             "Filename": os.path.basename(filepath),
             "Num_Contigs": len(lengths),
+            "Num_Contigs_0bp": contigs_0bp,
             "Num_Contigs_≥1kb": contigs_1kb,
             "Num_Contigs_≥10kb": contigs_10kb,
             "Num_Contigs_≥50kb": contigs_50kb,
@@ -80,6 +91,7 @@ def run_metrics(args):
             "Shortest_Contig": min(lengths),
             "GC_Content(%)": round(gc_content, 2),
             "N_Count": n_count,
+            "auN": round(auN_value),
             "N50": n50,
             "N90": n90,
             "L50": l50,
@@ -97,12 +109,12 @@ def run_metrics(args):
         file_handler.setFormatter(formatter)
         logger.addHandler(file_handler)
 
-    logger.info(f"Metrics calculated based on minimum contig size of {args.min_contig_size} bp")
-    print(f"\n\033[96mMetrics calculated based on minimum contig size of {args.min_contig_size} bp\033[0m")
-
     start_time = datetime.now()
     print(f"Metrics analysis started at {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
     logger.info(f"Metrics analysis started at {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
+
+    logger.info(f"Metrics calculated based on minimum contig size of {args.min_contig_size} bp")
+    print(f"\n\033[96mMetrics calculated based on minimum contig size of {args.min_contig_size} bp\033[0m")
 
     #Collect all FASTA files
     try:
