@@ -287,7 +287,7 @@ seqforge query: <br />
 `-q`, `--query-files`: path to directory containing query files in amino acid FASTA format <br />
 `-o`, `--output`: path to directory to store results
 
-**Required for nucleotide queries (blasn):** <br/>
+**Required for nucleotide queries (blastn):** <br/>
 `--nucleotide-query`: use blastn for queries in nucleotide FASTA format
 
 **Optional arguments:** <br/>
