@@ -88,6 +88,7 @@ Purpose: General-use tools for various genomic workflows <br/>
         *   Total length of contigs ≥ 1 kb
         *   GC content (%)
         *   N count
+        *   auN
         *   N50, N90
         *   L50, L90
         *   Lengths of each contig (CSV only)
