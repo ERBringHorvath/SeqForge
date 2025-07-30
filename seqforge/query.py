@@ -100,11 +100,8 @@ def execute_blast_query(data):
     return output_file, db_name, query_file_basename
 
 def search_motif_block(rows, fasta_records, motif_regexes):
-    import pandas as pd
     import os
-
     results, warnings = [], []
-    matched_restrictions = {idx: False for idx, (_, _, target) in enumerate(motif_regexes, start=1) if target}
 
     for row in rows:
         gene_id = row['sseqid']
@@ -112,75 +109,44 @@ def search_motif_block(rows, fasta_records, motif_regexes):
         query_file = row['query_file_name']
         query_basename = os.path.splitext(query_file)[0]
 
+        # parse start/end
         try:
-            sstart = int(row['sstart'])
-            send = int(row['send'])
+            sstart, send = int(row['sstart']), int(row['send'])
         except (KeyError, ValueError) as e:
-            warnings.append(f"Skipping row with invalid numeric fields for {gene_id}: {e}")
+            warnings.append(f"Skipping row with invalid coords for {gene_id}: {e}")
             continue
 
-        sequence = next((seq for rec_id, seq in fasta_records.items() if rec_id.startswith(gene_id)), None)
-        if not sequence:
-            warnings.append(f"No matching sequence found for gene ID: {gene_id}")
+        # pull full sequence, then subsequence
+        seq = next((s for rid, s in fasta_records.items()
+                    if rid.startswith(gene_id)), None)
+        if not seq:
+            warnings.append(f"No FASTA record for {gene_id}")
             continue
 
-        result_row = {
-            'genome': genome,
-            'query': query_file,
-            'sseqid': gene_id,
-            'sstart': sstart,
-            'send': send
-        }
+        low, high = sorted([sstart, send])
+        subseq = seq[low-1:high]  # 1‑based → 0‑based slice
 
-        #Search motifs
+        # for each motif regex, emit one row PER match
         for idx, (motif_string, regex, target_basename) in enumerate(motif_regexes, start=1):
+            # if user restricted motif to a particular query, skip others
             if target_basename and query_basename != target_basename:
-                result_row[f"motif_{idx}"] = ''
-                result_row[f"motif_{idx}_pattern"] = motif_string
                 continue
 
-            try:
-                matches = [m.group() for m in regex.finditer(sequence)]
-                result_row[f"motif_{idx}"] = ",".join(matches) if matches else ''
-                result_row[f"motif_{idx}_pattern"] = motif_string
-                if matches and target_basename:
-                    matched_restrictions[idx] = True
-            except Exception as e:
-                warnings.append(f"Error searching motif '{motif_string}' in gene {gene_id}: {e}")
-                result_row[f"motif_{idx}"] = ''
-                result_row[f"motif_{idx}_pattern"] = motif_string
-
-        #Only keep rows with at least one motif hit
-        if any(result_row[f"motif_{i}"] for i in range(1, len(motif_regexes) + 1)):
-            results.append(result_row)
-
-    if results:
-        df = pd.DataFrame(results)
-        final_groups = []
-
-        for gene_id, group in df.groupby('sseqid'):
-            group = group.copy()
-            motif_cols = [c for c in group.columns if c.startswith('motif_') and not c.endswith('_pattern')]
-
-            for col in motif_cols:
-                #Skip columns with no commas entirely
-                if not any(',' in str(x) for x in group[col]):
-                    continue
-
-                split_motifs = [x.split(',') if x else [] for x in group[col]]
-                cleaned = []
-                for row_idx, motifs in enumerate(split_motifs):
-                    #Only adjust if this row had a comma-separated list
-                    if len(motifs) > 1:
-                        cleaned.append(motifs[row_idx] if row_idx < len(motifs) else '')
-                    else:
-                        cleaned.append(motifs[0] if motifs else '')
-                group[col] = cleaned
-
-            final_groups.append(group)
-
-        df = pd.concat(final_groups, ignore_index=True)
-        results = df.to_dict(orient='records')
+            for m in regex.finditer(subseq):
+                hit = {
+                    'genome':   genome,
+                    'query':    query_file,
+                    'sseqid':   gene_id,
+                    'sstart':   sstart,
+                    'send':     send,
+                    # record which motif and the pattern they used
+                    f'motif_{idx}':         m.group(),
+                    f'motif_{idx}_pattern': motif_string,
+                    # absolute positions of the motif in the full seq
+                    'match_start': low + m.start(),
+                    'match_end':   low + m.end() - 1,
+                }
+                results.append(hit)
 
     return results, warnings
 
@@ -224,6 +190,24 @@ def run_motif_search(df, fasta_path, motif_regexes, results_output_dir, threads)
             for col in (f"motif_{idx}", f"motif_{idx}_pattern"):
                 if col not in motif_df.columns:
                     motif_df[col] = ''
+
+        if not motif_df.empty:
+            key_cols = ['genome', 'query', 'sseqid', 'sstart', 'send']
+            motif_df = motif_df.fillna('')
+
+        def first_nonempty(series):
+            for v in series:
+                if v:
+                    return v
+            return ''
+        
+        agg_map = {col: first_nonempty for col in motif_df.columns if col not in key_cols}
+
+        motif_df = (
+            motif_df
+            .groupby(key_cols, as_index=False)
+            .agg(agg_map)
+        )
 
         motif_cols = [c for idx in range(1, len(motif_regexes)+1)
                       for c in (f"motif_{idx}", f"motif_{idx}_pattern")]
