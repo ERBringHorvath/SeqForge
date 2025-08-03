@@ -185,33 +185,16 @@ def run_motif_search(df, fasta_path, motif_regexes, results_output_dir, threads)
         motif_df = pd.DataFrame(results)
         base_cols = ['genome', 'query', 'sseqid', 'sstart', 'send']
 
-        #Ensure motif columns always exist
+        # Ensure motif columns always exist
         for idx in range(1, len(motif_regexes) + 1):
             for col in (f"motif_{idx}", f"motif_{idx}_pattern"):
                 if col not in motif_df.columns:
                     motif_df[col] = ''
 
-        if not motif_df.empty:
-            key_cols = ['genome', 'query', 'sseqid', 'sstart', 'send']
-            motif_df = motif_df.fillna('')
-
-        def first_nonempty(series):
-            for v in series:
-                if v:
-                    return v
-            return ''
-        
-        agg_map = {col: first_nonempty for col in motif_df.columns if col not in key_cols}
-
-        motif_df = (
-            motif_df
-            .groupby(key_cols, as_index=False)
-            .agg(agg_map)
-        )
-
-        motif_cols = [c for idx in range(1, len(motif_regexes)+1)
-                      for c in (f"motif_{idx}", f"motif_{idx}_pattern")]
-        motif_df = motif_df[base_cols + motif_cols]
+        # No collapsing — keep one row per individual motif hit (including repeats)
+        motif_cols = [c for idx in range(1, len(motif_regexes) + 1)
+                    for c in (f"motif_{idx}", f"motif_{idx}_pattern")]
+        motif_df = motif_df[base_cols + motif_cols + ['match_start', 'match_end']]
 
         motif_df.to_csv(os.path.join(results_output_dir, "motif_matches.csv"), index=False)
         print(f"\n\033[92mMotif matches saved to motif_matches.csv\033[0m")
