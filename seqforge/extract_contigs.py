@@ -52,9 +52,16 @@ def process_contig_entry(row, fasta_map, evalue, min_perc, min_cov,
         logger.warning(msg)
     return None
 
-def extract_contigs_from_csv(csv_path, fasta_input, output_fasta, evalue=1e-5,
-                             min_perc=90.0, min_cov=75.0, *, keep_temp_files=False, logger=None,
-                             threads):
+def extract_contigs_from_csv(csv_path, 
+                             fasta_input, 
+                             output_fasta, 
+                             evalue=1e-5,
+                             min_perc=90.0, 
+                             min_cov=75.0, 
+                             threads=4,
+                             keep_temp_files=False, 
+                             logger=None
+                             ):
     df = pd.read_csv(csv_path)
     contigs = []
     extracted_contigs = set()

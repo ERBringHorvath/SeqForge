@@ -9,6 +9,7 @@ import re
 from concurrent.futures import ProcessPoolExecutor
 
 from utils.file_handler import collect_fasta_files, cleanup_temp_dir
+from utils.progress import ProgressHandler
 
 #Valid FASTA extensions
 FASTA_EXTENSIONS = (".fasta", ".faa", ".fna", ".ffn", ".fa", ".fas",
@@ -33,7 +34,7 @@ def sanitize_files_in_place(filepaths):
         if old_name != new_name:
             os.rename(os.path.join(dir_path, old_name), os.path.join(dir_path, new_name))
 
-def makeblastdb_single(input_file, output_dir):
+def makeblastdb_single(input_file, output_dir, logger):
     filename = os.path.basename(input_file)
     basename = os.path.splitext(filename)[0]
 
@@ -113,8 +114,31 @@ def run_make_blast_db(args):
             logger.error("Filenames contain special characters. Aborting")
             return
 
+    progress_arg = args.progress
+    progress_mode = progress_arg if progress_arg is not None else "none"
+
+    makedb_progress = ProgressHandler(total=len(files_to_process),
+                                     prefix="Database Creation",
+                                     mode=progress_mode)
+
+    # Parallelize creation, updating progress in main thread
     with ProcessPoolExecutor(max_workers=threads) as executor:
-        executor.map(makeblastdb_single, files_to_process, [output_dir]*len(files_to_process))
+        futures = {executor.submit(makeblastdb_single, f, output_dir, logger): f for f in files_to_process}
+        for future in futures:
+            input_file = futures[future]
+            try:
+                future.result()
+            except Exception as e:
+                logger.error(f"Error processing {input_file}: {e}")
+                if args.progress == "bar":
+                    pass
+                else:
+                    print(f"\033[91mError creating DB for {input_file}: {e}\033[0m")
+            if progress_mode == "verbose":
+                print(f"Processed {os.path.basename(input_file)}")
+            makedb_progress.update(1)
+    makedb_progress.finish()
+
 
     cleanup_temp_dir(temp_dir, args.keep_temp_files, logger=logger)
 

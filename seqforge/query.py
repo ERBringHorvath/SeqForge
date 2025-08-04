@@ -15,6 +15,7 @@ from datetime import datetime
 import logging
 
 from utils.file_handler import collect_fasta_files, cleanup_temp_dir
+from utils.progress import ProgressHandler
 
 FASTA_EXTS = ('.fa', '.fna', '.fas', '.ffn', '.fasta', '.faa')
 
@@ -109,14 +110,13 @@ def search_motif_block(rows, fasta_records, motif_regexes):
         query_file = row['query_file_name']
         query_basename = os.path.splitext(query_file)[0]
 
-        # parse start/end
         try:
             sstart, send = int(row['sstart']), int(row['send'])
         except (KeyError, ValueError) as e:
             warnings.append(f"Skipping row with invalid coords for {gene_id}: {e}")
             continue
 
-        # pull full sequence, then subsequence
+        #pull full sequence, then subsequence
         seq = next((s for rid, s in fasta_records.items()
                     if rid.startswith(gene_id)), None)
         if not seq:
@@ -126,9 +126,9 @@ def search_motif_block(rows, fasta_records, motif_regexes):
         low, high = sorted([sstart, send])
         subseq = seq[low-1:high]  # 1‑based → 0‑based slice
 
-        # for each motif regex, emit one row PER match
+        #for each motif regex, emit one row PER match
         for idx, (motif_string, regex, target_basename) in enumerate(motif_regexes, start=1):
-            # if user restricted motif to a particular query, skip others
+            #if user restricted motif to a particular query, skip others
             if target_basename and query_basename != target_basename:
                 continue
 
@@ -139,10 +139,10 @@ def search_motif_block(rows, fasta_records, motif_regexes):
                     'sseqid':   gene_id,
                     'sstart':   sstart,
                     'send':     send,
-                    # record which motif and the pattern they used
+                    #record which motif and the pattern they used
                     f'motif_{idx}':         m.group(),
                     f'motif_{idx}_pattern': motif_string,
-                    # absolute positions of the motif in the full seq
+                    #absolute positions of the motif in the full seq
                     'match_start': low + m.start(),
                     'match_end':   low + m.end() - 1,
                 }
@@ -150,7 +150,7 @@ def search_motif_block(rows, fasta_records, motif_regexes):
 
     return results, warnings
 
-def run_motif_search(df, fasta_path, motif_regexes, results_output_dir, threads):
+def run_motif_search(df, fasta_path, motif_regexes, results_output_dir, threads, progress=None):
     fasta_records = {}
     try:
         fasta_files, temp_dir = collect_fasta_files(fasta_path)
@@ -166,16 +166,22 @@ def run_motif_search(df, fasta_path, motif_regexes, results_output_dir, threads)
 
     #Parallel search
     rows = [row for _, row in df.iterrows()]
-    row_chunks = chunkify(rows, max(1, len(rows) // max(1, threads)))
+    row_chunks = list(chunkify(rows, max(1, len(rows) // max(1, threads))))
 
     results, warnings = [], []
+
+    progress_mode = progress if progress is not None else "none"
+    motif_progress = ProgressHandler(total=len(row_chunks), prefix="Motif Search", mode=progress_mode)
+
     with ProcessPoolExecutor(max_workers=threads) as executor:
         futures = [executor.submit(search_motif_block, chunk, fasta_records, motif_regexes)
                    for chunk in row_chunks]
-        for future in futures:
+        for future, chunk in zip(futures, row_chunks):
             res, warns = future.result()
             results.extend(res)
             warnings.extend(warns)
+            motif_progress.update(1, current_item=f"chunk size {len(chunk)}")
+        motif_progress.finish()
 
     #Log warnings once
     for w in warnings:
@@ -185,13 +191,13 @@ def run_motif_search(df, fasta_path, motif_regexes, results_output_dir, threads)
         motif_df = pd.DataFrame(results)
         base_cols = ['genome', 'query', 'sseqid', 'sstart', 'send']
 
-        # Ensure motif columns always exist
+        #Ensure motif columns always exist
         for idx in range(1, len(motif_regexes) + 1):
             for col in (f"motif_{idx}", f"motif_{idx}_pattern"):
                 if col not in motif_df.columns:
                     motif_df[col] = ''
 
-        # No collapsing — keep one row per individual motif hit (including repeats)
+        #No collapsing: keep one row per individual motif hit (including repeats)
         motif_cols = [c for idx in range(1, len(motif_regexes) + 1)
                     for c in (f"motif_{idx}", f"motif_{idx}_pattern")]
         motif_df = motif_df[base_cols + motif_cols + ['match_start', 'match_end']]
@@ -365,8 +371,21 @@ def run_multiblast(args):
                           write_alignment))
             db_names.add((query_file_basename, basename))
 
+    progress_arg = args.progress
+
+    progress_mode = progress_arg if progress_arg is not None else "none"
+
+    blast_progress = ProgressHandler(total=len(tasks), prefix=f"{blast}", mode=progress_mode)
+
     with ProcessPoolExecutor(max_workers=threads) as executor:
-        executor.map(execute_blast_query, tasks)
+        futures = [executor.submit(execute_blast_query, t) for t in tasks]
+        for future, task in zip(futures, tasks):
+            output_file, db_name, query_file_basename = future.result()
+            if progress_mode == 'verbose':
+                _, db_path, query_file_path, *_ = task
+                print(f"Processed {os.path.basename(query_file_path)} for {os.path.basename(db_path)}")
+            blast_progress.update(1)
+        blast_progress.finish()
 
     fieldnames = ['qseqid', 'sseqid', 'pident', 'length', 'mismatch', 'gapopen',
                   'qstart', 'qend', 'sstart', 'send', 'evalue', 'bitscore', 'qlen', 'sframe']
@@ -395,7 +414,7 @@ def run_multiblast(args):
              'evalue', 'bitscore', 'length', 'mismatch', 'gapopen', 'qstart', 'qend',
              'sstart', 'send', 'qlen', 'sframe']]
     df.to_csv(os.path.join(results_output_dir, "all_results.csv"), index=False)
-    print(f"\033[92mSaved all_results.csv\033[0m")
+    print(f"\n\033[92mSaved all_results.csv\033[0m")
 
     filtered_df = df[(df['evalue'] <= evalue_threshold) &
                      (df['pident'] >= perc_identity_threshold) &
@@ -415,7 +434,7 @@ def run_multiblast(args):
     motif_df = pd.DataFrame()
     if using_motif:
         print(f"\033[95mSearching for motifs: {' '.join(m[0] for m in motif_regexes)}\033[0m")
-        motif_df = run_motif_search(df, fasta_path, motif_regexes, results_output_dir, threads)
+        motif_df = run_motif_search(df, fasta_path, motif_regexes, results_output_dir, threads, args.progress)
 
         #Handle restricted-target warnings only if hits exist
         if not motif_df.empty:
