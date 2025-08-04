@@ -126,9 +126,8 @@ def search_motif_block(rows, fasta_records, motif_regexes):
             print(f"No FASTA record for sseqid: {gene_id}")
             continue
 
-        # low, high = sorted([sstart, send])
-        # subseq = seq[low-1:high]  # 1‑based → 0‑based slice
-        subseq = seq
+        low, high = sorted([sstart, send])
+        subseq = seq[low-1:high]  # 1‑based → 0‑based slice
 
         #for each motif regex, emit one row PER match
         for idx, (motif_string, regex, target_basename) in enumerate(motif_regexes, start=1):
@@ -147,10 +146,8 @@ def search_motif_block(rows, fasta_records, motif_regexes):
                     f'motif_{idx}':         m.group(),
                     f'motif_{idx}_pattern': motif_string,
                     #absolute positions of the motif in the full seq
-                    # 'match_start': low + m.start(),
-                    # 'match_end':   low + m.end() - 1,
-                    'match_start': m.start(),
-                    'match_end': m.end() - 1
+                    'match_start': low + m.start(),
+                    'match_end':   low + m.end() - 1,
                 }
                 results.append(hit)
 
