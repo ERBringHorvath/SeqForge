@@ -109,6 +109,7 @@ def search_motif_block(rows, fasta_records, motif_regexes):
         genome = row['database']
         query_file = row['query_file_name']
         query_basename = os.path.splitext(query_file)[0]
+        seq = fasta_records.get(gene_id)
 
         try:
             sstart, send = int(row['sstart']), int(row['send'])
@@ -119,12 +120,15 @@ def search_motif_block(rows, fasta_records, motif_regexes):
         #pull full sequence, then subsequence
         seq = next((s for rid, s in fasta_records.items()
                     if rid.startswith(gene_id)), None)
+
         if not seq:
             warnings.append(f"No FASTA record for {gene_id}")
+            print(f"No FASTA record for sseqid: {gene_id}")
             continue
 
-        low, high = sorted([sstart, send])
-        subseq = seq[low-1:high]  # 1‑based → 0‑based slice
+        # low, high = sorted([sstart, send])
+        # subseq = seq[low-1:high]  # 1‑based → 0‑based slice
+        subseq = seq
 
         #for each motif regex, emit one row PER match
         for idx, (motif_string, regex, target_basename) in enumerate(motif_regexes, start=1):
@@ -143,8 +147,10 @@ def search_motif_block(rows, fasta_records, motif_regexes):
                     f'motif_{idx}':         m.group(),
                     f'motif_{idx}_pattern': motif_string,
                     #absolute positions of the motif in the full seq
-                    'match_start': low + m.start(),
-                    'match_end':   low + m.end() - 1,
+                    # 'match_start': low + m.start(),
+                    # 'match_end':   low + m.end() - 1,
+                    'match_start': m.start(),
+                    'match_end': m.end() - 1
                 }
                 results.append(hit)
 
