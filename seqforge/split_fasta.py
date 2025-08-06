@@ -6,9 +6,10 @@ import logging
 import gzip
 from io import TextIOWrapper
 from Bio import SeqIO
-from tqdm import tqdm
 from math import ceil
 from datetime import datetime
+
+from utils.progress import ProgressHandler
 
 def run_split(args):
     logger = logging.getLogger("split-fasta")
@@ -59,39 +60,48 @@ def run_split(args):
         print(f"\n\033[94m{msg}\033[0m")
         logger.info(msg)
 
-        with tqdm(total=total_records, desc="Fragmenting") as pbar:
-            for i in range(num_chunks):
-                chunk_records = records[i * fragment_size : (i + 1) * fragment_size]
-                chunk_num = str(i + 1).zfill(digits)
-                ext = ".fa.gz" if compress else ".fa"
-                out_name = f"{base_name}_Frag{fragment_size}_{chunk_num}{ext}"
-                out_path = os.path.join(output_dir, out_name)
-                try:
-                    if compress:
-                        with gzip.open(out_path, "wt") as f:
-                            SeqIO.write(chunk_records, f, "fasta")
-                    else:
-                        SeqIO.write(chunk_records, out_path, "fasta")
-                    pbar.update(len(chunk_records))
-                except Exception as e:
-                    logging.error(f"\n \033[91mError writing chunk {chunk_num}: {e}\033[0m")
+        progress = ProgressHandler(total=total_records, prefix="Fragmenting", mode='bar')
+
+        for i in range(num_chunks):
+            chunk_records = records[i * fragment_size : (i + 1) * fragment_size]
+            chunk_num = str(i + 1).zfill(digits)
+            ext = ".fa.gz" if compress else ".fa"
+            out_name = f"{base_name}_Frag{fragment_size}_{chunk_num}{ext}"
+            out_path = os.path.join(output_dir, out_name)
+            try:
+                if compress:
+                    with gzip.open(out_path, "wt") as f:
+                        SeqIO.write(chunk_records, f, "fasta")
+                else:
+                    SeqIO.write(chunk_records, out_path, "fasta")
+                progress.update(len(chunk_records))
+            except Exception as e:
+                logging.error(f"\n \033[91mError writing chunk {chunk_num}: {e}\033[0m")
+        
+        progress.finish()
+        print()
     else:
         msg = "Splitting into individual FASTA files..."
         print(f"\n\033[94m{msg}\033[0m")
         logger.info(msg)
-        with tqdm(total=total_records, desc="Processing") as pbar:
-            for record in records:
-                out_name = f"{record.id}.fasta.gz" if compress else f"{record.id}.fasta"
-                out_path = os.path.join(output_dir, out_name)
-                try:
-                    if compress:
-                        with gzip.open(out_path, "wt") as f:
-                            SeqIO.write([record], f, "fasta")
-                    else:
-                        SeqIO.write(record, out_path, "fasta")
-                    pbar.update(1)
-                except Exception as e:
-                    logging.error(f"\n \033[91mError writing {record.id}: {e}\033[0m")
+
+        progress = ProgressHandler(total=total_records, prefix="Processing", mode='bar')
+
+        for record in records:
+            out_name = f"{record.id}.fasta.gz" if compress else f"{record.id}.fasta"
+            out_path = os.path.join(output_dir, out_name)
+            try:
+                if compress:
+                    with gzip.open(out_path, "wt") as f:
+                        SeqIO.write([record], f, "fasta")
+                else:
+                    SeqIO.write(record, out_path, "fasta")
+                progress.update(1, current_item=record.id)
+            except Exception as e:
+                logging.error(f"\n \033[91mError writing {record.id}: {e}\033[0m")
+
+        progress.finish()
+        print()
 
     if args.compress:
         print("\n\033[93mCompressed output files (.fasta.gz)\033[0m\n")

@@ -269,7 +269,8 @@ seqforge makedb: <br/>
 **Optional arguments:** <br/>
 `-T`, `--threads`: number of cores to dedicate for multiprocessing (default = 4) <br/>
 `-s`, `--sanitize`: remove pipeline-breaking special characters from file names (renames in-place) <br/>
-`--keep-temp-files`: for archive submission; retains temporary directory generated at /tmp/seqforge_fasta_extract_*
+`--keep-temp-files`: for archive submission; retains temporary directory generated at /tmp/seqforge_fasta_extract_* <br/>
+`-p`, `--progress`: progress reporting mode; choices = 'bar', 'verbose', 'none'. --progress verbose prints a line per item.
 
 Example: <br />
 `seqforge makedb -f /path/to/FASTA/files -o /path/to/results/folder -T 8`
@@ -304,7 +305,8 @@ seqforge query: <br />
 `--motif-only`: for use with `--motif-fasta-out`; export only motif string to FASTA <br/>
 `-f`, `--fasta-directory`: path to FASTA file(s) used to create BLAST databases. Required if using `--motif` <br/>
 `--visualize`: generate heatmap of BLAST hits and sequence logo of motif hits if `--motif` returns matches <br/>
-`--pdf`: override PNG output of visualize and instead generated a PDF (use in combination with `--visualize`)
+`--pdf`: override PNG output of visualize and instead generated a PDF (use in combination with `--visualize`) <br/>
+`-p`, `--progress`: progress reporting mode; choices = 'bar', 'verbose', 'none'. --progress verbose prints a line per item.
 
 Basic example: <br />
 `seqforge query -T 8 -d /path/to/blast/database/files -q /path/to/query/files/` <br /> 

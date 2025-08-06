@@ -117,6 +117,11 @@ def search_motif_block(rows, fasta_records, motif_regexes):
             warnings.append(f"Skipping row with invalid coords for {gene_id}: {e}")
             continue
 
+        matches = [rid for rid in fasta_records if row['sseqid'] in rid]
+
+        # if debug:
+        #     print(f"Looking for {row['sseqid']} --> available keys matching: {matches}")
+
         #pull full sequence, then subsequence
         seq = next((s for rid, s in fasta_records.items()
                     if rid.startswith(gene_id)), None)
