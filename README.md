@@ -464,6 +464,16 @@ seqforge search: <br/>
 `seqforge search -i /path/to/input.(json | gbk) -o metadata.csv --fields accession isolation_source host region` <br/>
 `seqforge search -i /path/to/input/files -o metadata.csv --all --json`
 ______________________________________________________________________________________________________________________________________
+
+## Generate Unique FASTA Headers 
+### (AUGUSTUS base prediction compliant)
+
+seqforge unique-headers: <br/>
+`-i`, `--input`: path to FASTA file(s) <br/>
+`-o`, `--output-dir`: directory for output FASTA files (unless using `--in-place`) <br/>
+`--in-place`: modify input files in-place (uses temporary files for safety) <br/>
+`-p`, `--progress`: progress reporting mode; choices = 'bar', 'verbose', 'none'. --progress verbose prints a line per record.
+______________________________________________________________________________________________________________________________________
 ______________________________________________________________________________________________________________________________________
 
 # Citations
