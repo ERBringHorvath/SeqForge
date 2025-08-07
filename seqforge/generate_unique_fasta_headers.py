@@ -18,10 +18,10 @@ def run_unique_fasta_headers(args):
         logger.addHandler(fh)
 
     start_time = datetime.now()
-    print(f"Query started at {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
-    logger.info(f"Query started at {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"Unique-Headers started at {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
+    logger.info(f"Unique-Headers started at {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
 
-    input_path = args.input
+    input_path = args.fasta_directory
     in_place = getattr(args, 'in_place', False)
     output_dir = None if in_place else getattr(args, 'output_dir', None) or getattr(args, 'output', None)
 
@@ -85,6 +85,8 @@ def run_unique_fasta_headers(args):
                     rec.description = ''
                     SeqIO.write(rec, out_handle, "fasta")
                     prog.update(1, current_item=new_id)
+            
+            if mode in ('bar', 'verbose'):
                 prog.finish()
                 print()
 
@@ -99,6 +101,6 @@ def run_unique_fasta_headers(args):
             print(f"\033[91mError writing {target_path}: {e}\033[0m")
 
     end_time = datetime.now()
-    print(f"Query completed at {end_time.strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"Unique-Headers completed at {end_time.strftime('%Y-%m-%d %H:%M:%S')}")
     logger.info(f"Total runtime: {str(end_time - start_time)}")
     print(f"Total runtime: {str(end_time - start_time)}")

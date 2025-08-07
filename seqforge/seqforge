@@ -100,7 +100,7 @@ def main():
     split_fasta_parser = subparsers.add_parser('split-fasta')
     split_fasta_parser.add_argument('-i', '--input', required=True, help="Input multi-FASTA file")
     split_fasta_parser.add_argument('-o', '--output-dir', required=True, help="Output directory for split FASTA files")
-    split_fasta_parser.add_argument('--fragment', type=int, help="Split multi-FASTA into chunks of this many sequences")
+    split_fasta_parser.add_argument('-F', '--fragment', type=int, help="Split multi-FASTA into chunks of this many sequences")
     split_fasta_parser.add_argument('-C', '--compress', action='store_true', help="Compress output files as .gz")
     if 'split_fasta' in available_modules:
         split_fasta_parser.set_defaults(func=available_modules['split_fasta'])
@@ -167,9 +167,9 @@ def main():
         parser_fasta_metrics.set_defaults(func=available_modules['fasta_metrics'])
 
     parser_unique = subparsers.add_parser('unique-headers', help='Append source and random suffix to FASTA headers')
-    parser_unique.add_argument('-i', '--input', required=True, help='Path to FASTA file(s)')
+    parser_unique.add_argument('-f', '--fasta-directory', required=True, help='Path to FASTA file(s)')
     parser_unique.add_argument('-o', '--output-dir', help="Directory for output FASTA files (unless using --in-place)")
-    parser_unique.add_argument('--in-place', action='store_true', help="Modify input files in-place (uses temporary files for safety)")
+    parser_unique.add_argument('-I', '--in-place', action='store_true', help="Modify input files in-place (uses temporary files for safety)")
     parser_unique.add_argument('-p', '--progress', nargs="?", const="bar", 
                                choices=['bar', 'verbose', 'none'],
                                default=None,

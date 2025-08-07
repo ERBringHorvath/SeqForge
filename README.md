@@ -2,7 +2,7 @@
 
 ## Design Philosophy:
 
-SeqForge emphasizes clarity, flexibility, and scale. Each module is standalone but interoperable with others, allowing researchers to plug in just what they need or use the full pipeline. Designed for power users but accessible enough for those just entering the field, SeqForge aims to grow as the field of bacterial genomics and bioinformatics expands.
+SeqForge emphasizes clarity, flexibility, and scale. Each module is standalone but interoperable with others, allowing researchers to plug in just what they need or use the full pipeline. Designed for power users but accessible enough for those just entering the field, SeqForge aims to grow as the field of microbial genomics and bioinformatics expands.
 
 ### Note on FASTA file submission:
 
@@ -35,12 +35,12 @@ Purpose: Rapid database creation and high-throughput querying <br/>
             *    Query files: AT_domain.faa, KS_domain.faa
             *    Motifs: GHXXGE, TAXXSS
             *    Unlinked Query motif search: <br/>
-            `seqforge query -d <DB_DIR> -q <Query_DIR> -o <RESULTS_DIR> -f <FASTA_DIR> --motif GHXXGE TAXXSS`
+                `seqforge query -d <DB_DIR> -q <Query_DIR> -o <RESULTS_DIR> -f <FASTA_DIR> --motif GHXXGE TAXXSS`
                     * This results in all queries being searched for each motif
             *    Linked Query motif search: <br/>
                 `seqforge query -d <DB_DIR> -q <Query_DIR> -o <RESULTS_DIR> -f <FASTA_DIR> --motif GHXXGE{AT_domain} TAXXSS{KS_domain}` <br/>
                     *    This results in only AT_domain.faa being searched for GHXXGE and only KS_domain.faa being searched for TAXXSS.
-                    *    The exact query file basename should be placed within brackets as a part of the motif string. 
+                    *    The exact query file base name should be placed within brackets as a part of the motif string. 
 *   BLAST hits and motif matches may be visualized using the `--visualize` flag. BLAST hits across genomes are represented by a heatmap, where the color intensity of each individual cell reflects that query's percent identity within a specific genome. For queries that return > 1 hit per genome, only  the strongest hit will be used to construct the heatmap. If `--visualize` is combined with `--motif`, motif matches will be illustrated as a sequence logo representing amino acid frequencies. Plots may be saved as either a high resolution PNG or in PDF format (recommended). 
 ______________________________________________________________________________________________________________________________________
 Example Plots:
@@ -62,6 +62,7 @@ Purpose: Extract meaningful biological context from BLAST hits <br/>
     *   Filtering using percent identity, query coverage, and/or e-value.
 *   extract-contig<br/>
     Extract *entire contigs* from reference assemblies based on where BLAST hits occurred. Ideal for identifying genomic context of hits in metagenomic assemblies too large to open via a genome browser.
+    *   For .faa files containing coding sequences, `extract-contig` will extract the full protein sequence from the source file, not just the aligned region identified via `query` for query coverage < 100%. 
 ______________________________________________________________________________________________________________________________________
 ### <ins>Module 3: Utilities<ins/>
 
@@ -92,6 +93,14 @@ Purpose: General-use tools for various genomic workflows <br/>
         *   N50, N90
         *   L50, L90
         *   Lengths of each contig (CSV only)
+* unique-headers <br/>
+    Append unique identifiers to each FASTA header within a multi-FASTA file
+    *   Submit a single FASTA file or a directory of FASTA files
+    *   Appends source file name + unique alphanumeric barcode to header
+    *   Example:
+        *   Source file: GCA_000346795_1.faa
+        *   Example header: >hypothetical
+        *   unique-headers modification: >hypothetical_GCA_000346795_1_54uMe
 ______________________________________________________________________________________________________________________________________
 ______________________________________________________________________________________________________________________________________
 
@@ -238,6 +247,7 @@ Module Status Report:
  - search: Available
  - sanitize: Available
  - fasta_metrics: Available
+ - generate_unqiue_fasta_headers: Available
 ```
 If there is a problem, the status will read 'Broken or Missing' <br/>
 Submit issues [here](https://github.com/ERBringHorvath/SeqForge/issues)
@@ -289,23 +299,23 @@ seqforge query: <br />
 `-o`, `--output`: path to directory to store results
 
 **Required for nucleotide queries (blastn):** <br/>
-`--nucleotide-query`: use blastn for queries in nucleotide FASTA format
+`-N`, `--nucleotide-query`: use blastn for queries in nucleotide FASTA format
 
 **Optional arguments:** <br/>
 `-T`, `--threads`: number of cores to dedicate for multiprocessing (default = 4) <br />
-`--report-strongest-match`: report only the single strongest match for each query <br />
+`-R`, `--report-strongest-match`: report only the single strongest match for each query <br />
 `--min-perc`: define minimum percent identity threshold. Default = 90 <br />
 `--min-cov`: define minimum query coverage threshold. Default = 75 <br />
 `-e`, `--evalue`: maximum e-value cutoff, default 0.00001 <br />
 `--min-seq-len`: define minimum sequence length for short nucleotide sequence queries (use with caution and only with `--nucleotide-query`) <br />
-`--no-alignment-files`: suppress alignment file creation <br/>
+`-a`, `--no-alignment-files`: suppress alignment file creation <br/>
 `--keep-temp-files`: retain individual *_results.txt files in output directory <br/>
 `--motif`: amino acid motif (e.g., WXWXIP or space-separated list) to search within blastp hits. X is treated as a wildcard. Only for use with blastp queries <br/>
 `--motif-fasta-out`: export motif query alignments to FASTA <br/>
 `--motif-only`: for use with `--motif-fasta-out`; export only motif string to FASTA <br/>
 `-f`, `--fasta-directory`: path to FASTA file(s) used to create BLAST databases. Required if using `--motif` <br/>
-`--visualize`: generate heatmap of BLAST hits and sequence logo of motif hits if `--motif` returns matches <br/>
-`--pdf`: override PNG output of visualize and instead generated a PDF (use in combination with `--visualize`) <br/>
+`-V`, `--visualize`: generate heatmap of BLAST hits and sequence logo of motif hits if `--motif` returns matches <br/>
+`-P`, `--pdf`: override PNG output of visualize and instead generated a PDF (use in combination with `--visualize`) <br/>
 `-p`, `--progress`: progress reporting mode; choices = 'bar', 'verbose', 'none'. --progress verbose prints a line per item.
 
 Basic example: <br />
@@ -442,8 +452,8 @@ ________________________________________________________________________________
 seqforge split-fasta: <br />
 `-i`, `--input`: input multi-FASTA file <br />
 `-o`, `--output-dir`: output directory for split FASTA files <br />
-`--fragment`: split multi-FASTA file into defined chunks of *n* sequences each <br />
-`--compress`: compress output files as .gz <br />
+`-F`, `--fragment`: split multi-FASTA file into defined chunks of *n* sequences each <br />
+`-C`, `--compress`: compress output files as .gz <br />
 ______________________________________________________________________________________________________________________________________
 
 ## Extract Sequence Metadata from JSON/GenBank Files
@@ -471,7 +481,7 @@ ________________________________________________________________________________
 seqforge unique-headers: <br/>
 `-i`, `--input`: path to FASTA file(s) <br/>
 `-o`, `--output-dir`: directory for output FASTA files (unless using `--in-place`) <br/>
-`--in-place`: modify input files in-place (uses temporary files for safety) <br/>
+`-I`, `--in-place`: modify input files in-place (uses temporary files for safety) <br/>
 `-p`, `--progress`: progress reporting mode; choices = 'bar', 'verbose', 'none'. --progress verbose prints a line per record.
 ______________________________________________________________________________________________________________________________________
 ______________________________________________________________________________________________________________________________________
