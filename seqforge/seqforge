@@ -70,10 +70,10 @@ def main():
     parser_query.add_argument('-o', '--output', required=True, help='Path to directory to store results.')
     parser_query.add_argument('--min-perc', type=check_query_range, help='Define percent identity threshold (default = 90)')
     parser_query.add_argument('--min-cov', type=check_query_range, help="Define query coverage threshold (default = 75)")
-    parser_query.add_argument('--report-strongest-matches', action='store_true', help='Report only the top hit for each query')
-    parser_query.add_argument('--nucleotide-query', action='store_true', help='Use blastn for nucelotide queries')
+    parser_query.add_argument('-R', '--report-strongest-matches', action='store_true', help='Report only the top hit for each query')
+    parser_query.add_argument('-N', '--nucleotide-query', action='store_true', help='Use blastn for nucelotide queries')
     parser_query.add_argument('--min-seq-len', type=int, help='Minimum sequence length for database searches (use with caution)')
-    parser_query.add_argument('--no-alignment-files', action='store_true', help='Do not generate BLAST alignment output files.')
+    parser_query.add_argument('-a', '--no-alignment-files', action='store_true', help='Do not generate BLAST alignment output files.')
     parser_query.add_argument('--keep-temp-files', action='store_true', help='Keep temporary *_results.txt files in the output directory')
     parser_query.add_argument('--motif', type=str, nargs='+', 
                               help=("Amino acid motif (e.g., GHXXGE) to search within blast hits. X is treated as a wildcard. \n"
@@ -85,8 +85,8 @@ def main():
     parser_query.add_argument('--motif-fasta-out', action='store_true', help='Export motif match source gene as FASTA file(s)')
     parser_query.add_argument('--motif-only', action='store_true', help="For use with --motif-fasta-out, output only the motif string")    
     parser_query.add_argument('-f', '--fasta-directory', type=str, help='Path to FASTA file or directory of FASTA files used to create the BLAST databases. Required if using --motif' )
-    parser_query.add_argument('--visualize', action='store_true', help="visualize query results")
-    parser_query.add_argument('--pdf', action='store_true', help='Output figure to PDF instead of PNG')
+    parser_query.add_argument('-V', '--visualize', action='store_true', help="visualize query results")
+    parser_query.add_argument('-P', '--pdf', action='store_true', help='Output figure to PDF instead of PNG')
     parser_query.add_argument('-p', '--progress', nargs="?", const="bar",
                               choices=["none", "bar", "verbose"], default=None,
                               help=("Progress reporting mode "
@@ -101,7 +101,7 @@ def main():
     split_fasta_parser.add_argument('-i', '--input', required=True, help="Input multi-FASTA file")
     split_fasta_parser.add_argument('-o', '--output-dir', required=True, help="Output directory for split FASTA files")
     split_fasta_parser.add_argument('--fragment', type=int, help="Split multi-FASTA into chunks of this many sequences")
-    split_fasta_parser.add_argument('--compress', action='store_true', help="Compress output files as .gz")
+    split_fasta_parser.add_argument('-C', '--compress', action='store_true', help="Compress output files as .gz")
     if 'split_fasta' in available_modules:
         split_fasta_parser.set_defaults(func=available_modules['split_fasta'])
 
