@@ -12,7 +12,7 @@ FASTA_EXTENSIONS = (
     ".fasta.gz", ".faa.gz", ".fna.gz", ".ffn.gz", ".fa.gz", ".fas.gz"
 )
 
-def collect_fasta_files(input_path, sanitize_flag=False):
+def collect_fasta_files(input_path, sanitize_flag=False, temp_dir_base=None):
     input_path = os.path.abspath(input_path)
     temp_dir = None
 
@@ -29,23 +29,34 @@ def collect_fasta_files(input_path, sanitize_flag=False):
             return False
         return filename.endswith(FASTA_EXTENSIONS)
 
-    #Directory of FASTAs
-    if os.path.isdir(input_path):
-        fasta_files = [
-            os.path.join(input_path, f)
-            for f in os.listdir(input_path)
-            if is_valid_fasta(f)
-        ]
-        if not fasta_files:
-            raise ValueError(f"No FASTA files found in directory: {input_path}")
-        return fasta_files, None
+    def ensure_temp_base(dirpath):
+        if dirpath is None:
+            return None
+        
+        dirpath = os.path.abspath(os.path.expanduser(os.path.expandvars(dirpath)))
+
+        if os.path.exists(dirpath) and os.path.isfile(dirpath):
+            raise ValueError(f"--temp-dir '{dirpath}' is a file; expected a directory.")
+        
+        try:
+            os.makedirs(dirpath, exist_ok=True)
+        except Exception as e:
+            raise ValueError(f"Failed to create --temp-dir '{dirpath}': {e}")
+        
+        try:
+            with tempfile.NamedTemporaryFile(dir=dirpath, prefix="._permtest_", delete=True) as _:
+                pass
+        except Exception as e:
+            raise ValueError(f"--temp-dir '{dirpath}' is not writable: {e}")
+        
+        return dirpath
     
-    #Single FASTA file (compressed or not)
     if os.path.isfile(input_path) and is_valid_fasta(os.path.basename(input_path)):
         return [input_path], None
     
-    if os.path.isfile(input_path) and input_path.endswith((".zip", ".tar", ".tar.gz", ".tgz")):
-        temp_dir = tempfile.mkdtemp(prefix="seqforge_fasta_extract_")
+    if os.path.isfile(input_path) and input_path.endswith((".zip", ".tar", ".tar.gz", '.tgz')):
+        temp_dir_base = ensure_temp_base(temp_dir_base)
+        temp_dir = tempfile.mkdtemp(prefix="seqforge_fasta_extract_", dir=temp_dir_base)
 
         try:
             if input_path.endswith(".zip"):
@@ -63,10 +74,10 @@ def collect_fasta_files(input_path, sanitize_flag=False):
             for file in files:
                 if is_valid_fasta(file):
                     fasta_files.append(os.path.join(root, file))
-
+        
         if not fasta_files:
             shutil.rmtree(temp_dir, ignore_errors=True)
-            raise ValueError(f"No FASTA files found in archive: {input_path}")
+            raise ValueError(f"No FASTA files found in archve: {input_path}")
         
         return fasta_files, temp_dir
     
@@ -78,6 +89,6 @@ def cleanup_temp_dir(temp_dir, keep=False, logger=None):
             msg = f"Temporary FASTA files retained for debugging: {temp_dir}"
             if logger:
                 logger.info(msg)
-            print(f"\033[93m{msg}\033[0m")
+            print(f"\033[92m{msg}\033[0m")
         else:
             shutil.rmtree(temp_dir, ignore_errors=True)

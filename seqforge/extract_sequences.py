@@ -78,14 +78,14 @@ def extract_sequences_from_csv(csv_path, fasta_input, output_fasta,
                                translate=False, evalue=1e-5,
                                min_perc=90.0, min_cov=75.0,
                                up=0, down=0, *, keep_temp_files=False, logger=None,
-                               threads):
+                               threads=4, temp_dir_base=None):
     
     df = pd.read_csv(csv_path)
     sequences = []
 
     #Collect all FASTA files (file_handler)
     try:
-        fasta_files, temp_dir = collect_fasta_files(fasta_input)
+        fasta_files, temp_dir = collect_fasta_files(fasta_input, temp_dir_base=temp_dir_base)
     except ValueError as e:
         print(f"\n\033[91mError: {e}\033[0m")
         logger.error(str(e))
@@ -158,7 +158,8 @@ def run(args):
         min_cov=args.min_cov,
         up=int(args.up),
         down=int(args.down),
-        keep_temp_files=args.keep_temp_files,
+        keep_temp_files=getattr(args, 'keep_temp_files', False),
+        temp_dir_base=getattr(args, 'temp_dir', None),
         logger=logger,
         threads=args.threads if args.threads else 4
     )

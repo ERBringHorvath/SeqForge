@@ -24,23 +24,36 @@ def chunkify(iterable, n):
     it = iter(iterable)
     return iter(lambda: list(islice(it, n)), [])
 
-def export_motif_fasta(motif_df, output_dir, fasta_path=None, motif_only=False):
+def export_motif_fasta(
+        motif_df, 
+        output_dir, 
+        fasta_path=None, 
+        motif_only=False, 
+        temp_dir_base=None,
+        keep_temp=False,
+        logger=None
+    ):
     if motif_df.empty:
         print("\033[93mNo motif matches to write FASTA files for.\033[0m")
         return
 
     fasta_records = {}
+    genome_temp_dir = None
+
     if not motif_only and fasta_path:
         try:
-            fasta_files, temp_dir = collect_fasta_files(fasta_path)
+            fasta_files, genome_temp_dir = collect_fasta_files(
+                fasta_path, 
+                temp_dir_base=temp_dir_base
+            )
         except ValueError:
-            fasta_files, temp_dir = [], None
+            fasta_files, genome_temp_dir = [], None
 
         for file in fasta_files:
             for record in SeqIO.parse(file, "fasta"):
                 fasta_records[record.id] = str(record.seq).upper()
 
-        cleanup_temp_dir(temp_dir, keep=False)
+        cleanup_temp_dir(genome_temp_dir, keep=keep_temp, logger=logger)
 
     motif_cols = [col for col in motif_df.columns if col.startswith("motif_") and not col.endswith("_pattern")]
 
@@ -158,19 +171,33 @@ def search_motif_block(rows, fasta_records, motif_regexes):
 
     return results, warnings
 
-def run_motif_search(df, fasta_path, motif_regexes, results_output_dir, threads, progress=None):
+def run_motif_search(
+        df, 
+        fasta_path, 
+        motif_regexes, 
+        results_output_dir, 
+        threads, 
+        progress=None,
+        keep_temp=False,
+        temp_dir_base=None
+    ):
+
     fasta_records = {}
     try:
-        fasta_files, temp_dir = collect_fasta_files(fasta_path)
+        fasta_files, temp_dir = collect_fasta_files(
+            fasta_path, temp_dir_base=temp_dir_base
+        )
     except ValueError as e:
         print(f"\n\033[91mError: {e}\033[0m")
         return pd.DataFrame()
+    
+    print(f"[debug] genome temp dir: {temp_dir}")
     
     for file in fasta_files:
         for record in SeqIO.parse(file, "fasta"):
             fasta_records[record.id] = str(record.seq).upper()
     
-    cleanup_temp_dir(temp_dir, keep=False)
+    cleanup_temp_dir(temp_dir, keep=keep_temp)
 
     #Parallel search
     rows = [row for _, row in df.iterrows()]
@@ -248,11 +275,13 @@ def run_multiblast(args):
         os.makedirs(results_output_dir)
 
     try:
-        query_files, temp_dir = collect_fasta_files(query_path)
+        query_files, temp_dir = collect_fasta_files(query_path, temp_dir_base=args.temp_dir)
     except ValueError as e:
         print(f"\n\033[91mError: {e}\033[0m")
         logger.error(str(e))
         return
+    
+    print(f"[debug] query temp dir: {temp_dir}")
     
     if not query_files:
         print(f"\033[91mError: No valid FASTA file(s) found at {query_path}\033[0m")
@@ -442,7 +471,16 @@ def run_multiblast(args):
     motif_df = pd.DataFrame()
     if using_motif:
         print(f"\033[95mSearching for motifs: {' '.join(m[0] for m in motif_regexes)}\033[0m")
-        motif_df = run_motif_search(df, fasta_path, motif_regexes, results_output_dir, threads, args.progress)
+        motif_df = run_motif_search(
+            df, 
+            fasta_path, 
+            motif_regexes, 
+            results_output_dir, 
+            threads, 
+            args.progress,
+            keep_temp=getattr(args, 'keep_temp_files', False),
+            temp_dir_base=getattr(args, 'temp_dir', None)
+        )
 
         #Handle restricted-target warnings only if hits exist
         if not motif_df.empty:
@@ -455,9 +493,15 @@ def run_multiblast(args):
                     logger.warning(msg)
 
     if using_motif and not motif_df.empty and args.motif_fasta_out:
-        export_motif_fasta(motif_df, results_output_dir, 
-                           fasta_path=fasta_path,
-                           motif_only=args.motif_only)
+        export_motif_fasta(
+            motif_df, 
+            results_output_dir, 
+            fasta_path=fasta_path,
+            motif_only=args.motif_only,
+            keep_temp=getattr(args, 'keep_temp_files', False),
+            temp_dir_base=getattr(args, 'temp_dir', None),
+            logger=logger
+            )
 
     if args.visualize:
         from visualize import run_visualization

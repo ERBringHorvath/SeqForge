@@ -60,7 +60,8 @@ def extract_contigs_from_csv(csv_path,
                              min_cov=75.0, 
                              threads=4,
                              keep_temp_files=False, 
-                             logger=None
+                             logger=None,
+                             temp_dir_base=None
                              ):
     df = pd.read_csv(csv_path)
     contigs = []
@@ -69,7 +70,7 @@ def extract_contigs_from_csv(csv_path,
 
     #Collect all FASTA files (file_handler)
     try:
-        fasta_files, temp_dir = collect_fasta_files(fasta_input)
+        fasta_files, temp_dir = collect_fasta_files(fasta_input, temp_dir_base=temp_dir_base)
     except ValueError as e:
         print(f"\n\033[91mError: {e}\033[0m")
         logger.error(str(e))
@@ -125,7 +126,8 @@ def run_contigs(args):
         evalue=args.evalue,
         min_perc=args.min_perc,
         min_cov=args.min_cov,
-        keep_temp_files=args.keep_temp_files,
+        keep_temp_files=getattr(args, 'keep_temp_files', False),
+        temp_dir_base=getattr(args, 'temp_dir', None),
         logger=logger,
         threads=args.threads if args.threads else 4
     )

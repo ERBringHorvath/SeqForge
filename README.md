@@ -279,6 +279,7 @@ seqforge makedb: <br/>
 **Optional arguments:** <br/>
 `-T`, `--threads`: number of cores to dedicate for multiprocessing (default = 4) <br/>
 `-s`, `--sanitize`: remove pipeline-breaking special characters from file names (renames in-place) <br/>
+`--temp-dir`: specify a temporary directory for archive extraction (default = /tmp/) <br/>
 `--keep-temp-files`: for archive submission; retains temporary directory generated at /tmp/seqforge_fasta_extract_* <br/>
 `-p`, `--progress`: progress reporting mode; choices = 'bar', 'verbose', 'none'. --progress verbose prints a line per item.
 
@@ -309,6 +310,7 @@ seqforge query: <br />
 `-e`, `--evalue`: maximum e-value cutoff, default 0.00001 <br />
 `--min-seq-len`: define minimum sequence length for short nucleotide sequence queries (use with caution and only with `--nucleotide-query`) <br />
 `-a`, `--no-alignment-files`: suppress alignment file creation <br/>
+`--temp-dir`: specify a temporary directory for archive extraction (default = /tmp/) <br/>
 `--keep-temp-files`: retain individual *_results.txt files in output directory <br/>
 `--motif`: amino acid motif (e.g., WXWXIP or space-separated list) to search within blastp hits. X is treated as a wildcard. Only for use with blastp queries <br/>
 `--motif-fasta-out`: export motif query alignments to FASTA <br/>
@@ -357,6 +359,7 @@ These should be the FASTA files the BLAST databases were created from and should
 `--translate`: translates extracted nucleotide sequence(s) <br/>
 `--up`: extract additional basepairs upstream of aligned sequence <br/>
 `--down`: extract additional basepairs downstream of aligned sequence <br/>
+`--temp-dir`: specify a temporary directory for archive extraction (default = /tmp/) <br/>
 `--keep-temp-files`: for archive submission; retains temporary directory generated at /tmp/seqforge_fasta_extract_*
 
 **NOTE:** Translation of sequences is optional, however care should be used when translating extracted nucleotide sequences, as BLAST results may not always contain a full CDS. To allow for this, when the `--translate` argument is called, extracted sequences will be trimmed to only include complete codons, which may affect interpretation of results. Generally, BLAST+ will return sequence coordinates in the correct frame; this has been tested and no mistranslations have been logged, but there are always exceptions. 
@@ -404,6 +407,7 @@ These should be the FASTA files the BLAST databases were created from and should
 `-e`, `--evalue`: maximum e-value threshold, default = 0.00001 <br />
 `--min-perc`: minimum percent identity threshold. Default = 90 <br />
 `--min-cov`: minimum query coverage threshold. Default = 75 <br />
+`--temp-dir`: specify a temporary directory for archive extraction (default = /tmp/) <br/>
 `--keep-temp-files`: for archive submission; retains temporary directory generated at /tmp/seqforge_fasta_extract_*
 
 **NOTE:** Results files and FASTA reference assemblies <ins>**must**</ins> share the same basename for both `seqforge extract` and `seqforge extract-contig`:
@@ -444,6 +448,7 @@ seqforge fasta-metrics: <br/>
 `-f`, `--fasta-directory`: path to FASTA file or directory of FASTA files to be analyzed <br/>
 `-o`, `--output`: optional name for CSV summary (default: fasta_metrics_summary.csv) <br/>
 `-M`, `--min-contig-size`: minimum contig size to include for all calculations (default = 500) <br/>
+`--temp-dir`: specify a temporary directory for archive extraction (default = /tmp/) <br/>
 `--keep-temp-files`: for archive submission; retains temporary directory generated at /tmp/seqforge_fasta_extract_*
 ______________________________________________________________________________________________________________________________________
 

@@ -89,7 +89,7 @@ def run_make_blast_db(args):
         os.makedirs(output_dir)
 
     try:
-        files_to_process, temp_dir = collect_fasta_files(input_path, sanitize_flag=args.sanitize)
+        files_to_process, temp_dir = collect_fasta_files(input_path, sanitize_flag=args.sanitize, temp_dir_base=args.temp_dir)
     except ValueError as e:
         print(f"\n\033[91mError: {e}\033[0m")
         logger.error(str(e))

@@ -118,7 +118,7 @@ def run_metrics(args):
 
     #Collect all FASTA files
     try:
-        fasta_files, temp_dir = collect_fasta_files(args.fasta_directory)
+        fasta_files, temp_dir = collect_fasta_files(args.fasta_directory, temp_dir_base=args.temp_dir)
     except ValueError as e:
         msg = f"Error: {e}"
         print(f"\n\033[91m{msg}\033[0m")
