@@ -51,6 +51,17 @@ def collect_fasta_files(input_path, sanitize_flag=False, temp_dir_base=None):
         
         return dirpath
     
+    #Directory of FASTAs
+    if os.path.isdir(input_path):
+        fasta_files = [
+            os.path.join(input_path, f)
+            for f in os.listdir(input_path)
+            if is_valid_fasta(f)
+        ]
+        if not fasta_files:
+            raise ValueError(f"No FASTA files found in directory: {input_path}")
+        return fasta_files, None
+    
     if os.path.isfile(input_path) and is_valid_fasta(os.path.basename(input_path)):
         return [input_path], None
     
