@@ -489,7 +489,7 @@ ________________________________________________________________________________
 ### (AUGUSTUS base prediction compliant)
 
 seqforge unique-headers: <br/>
-`-i`, `--input`: path to FASTA file(s) <br/>
+`-f`, `--fasta-directory`: path to FASTA file(s) <br/>
 `-o`, `--output-dir`: directory for output FASTA files (unless using `--in-place`) <br/>
 `-I`, `--in-place`: modify input files in-place (uses temporary files for safety) <br/>
 `-p`, `--progress`: progress reporting mode; choices = 'bar', 'verbose', 'none'. --progress verbose prints a line per record.
