@@ -161,8 +161,11 @@ ________________________________________________________________________________
 
 **License:** <br />
     This program is shared under MIT License, which allows for modification and redistribution with attribution.
+______________________________________________________________________________________________________________________________________
 
-## Install NCBI BLAST+
+# Installation
+
+### Install NCBI BLAST+
 
 **SeqForge uses [NCBI BLAST+](https://pubmed.ncbi.nlm.nih.gov/20003500/)**
 
@@ -203,7 +206,7 @@ If not already installed, install [Git](https://github.com/git-guides/install-gi
 * To test installation, open the terminal and type `git --version` <br />
 * For macOS users, you should see something like `git version 2.37.1 (Apple Git-137.1)`
 
-## **Clone SeqForge from source**
+### **Clone SeqForge from source**
 
 We suggest installing SeqForge within your Home folder, such as `/home/user/` 
 
@@ -217,7 +220,7 @@ Clone SeqForge from the repository
 
 Add SeqForge to your PATH
 
-1. Open your profile in a text editor. This might be `~/.bash_profile` or `~/.zshrc`
+1. Open your profile in a text editor. This might be `~/.bash_profile`, `~/.bashrc`, or `~/.zshrc`
 2. Add the following line to the end of the file:
 
 `export PATH=$PATH:/home/user/SeqForge/seqforge`
