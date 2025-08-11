@@ -191,8 +191,6 @@ def run_motif_search(
         print(f"\n\033[91mError: {e}\033[0m")
         return pd.DataFrame()
     
-    print(f"[debug] genome temp dir: {temp_dir}")
-    
     for file in fasta_files:
         for record in SeqIO.parse(file, "fasta"):
             fasta_records[record.id] = str(record.seq).upper()
