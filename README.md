@@ -184,7 +184,7 @@ Or using Conda:
 
 `conda create -n seqforge`
 
-3. Activate Conda envrionment
+3. Activate Conda environment
 
 `source activate seqforge`
 
@@ -194,21 +194,21 @@ Or using Conda:
 
 **Verify BLAST Installation**
 
-`makeblastdb -h` <br />
-`blastn -h`
+`makeblastdb --help` <br />
+`blastn --help`
 
 If these commands run without error, BLAST is correctly installed. If an error occurs, refer to the [BLAST+ documentation](https://blast.ncbi.nlm.nih.gov/doc/blast-help/index.html#index)
 
 ## SeqForge Installation
 
 If not already installed, install [Git](https://github.com/git-guides/install-git) <br />
-* Linux/macOS systems should have this installed by default <br />
+* Linux/macOS systems may have this installed by default <br />
 * To test installation, open the terminal and type `git --version` <br />
 * For macOS users, you should see something like `git version 2.37.1 (Apple Git-137.1)`
 
 ### **Clone SeqForge from source**
 
-We suggest installing SeqForge within your Home folder, such as `/home/user/` 
+We suggest installing SeqForge within your Home folder, such as `/home/user` 
 
 Change directory to desired installation path
 
@@ -231,6 +231,8 @@ Whatever the initial directory, this path should end with `/SeqForge/seqforge`
 Save the file and restart your terminal or run `source ~/.bashrc` or `~/.bash_profile` (Linux/macOS) or `source ~/.zshrc` (macOS)
 
 **Install Dependencies**
+
+Locate to the SeqForge/seqforge directory:
 
 `pip install -r requirements.txt` or `pip3 install -r requirements.txt`
 
@@ -290,8 +292,8 @@ Example: <br />
 `seqforge makedb -f /path/to/FASTA/files -o /path/to/results/folder -T 8`
 
 **Database type is automatically detected during database creation following standard FASTA extension practices** <br/>
-.fasta, .fa, .fas, .ffn, .fna == nucleotide <br/>
-.faa == protein 
+*   .fasta, .fa, .fas, .ffn, .fna == nucleotide
+*   .faa == protein 
 ______________________________________________________________________________________________________________________________________
 
 **Querying a database library**
