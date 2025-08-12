@@ -485,14 +485,16 @@ seqforge search: <br/>
 `seqforge search -i /path/to/input/files -o metadata.csv --all --json`
 ______________________________________________________________________________________________________________________________________
 
-## Generate Unique FASTA Headers 
-### (AUGUSTUS base prediction compliant)
+## Generate Unique FASTA Headers
+### Appends unique barcode to each FASTA header line
 
 seqforge unique-headers: <br/>
 `-f`, `--fasta-directory`: path to FASTA file(s) <br/>
 `-o`, `--output-dir`: directory for output FASTA files (unless using `--in-place`) <br/>
 `-I`, `--in-place`: modify input files in-place (uses temporary files for safety) <br/>
-`-p`, `--progress`: progress reporting mode; choices = 'bar', 'verbose', 'none'. --progress verbose prints a line per record.
+`-p`, `--progress`: progress reporting mode; choices = 'bar', 'verbose', 'none'. `--progress verbose` prints a line per record.
+
+We suggest using this module for any CDS prediction .faa output file(s) prior to Query-Motif
 ______________________________________________________________________________________________________________________________________
 ______________________________________________________________________________________________________________________________________
 
