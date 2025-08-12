@@ -279,8 +279,6 @@ def run_multiblast(args):
         logger.error(str(e))
         return
     
-    print(f"[debug] query temp dir: {temp_dir}")
-    
     if not query_files:
         print(f"\033[91mError: No valid FASTA file(s) found at {query_path}\033[0m")
         logger.warning("No valid FASTA files found")

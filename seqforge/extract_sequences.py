@@ -6,9 +6,33 @@ import logging
 from datetime import datetime
 import pandas as pd
 from Bio import SeqIO
+from Bio.SeqRecord import SeqRecord
 import concurrent.futures
 
 from utils.file_handler import collect_fasta_files, cleanup_temp_dir
+
+NUC_CHARS = set("ACGTRYSWKMBDHVNU-.") #IUPAC nucleotides + gap/dot
+
+def is_protein_fasta(path, max_records=25, max_chars=20000):
+    seen = set()
+    total = 0
+    try:
+        for i, rec in enumerate(SeqIO.parse(path, "fasta"), start=1):
+            s = str(rec.seq).upper()
+            for ch in s:
+                if ch.isalpha() or ch in "-.*":
+                    seen.add(ch)
+                    total += 1
+                    if ch not in NUC_CHARS:
+                        return True #definitely protein
+                    if total >= max_chars:
+                        return False
+            if i >= max_records:
+                break
+    except Exception:
+        return False
+    #If we only see NT chars, call it NT
+    return False
 
 def process_sequence_entry(row, fasta_map, translate,
                            evalue, min_perc, min_cov,
@@ -67,7 +91,7 @@ def process_sequence_entry(row, fasta_map, translate,
 
             header_id   = f"{seq_record.id}_{row['database']}_{row['query_file_name']}_region"
             description = "translated" if translate else "nucleotide"
-            return SeqIO.SeqRecord(subseq, id=header_id, description=description)
+            return SeqRecord(subseq, id=header_id, description=description)
 
     msg = f"Sequence ID {row['sseqid']} not found in {original_fasta}"
     print(f"\033[91m{msg}\033[0m")
@@ -90,6 +114,23 @@ def extract_sequences_from_csv(csv_path, fasta_input, output_fasta,
         print(f"\n\033[91mError: {e}\033[0m")
         logger.error(str(e))
         return
+    
+    if translate:
+        offending = []
+        for f in fasta_files:
+            name = os.path.basename(f).lower()
+            if name.endswith((".faa", ".faa.gz")) or is_protein_fasta(f):
+                offending.append(f)
+        if offending:
+            msg = {
+                "Amino acid FASTA(s) detected; --translate expects nucleotide sequences\n"
+                "Offending files:\n " + "\n ".join(offending[:10]) + ("..." if len(offending) > 10 else "")
+            }
+            print(f"\033[91m{msg}\033[0m")
+            if logger:
+                logger.warning(msg)
+            cleanup_temp_dir(temp_dir, keep=keep_temp_files, logger=logger)
+            return
 
     fasta_map = {}
     for f in fasta_files:

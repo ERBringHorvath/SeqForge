@@ -158,6 +158,12 @@ def run_search(args):
     logger.setLevel(logging.INFO)
     logger.propagate = False
 
+    if not args.all and not args.fields:
+        print("\n\033[93mPlease use either '--all' to extract all available metadata "
+              "or '--fields <fields>' to extract specific items\n"
+              "Use 'seqforge search -h' to print a list of available fields\033[0m")
+        return
+
     if not any(isinstance(h, logging.FileHandler) and h.baseFilename.endswith("seqforge_search.log")
             for h in logger.handlers):
         file_handler = logging.FileHandler("seqforge_search.log", mode='a')

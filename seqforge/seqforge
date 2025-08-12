@@ -41,7 +41,7 @@ def main():
 
     parser = argparse.ArgumentParser(prog='seqforge', description='SeqForge: A genomics toolkit.')
     parser.add_argument('--module-health', action='store_true', help='Check status of SeqForge Modules')
-    parser.add_argument('-v', '--version', action='version', version='%(prog)s 0.6.7')
+    parser.add_argument('-v', '--version', action='version', version='%(prog)s 1.0.0')
     parser.add_argument('--info', action='store_true', help="Program details")
     subparsers = parser.add_subparsers(dest='command', help='Available commands')
 
@@ -90,7 +90,7 @@ def main():
     parser_query.add_argument('-V', '--visualize', action='store_true', help="visualize query results")
     parser_query.add_argument('-P', '--pdf', action='store_true', help='Output figure to PDF instead of PNG')
     parser_query.add_argument('-p', '--progress', nargs="?", const="bar",
-                              choices=["none", "bar", "verbose"], default=None,
+                              choices=["bar", "verbose", "none"], default=None,
                               help=("Progress reporting mode "
                                     "passing only --progress is equivalent to --progress bar "
                                     "'verbose' prints a line per item, 'none' silences output")
