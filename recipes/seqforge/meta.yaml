@@ -35,18 +35,11 @@ test:
   commands:
     - seqforge --version
     - seqforge --module-health
-    - python - <<'PY'
-      from pathlib import Path
-      p = Path("t.fa")
-      p.write_text(">a\nACGT\n>b\nACGT\n")
-      import subprocess, os
-      os.makedirs("out", exist_ok=True)
-      # adjust subcommand token if yours differs from "unique-headers"
-      subprocess.run(["seqforge","unique-headers","-i","t.fa","-o","out","--progress","none"], check=True)
-      out = Path("out") / "t.fa"
-      print(out.read_text())
-      print("OK")
-      PY
+    - python -c "from pathlib import Path; Path('t.fa').write_text('>a\nACGT\n>b\nACGT\n')"
+    - mkdir -p out
+    - seqforge unique-headers -i t.fa -o out --progress none
+    - test -f out/t.fa
+    - python -c "from pathlib import Path; print((Path('out')/'t.fa').read_text()); print('OK')"
 
 about:
   home: https://github.com/ERBringHorvath/SeqForge

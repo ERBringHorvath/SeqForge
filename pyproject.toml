@@ -22,3 +22,10 @@ seqforge = "seqforge.cli:main"
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["seqforge*"]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+python_files = "test_*.py"
