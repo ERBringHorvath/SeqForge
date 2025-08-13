@@ -225,15 +225,15 @@ Add SeqForge to your PATH
 
 `export PATH=$PATH:/home/user/SeqForge/seqforge`
 
-Or run:
-
-`echo 'export PATH="$PATH:/$HOME/SeqForge/seqforge"' >> ~/.bashrc` <br/>
-`source ~/.bashrc` 
-
 Replace `/home/user/SeqForge/seqforge` with the actual path to the directory containing the executable. <br />
 Whatever the initial directory, this path should end with `/SeqForge/seqforge`
 
 Save the file and restart your terminal or run `source ~/.bashrc` or `~/.bash_profile` (Linux/macOS) or `source ~/.zshrc` (macOS)
+
+Or run:
+
+`echo 'export PATH="$PATH:/$HOME/SeqForge/seqforge"' >> ~/.bashrc` <br/>
+`source ~/.bashrc` 
 
 **Install Dependencies**
 
@@ -244,7 +244,7 @@ Locate to the SeqForge/ directory:
 
 **Verify SeqForge Installation**
 
-`seqforge --version`
+`seqforge --version` <br/>
 `seqforge --module-health` <br/>
 
 You should see: <br/>
