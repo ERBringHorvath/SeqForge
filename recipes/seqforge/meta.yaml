@@ -22,43 +22,41 @@ requirements:
     - python >=3.10
     - biopython
     - pandas
-    - matplotlib-base
     - blast
+    - matplotlib-base
     - seaborn
     - logomaker
 
 test:
   requires:
     - python
-    - pip
   commands:
-    - python -c "import sys; import seqforge; print('ok')"
     - seqforge --version
     - seqforge --module-health
-
     - python - <<'PY'
-from pathlib import pathlib
-p  = Path("tmp.fa")
-p.write_text(">a\nACGT\n>b\nACGT\n")
-import subprocess, os
-os.makedirs("out", exist_ok=True)
-r = subprocess.run(["seqforge","unique-headers","-f","tmp.fa","-o","--progress","none"], check=True)
-out = Path("out") / "temp.fa"
-print(out.read_text())
-print("OK")
-PY
+      from pathlib import Path
+      p = Path("t.fa")
+      p.write_text(">a\nACGT\n>b\nACGT\n")
+      import subprocess, os
+      os.makedirs("out", exist_ok=True)
+      # adjust subcommand token if yours differs from "unique-headers"
+      subprocess.run(["seqforge","unique-headers","-i","t.fa","-o","out","--progress","none"], check=True)
+      out = Path("out") / "t.fa"
+      print(out.read_text())
+      print("OK")
+      PY
 
 about:
   home: https://github.com/ERBringHorvath/SeqForge
-  license: matplotlib
+  license: MIT
   license_family: MIT
-  license_file: license
+  license_file: LICENSE
   summary: "SeqForge: A genomics toolkit for FASTA processing, BLAST orchestration, and motif mining."
   description: |
-    SeqForge provides utilities to sanitize, split, annotate, and analyze FASTA files; run BLAST+ queries 
-    in parallel; and perform motif mining with export options. Progress reporting is handled by an in-house 
-    progress bar.
+    SeqForge provides utilities to sanitize, split, annotate, and analyze FASTA files; run BLAST+ queries
+    in parallel; and perform motif mining with export options. Progress reporting is handled by an
+    in-house progress bar (no tqdm dependency).
 
 extra:
-  recipe-maintainters:
+  recipe-maintainers:
     - ERBringHorvath
