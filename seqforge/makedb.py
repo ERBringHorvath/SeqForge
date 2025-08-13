@@ -8,8 +8,8 @@ from datetime import datetime
 import re
 from concurrent.futures import ProcessPoolExecutor
 
-from utils.file_handler import collect_fasta_files, cleanup_temp_dir
-from utils.progress import ProgressHandler
+from .utils.file_handler import collect_fasta_files, cleanup_temp_dir
+from .utils.progress import ProgressHandler
 
 #Valid FASTA extensions
 FASTA_EXTENSIONS = (".fasta", ".faa", ".fna", ".ffn", ".fa", ".fas",

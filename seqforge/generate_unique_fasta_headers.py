@@ -6,7 +6,7 @@ import string
 from datetime import datetime
 from Bio import SeqIO
 
-from utils.progress import ProgressHandler
+from .utils.progress import ProgressHandler
 
 def run_unique_fasta_headers(args):
     logger = logging.getLogger("unique-fasta-headers")

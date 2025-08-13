@@ -9,7 +9,7 @@ from Bio import SeqIO
 from Bio.SeqRecord import SeqRecord
 import concurrent.futures
 
-from utils.file_handler import collect_fasta_files, cleanup_temp_dir
+from .utils.file_handler import collect_fasta_files, cleanup_temp_dir
 
 NUC_CHARS = set("ACGTRYSWKMBDHVNU-.") #IUPAC nucleotides + gap/dot
 

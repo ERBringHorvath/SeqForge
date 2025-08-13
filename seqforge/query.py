@@ -14,8 +14,8 @@ from Bio.SeqRecord import SeqRecord
 from datetime import datetime
 import logging
 
-from utils.file_handler import collect_fasta_files, cleanup_temp_dir
-from utils.progress import ProgressHandler
+from .utils.file_handler import collect_fasta_files, cleanup_temp_dir
+from .utils.progress import ProgressHandler
 
 FASTA_EXTS = ('.fa', '.fna', '.fas', '.ffn', '.fasta', '.faa')
 

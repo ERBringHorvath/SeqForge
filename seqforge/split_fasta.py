@@ -9,7 +9,7 @@ from Bio import SeqIO
 from math import ceil
 from datetime import datetime
 
-from utils.progress import ProgressHandler
+from .utils.progress import ProgressHandler
 
 def run_split(args):
     logger = logging.getLogger("split-fasta")

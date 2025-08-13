@@ -7,7 +7,7 @@ from datetime import datetime
 import pandas as pd
 from Bio import SeqIO
 
-from utils.file_handler import collect_fasta_files, cleanup_temp_dir
+from .utils.file_handler import collect_fasta_files, cleanup_temp_dir
 
 def run_metrics(args):
 

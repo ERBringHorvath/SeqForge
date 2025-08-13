@@ -9,7 +9,7 @@ from Bio import SeqIO
 import concurrent.futures
 from threading import Lock
 
-from utils.file_handler import collect_fasta_files, cleanup_temp_dir
+from .utils.file_handler import collect_fasta_files, cleanup_temp_dir
 
 def process_contig_entry(row, fasta_map, evalue, min_perc, min_cov,
                          extracted_contigs, lock, *, logger):

@@ -9,7 +9,8 @@ from datetime import datetime
 import re
 import logging
 from datetime import datetime
-from shared.constants import FIELD_ALIASES
+
+from .shared.constants import FIELD_ALIASES
 
 #replace whitespace with underscore
 def normalize_key(key):
