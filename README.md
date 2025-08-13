@@ -182,7 +182,7 @@ Or using Conda:
 
 2. Create Conda environment
 
-`conda create -n seqforge`
+`conda create -y -n seqforge python=3.10`
 
 3. Activate Conda environment
 
@@ -225,6 +225,11 @@ Add SeqForge to your PATH
 
 `export PATH=$PATH:/home/user/SeqForge/seqforge`
 
+Or run:
+
+`echo 'export PATH="$PATH:/$HOME/SeqForge/seqforge"' >> ~/.bashrc` <br/>
+`source ~/.bashrc` 
+
 Replace `/home/user/SeqForge/seqforge` with the actual path to the directory containing the executable. <br />
 Whatever the initial directory, this path should end with `/SeqForge/seqforge`
 
@@ -232,12 +237,14 @@ Save the file and restart your terminal or run `source ~/.bashrc` or `~/.bash_pr
 
 **Install Dependencies**
 
-Locate to the SeqForge/seqforge directory:
+Locate to the SeqForge/ directory:
 
-`pip install -r requirements.txt` or `pip3 install -r requirements.txt`
+`cd ~/SeqForge` <br/>
+`pip install .`
 
 **Verify SeqForge Installation**
 
+`seqforge --version`
 `seqforge --module-health` <br/>
 
 You should see: <br/>
@@ -267,7 +274,7 @@ Indifivual module help: <br/>
 NOTE: Permissions should automatically be applied during installation. If you get a `permission denied` message when running `seqforge`
 permissions may need to be changed manually. To do this, you can use the following command (requires administrator privileges):
 
-`chmod +x /path/to/SeqForge/seqforge/seqforge`
+`chmod +x ~/SeqForge/seqforge/seqforge`
 
 ______________________________________________________________________________________________________________________________________
 ______________________________________________________________________________________________________________________________________
