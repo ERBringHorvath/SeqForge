@@ -499,27 +499,11 @@ def run_multiblast(args):
             logger=logger
             )
 
-    # if args.visualize:
-    #     from visualize import run_visualization
-    #     run_visualization(filtered_df, args)
-    #     if using_motif and not motif_df.empty:
-    #         from visualize import run_sequence_logo
-    #         run_sequence_logo(motif_df, args)
-
     if args.visualize:
-        try:
-            from .visualize import run_visualization
-        except ImportError:
-            from .visualize import run_visualization
-        
+        from visualize import run_visualization
         run_visualization(filtered_df, args)
-
         if using_motif and not motif_df.empty:
-            try:
-                from .visualize import run_sequence_logo
-            except ImportError:
-                from .visualize import run_sequence_logo
-            
+            from visualize import run_sequence_logo
             run_sequence_logo(motif_df, args)
 
     cleanup_temp_dir(temp_dir, keep=getattr(args, 'keep_temp_files', False), logger=logger)

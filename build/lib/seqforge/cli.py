@@ -1,0 +1,229 @@
+#!/usr/bin/env python3
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2025 Elijah Bring Horvath
+
+import argparse, sys, subprocess, os, importlib
+from datetime import datetime
+
+from .shared.constants import FIELD_ALIASES
+from . import __version__
+
+available_modules = {}
+
+def safe_import(name, func_name):
+    pkg = __package__ or "seqforge"
+    try:
+        mod = importlib.import_module(f".{name}", pkg)
+        available_modules[name] = getattr(mod, func_name)
+    except Exception as e:
+        print(f"\033[91m[Module Error] '{name}' could not be loaded: {e}\033[0m")
+
+safe_import('makedb', 'run_make_blast_db')
+safe_import('query', 'run_multiblast')
+safe_import('split_fasta', 'run_split')
+safe_import('extract_sequences', 'run')
+safe_import('extract_contigs', 'run_contigs')
+safe_import('search', 'run_search')
+safe_import('sanitize', 'run_sanitize')
+safe_import('fasta_metrics', 'run_metrics')
+safe_import('generate_unique_fasta_headers', 'run_unique_fasta_headers')
+
+def check_query_range(value):
+    ivalue = int(value)
+    if ivalue < 0 or ivalue > 100:
+        raise argparse.ArgumentTypeError(f" {value} is out of allowed range (0-100)")
+    return ivalue
+
+def check_extract_range(value):
+    value = float(value)
+    if value < 0 or value > 100:
+        raise argparse.ArgumentTypeError(f" \033[91mValue is out of allowed range (0-100)\033[0m \n")
+    return value
+
+def main():
+
+    parser = argparse.ArgumentParser(prog='seqforge', description='SeqForge: A genomics toolkit.')
+    parser.add_argument('--module-health', action='store_true', help='Check status of SeqForge Modules')
+    parser.add_argument('-v', '--version', action='version', version=f'%(prog)s {__version__}')
+    parser.add_argument('--info', action='store_true', help="Program details")
+    subparsers = parser.add_subparsers(dest='command', help='Available commands')
+
+    # Sub-parser for the "makedb" command
+    parser_makedb = subparsers.add_parser('makedb', help='Create a BLAST database from a FASTA file.')
+    parser_makedb.add_argument('-f', '--fasta-directory', required=True, help='Path to FASTA files.')
+    parser_makedb.add_argument('-o', '--output-dir', required=True, help='Name for the output database.')
+    parser_makedb.add_argument('-T', '--threads', type=int, help="Number of cores to dedicate for multi-processing")
+    parser_makedb.add_argument('-s', '--sanitize', action='store_true', help="Permanently remove special characters from FASTA file(s)")
+    parser_makedb.add_argument('--temp-dir', help="Specify temporary directory (default = /tmp/)")
+    parser_makedb.add_argument('--keep-temp-files', action="store_true", help="Keep extracted temporary files for debugging")
+    parser_makedb.add_argument('-p', '--progress', nargs="?", const="bar",
+                               choices=["none", "bar", "verbose"], default=None,
+                               help=("Progress reporting mode "
+                                     "passing only --progress is equivalent to --progress bar "
+                                     "'verbose' prints a line per item, 'none' silences output")
+                               )
+    if 'makedb' in available_modules:
+        parser_makedb.set_defaults(func=available_modules['makedb'])
+
+    ##Add sub-parser for the "query" command
+    parser_query = subparsers.add_parser('query', help="Run BLAST queries in parallel.")
+    parser_query.add_argument('-d', '--database', required=True, help='Path to the BLAST databases.')
+    parser_query.add_argument('-q', '--query-files', required=True, help='Path to the query files in FASTA format.')
+    parser_query.add_argument('-T', '--threads', type=int, help='Number of cores to dedicate')
+    parser_query.add_argument('-e', '--evalue', type=float, help='E-value threshold.')
+    parser_query.add_argument('-o', '--output', required=True, help='Path to directory to store results.')
+    parser_query.add_argument('--min-perc', type=check_query_range, help='Define percent identity threshold (default = 90)')
+    parser_query.add_argument('--min-cov', type=check_query_range, help="Define query coverage threshold (default = 75)")
+    parser_query.add_argument('-R', '--report-strongest-matches', action='store_true', help='Report only the top hit for each query')
+    parser_query.add_argument('-N', '--nucleotide-query', action='store_true', help='Use blastn for nucelotide queries')
+    parser_query.add_argument('--min-seq-len', type=int, help='Minimum sequence length for database searches (use with caution)')
+    parser_query.add_argument('-a', '--no-alignment-files', action='store_true', help='Do not generate BLAST alignment output files.')
+    parser_query.add_argument('--temp-dir', help='Specify a temporary directory (default = /tmp/)')
+    parser_query.add_argument('--keep-temp-files', action='store_true', help='Keep temporary *_results.txt files in the output directory')
+    parser_query.add_argument('--motif', type=str, nargs='+', 
+                              help=("Amino acid motif (e.g., GHXXGE) to search within blast hits. X is treated as a wildcard. \n"
+                                    "For use only with blastp queries "
+                                    "Motifs may be linked to specific query results using braces. "
+                                    "For example: 'query_file.faa' --> '--motif GHXXGE{query_file}'")
+                              
+                              )
+    parser_query.add_argument('--motif-fasta-out', action='store_true', help='Export motif match source gene as FASTA file(s)')
+    parser_query.add_argument('--motif-only', action='store_true', help="For use with --motif-fasta-out, output only the motif string")    
+    parser_query.add_argument('-f', '--fasta-directory', type=str, help='Path to FASTA file or directory of FASTA files used to create the BLAST databases. Required if using --motif' )
+    parser_query.add_argument('-V', '--visualize', action='store_true', help="visualize query results")
+    parser_query.add_argument('-P', '--pdf', action='store_true', help='Output figure to PDF instead of PNG')
+    parser_query.add_argument('-p', '--progress', nargs="?", const="bar",
+                              choices=["bar", "verbose", "none"], default=None,
+                              help=("Progress reporting mode "
+                                    "passing only --progress is equivalent to --progress bar "
+                                    "'verbose' prints a line per item, 'none' silences output")
+                                )
+    if 'query' in available_modules:
+        parser_query.set_defaults(func=available_modules['query'])
+
+    ##Add sub-parser for multi-FASTA file splitter
+    split_fasta_parser = subparsers.add_parser('split-fasta')
+    split_fasta_parser.add_argument('-i', '--input', required=True, help="Input multi-FASTA file")
+    split_fasta_parser.add_argument('-o', '--output-dir', required=True, help="Output directory for split FASTA files")
+    split_fasta_parser.add_argument('-F', '--fragment', type=int, help="Split multi-FASTA into chunks of this many sequences")
+    split_fasta_parser.add_argument('-C', '--compress', action='store_true', help="Compress output files as .gz")
+    if 'split_fasta' in available_modules:
+        split_fasta_parser.set_defaults(func=available_modules['split_fasta'])
+
+    parser_extract = subparsers.add_parser('extract', help="Extract sequences based Query results")
+    parser_extract.add_argument('-c', '--csv-path', required=True, help="Path to BLAST results files.")
+    parser_extract.add_argument('-f', '--fasta-directory', required=True, help="Path to reference FASTA assemblies.")
+    parser_extract.add_argument('-o', '--output-fasta', required=True, help="Output FASTA file name.")
+    parser_extract.add_argument('-T', '--threads', type=int, help="Number of cores to dedicate.")
+    parser_extract.add_argument('-e', '--evalue', type=float, default=1e-5, help='Minimum e-value threshold for sequence extraction.')
+    parser_extract.add_argument('--min-perc', type=check_extract_range, default=90.0, help='Minimum percent identity threshold for sequence extraction.')
+    parser_extract.add_argument('--min-cov', type=check_extract_range, default=75.0, help='Minimum query coverage threshold for sequence extraction.')
+    parser_extract.add_argument('--translate', action='store_true', help='Translate extracted nucleotide sequence using the standard genetic code.')
+    parser_extract.add_argument('--up', type=int, default=0, help="Extract additional basepairs upstream of aligned sequence")
+    parser_extract.add_argument('--down', type=int, default=0, help="Extract additional basepairs downstream of aligned sequence")
+    parser_extract.add_argument('--temp-dir', help='Specify a temporary directory (default = /tmp/)')
+    parser_extract.add_argument('--keep-temp-files', action='store_true', help='Keep extracted temporary files for debugging (only with archive submission)')
+    if 'extract_sequences' in available_modules:
+        parser_extract.set_defaults(func=available_modules['extract_sequences'])
+
+    parser_extract_contig = subparsers.add_parser('extract-contig', help="Extract entire contig containing matching sequences.")
+    parser_extract_contig.add_argument('-c', '--csv-path', required=True, help="Path to Query results file (all_results.csv or all_filtered_results.csv)")
+    parser_extract_contig.add_argument('-f', '--fasta-directory', required=True, help="Path to your FASTA files used to create 'makedb' databases")
+    parser_extract_contig.add_argument('-o', '--output-fasta', required=True, help="Output FASTA file with extension (.fa, .fas, .fna, .fasta)")
+    parser_extract_contig.add_argument('-T', '--threads', type=int, default=1, help="Number of cores to dedicate")
+    parser_extract_contig.add_argument('-e', '--evalue', type=float, default=1e-5, help="Minimum e-value threshold")
+    parser_extract_contig.add_argument('--min-perc', type=check_extract_range, default=90, help="Minimum percent identity threshold")
+    parser_extract_contig.add_argument('--min-cov', type=check_extract_range, default=75, help="Minimum query coverage threshold")
+    parser_extract_contig.add_argument('--temp-dir', help='Specify a temporary directory (default = /tmp/)')
+    parser_extract_contig.add_argument('--keep-temp-files', action='store_true', help='Keep extracted temporary files for debugging (only with archive submission)')
+    if 'extract_contigs' in available_modules:
+        parser_extract_contig.set_defaults(func=available_modules['extract_contigs'])
+
+    parser_search = subparsers.add_parser("search", help="Extract metadata from GenBank or JSON files")
+    parser_search.add_argument('-i', '--input', required=True, help="Input file (.json or .gb/.gbk/.genbank)")
+    parser_search.add_argument('-o', '--output', required=True, help="Output file (e.g., .csv, .tsv, .json)")
+    parser_search.add_argument('--all', action='store_true', help='Extract all available metadata')
+    allowed_fields = ', '.join(FIELD_ALIASES.keys())
+    parser_search.add_argument('--fields', nargs='+', metavar="FIELD", help=f"Space-separated list of metadata fields to extract. Allowed fields: {allowed_fields}")
+    parser_search.add_argument('--json', action='store_true', help="Parse only JSON files in the input directory")
+    parser_search.add_argument('--gb', action='store_true', help="Parse only GenBank files in the input directory")
+    if 'search' in available_modules:
+        parser_search.set_defaults(func=available_modules['search'])
+
+    parser_sanitize = subparsers.add_parser("sanitize", help="Remove special characters from input files (required for SeqForge modules)")
+    parser_sanitize.add_argument('-i', '--input', required=True, help="File(s) to sanitize. Can be a single file or a directory of files")
+    parser_sanitize.add_argument('-e', '--extension', nargs='+', help="File extensions to process. Not needed if submitting a single file. For FASTA files, run '-e fasta' to allow for all standard FASTA extensions")
+    parser_sanitize.add_argument('-I', '--in-place', action='store_true', help="Rename files in place (recommended)")
+    parser_sanitize.add_argument('-S', '--sanitize-outdir', dest='output', help="Leave original filenames unchanged, but copy them to a new directory with santitized filenames")
+    parser_sanitize.add_argument('--dry-run', action='store_true', help="Preview changes without renaming any files")
+    if 'sanitize' in available_modules:
+        parser_sanitize.set_defaults(func=available_modules['sanitize'])
+
+    parser_fasta_metrics = subparsers.add_parser("fasta-metrics", help="Compute FASTA file statistics (e.g., N50, GC Content, etc.)")
+    parser_fasta_metrics.add_argument('-f', '--fasta-directory', required=True, help="Path to FASTA file or directory of FASTA files")
+    parser_fasta_metrics.add_argument('-o', '--output', default=None, help="Optional name for CSV summary (default: fasta_metrics_summary.csv)")
+    parser_fasta_metrics.add_argument('-M', '--min-contig-size', type=int, default=500, help="Minimum contig size (in bp) to include for calculation of all reported metrics (default = 500)")
+    parser_fasta_metrics.add_argument('--temp-dir', help='Specify a temporary directory (default = /tmp/)')
+    parser_fasta_metrics.add_argument('--keep-temp-files', action='store_true', help='Keep extracted temporary files for debugging (only with archive submission)')
+    if 'fasta_metrics' in available_modules:
+        parser_fasta_metrics.set_defaults(func=available_modules['fasta_metrics'])
+
+    parser_unique = subparsers.add_parser('unique-headers', help='Append source and random suffix to FASTA headers')
+    parser_unique.add_argument('-f', '--fasta-directory', required=True, help='Path to FASTA file(s)')
+    parser_unique.add_argument('-o', '--output-dir', help="Directory for output FASTA files (unless using --in-place)")
+    parser_unique.add_argument('-I', '--in-place', action='store_true', help="Modify input files in-place (uses temporary files for safety)")
+    parser_unique.add_argument('-p', '--progress', nargs="?", const="bar", 
+                               choices=['bar', 'verbose', 'none'],
+                               default=None,
+                               help=("Progress reporting mode; "
+                                     "passing only --progress is equivalent to --progress bar "
+                                     "'--verbose' prints a line per record, 'none' silences output")
+                                     )
+    if 'generate_unique_fasta_headers' in available_modules:
+        parser_unique.set_defaults(func=available_modules['generate_unique_fasta_headers'])
+
+    args = parser.parse_args()
+
+    if args.module_health:
+        print("\n\033[96mModule Status Report:\033[0m")
+        for name in ['makedb', 'query', 'split_fasta', 'extract_sequences', 'extract_contigs',
+                     'search', 'sanitize', 'fasta_metrics', 'generate_unique_fasta_headers']:
+            status = "Available" if name in available_modules else "Broken or Missing"
+            if status == "Available":
+                print(f" - {name}: \033[92m{status}\033[0m")
+            else:
+                print(f" - {name}: \033[91m{status}\033[0m")
+        print("\n")
+        sys.exit(0)
+
+    if args.info:
+        print("\n\033[92mFor detailed instructions on SeqForge usage, please see the README or visit \033[0m"
+              "\033[96mhttps://github.com/ERBringHorvath/SeqForge\033[0m\n")
+
+    MODULE_LABELS = {
+        'run_make_blast_db': "Database Creation",
+        'run_multiblast': "Query",
+        'run_split': "FASTA Splitter",
+        'run': "Sequence Extraction",
+        'run_contigs': "Contig Extraction",
+        'run_search': "Metadata Search",
+        'run_sanitize': "Sanitize",
+        'run_metrics': "FASTA Metrics",
+        'run_unique_fasta_headers': "Generate Unique FASTA Headers"
+    }
+
+    if hasattr(args, 'func'):
+        func_name = args.func.__name__
+        display_name = MODULE_LABELS.get(func_name, func_name)
+
+        print(f"\n\033[93mStarting SeqForge {display_name}\033[0m")
+
+        try:
+            args.func(args)
+        except Exception as e:
+            print(f"\n\033[91mAn error occurred in module {display_name}: {e}\033[0m")
+    else:
+        parser.print_help()
+
+if __name__ == "__main__":
+    main()
