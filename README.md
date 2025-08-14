@@ -1,5 +1,9 @@
 # **<ins>SeqForge<ins/>**
 
+[![Bioconda](https://img.shields.io/conda/vn/bioconda/seqforge.svg)](https://anaconda.org/bioconda/seqforge)  
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)  
+[![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)](#)  
+
 ## Design Philosophy:
 
 SeqForge emphasizes clarity, flexibility, and scale. Each module is standalone but interoperable with others, allowing researchers to plug in just what they need or use the full pipeline. Designed for power users but accessible enough for those just entering the field, SeqForge aims to grow as the field of microbial genomics and bioinformatics expands.
@@ -165,7 +169,17 @@ ________________________________________________________________________________
 
 # Installation
 
-### Install NCBI BLAST+
+### SeqForge Conda Installation
+
+Install through Conda:
+
+`conda install -y -c bioconda seqforge`
+
+If you want the most up-to-date release, follow these steps
+
+### Standalone Installation
+
+Install NCBI BLAST+
 
 **SeqForge uses [NCBI BLAST+](https://pubmed.ncbi.nlm.nih.gov/20003500/)**
 
