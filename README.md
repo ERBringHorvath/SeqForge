@@ -173,7 +173,7 @@ ________________________________________________________________________________
 
 Install through Conda:
 
-`conda install -y -c bioconda seqforge`
+`conda install -y bioconda::seqforge`
 
 If you want the most up-to-date release, follow these steps
 
