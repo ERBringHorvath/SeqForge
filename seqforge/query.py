@@ -132,9 +132,6 @@ def search_motif_block(rows, fasta_records, motif_regexes):
 
         matches = [rid for rid in fasta_records if row['sseqid'] in rid]
 
-        # if debug:
-        #     print(f"Looking for {row['sseqid']} --> available keys matching: {matches}")
-
         #pull full sequence, then subsequence
         seq = next((s for rid, s in fasta_records.items()
                     if rid.startswith(gene_id)), None)
@@ -498,14 +495,7 @@ def run_multiblast(args):
             temp_dir_base=getattr(args, 'temp_dir', None),
             logger=logger
             )
-
-    # if args.visualize:
-    #     from visualize import run_visualization
-    #     run_visualization(filtered_df, args)
-    #     if using_motif and not motif_df.empty:
-    #         from visualize import run_sequence_logo
-    #         run_sequence_logo(motif_df, args)
-
+        
     if args.visualize:
         try:
             from .visualize import run_visualization
