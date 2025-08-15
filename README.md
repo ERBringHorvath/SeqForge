@@ -8,6 +8,23 @@
 
 SeqForge emphasizes clarity, flexibility, and scale. Each module is standalone but interoperable with others, allowing researchers to plug in just what they need or use the full pipeline. Designed for power users but accessible enough for those just entering the field, SeqForge aims to grow as the field of microbial genomics and bioinformatics expands.
 
+## Table of Contents
+ - [Overview](#overview)
+ - [Recommended Workflow](#recommended-workflow)
+ - [Installation](#installation)
+ - [Usage](#usage)
+ - [Database Creation](#building-a-blast-database)
+ - [Querying a Database](#querying-a-database)
+ - [Sequence Extraction](#extract-sequences-from-a-seqforge-query)
+ - [Contig Extraction](#extract-entire-contig)
+ - [Sanitize File Names](#sanitize-file-names)
+ - [Assembly Metrics](#fasta-file-metrics)
+ - [Split Multi-FASTA Files](#split-multi-fasta-files)
+ - [Extract Metadata](#extract-sequence-metadata-from-json-or-genbank-files)
+ - [Barcode FASTA Headers](#generate-unique-fasta-headers)
+ - [Citations](#citations)
+
+# Overview
 ### Note on FASTA file submission:
 
 All FASTA-handling modules support the following inputs:
@@ -173,38 +190,29 @@ ________________________________________________________________________________
 
 Install through Conda:
 
-`conda install -y bioconda::seqforge`
-
-If you want the most up-to-date release, follow these steps
+1. Install Conda [miniforge](https://github.com/conda-forge/miniforge/) if not already installed <br/>
+2. Create a new Conda environment
+    * `conda create -y -n seqforge python=3.10`
+3. Install SeqForge
+    * `conda install -y bioconda::seqforge`
 
 ### Standalone Installation
 
-Install NCBI BLAST+
+For the most up-to-date version, clone from GitHub:
 
 **SeqForge uses [NCBI BLAST+](https://pubmed.ncbi.nlm.nih.gov/20003500/)**
 
-Camancho C, Coulouris G, Avagyan V, Ma N, Papadopoulos J, Bealer K, Madden TL, **2009**. <br />
-BLAST+: architecture and applications. *BMC Bioinformatics*, 10, 421. doi:10.1186/1471-2105-10-421
+1. Install NCBI BLAST+
+    * Download latest version of [BLAST+](https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
 
-**Install BLAST+**
-
-Download latest version of [BLAST+](https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
-
-Or using Conda:
-
-1. Install Conda [miniforge](https://github.com/conda-forge/miniforge/) if not already installed
-
+Or using Conda: <br/>
+1. Install Conda [miniforge](https://github.com/conda-forge/miniforge/) if not already installed <br/>
 2. Create Conda environment
-
-`conda create -y -n seqforge python=3.10`
-
+    * `conda create -y -n seqforge python=3.10`
 3. Activate Conda environment
-
-`source activate seqforge`
-
+    * `source activate seqforge`
 4. Install BLAST+
-
-`conda -y install bioconda::blast`
+    * `conda -y install bioconda::blast`
 
 **Verify BLAST Installation**
 
@@ -213,36 +221,26 @@ Or using Conda:
 
 If these commands run without error, BLAST is correctly installed. If an error occurs, refer to the [BLAST+ documentation](https://blast.ncbi.nlm.nih.gov/doc/blast-help/index.html#index)
 
-## SeqForge Installation
-
 If not already installed, install [Git](https://github.com/git-guides/install-git) <br />
-* Linux/macOS systems may have this installed by default <br />
-* To test installation, open the terminal and type `git --version` <br />
-* For macOS users, you should see something like `git version 2.37.1 (Apple Git-137.1)`
+Linux/macOS systems may have this installed by default <br />
+To test installation, open the terminal and type `git --version` <br />
+For macOS users, you should see something like `git version 2.37.1 (Apple Git-137.1)`
 
-### **Clone SeqForge from source**
-
-We suggest installing SeqForge within your Home folder, such as `/home/user` 
-
-Change directory to desired installation path
-
-`cd /home/user`
-
-Clone SeqForge from the repository
-
-`git clone https://github.com/ERBringHorvath/SeqForge`
-
-Add SeqForge to your PATH
-
-1. Open your profile in a text editor. This might be `~/.bash_profile`, `~/.bashrc`, or `~/.zshrc`
-2. Add the following line to the end of the file:
-
-`export PATH=$PATH:/home/user/SeqForge/seqforge`
+5. Setup:
+    * We suggest installing SeqForge within your Home folder, such as `/home/user` 
+6. Change directory to desired installation path
+    * `cd /home/user`
+7. Clone SeqForge from the repository
+    * `git clone https://github.com/ERBringHorvath/SeqForge`
+8. Add SeqForge to your PATH
+    * Open your profile in a text editor. This might be `~/.bash_profile`, `~/.bashrc`, or `~/.zshrc`
+9. Add the following line to the end of the file:
+    * `export PATH=$PATH:/home/user/SeqForge/seqforge`
 
 Replace `/home/user/SeqForge/seqforge` with the actual path to the directory containing the executable. <br />
 Whatever the initial directory, this path should end with `/SeqForge/seqforge`
 
-Save the file and restart your terminal or run `source ~/.bashrc` or `~/.bash_profile` (Linux/macOS) or `source ~/.zshrc` (macOS)
+10. Save the file and restart your terminal or run `source ~/.bashrc` or `~/.bash_profile` (Linux/macOS) or `source ~/.zshrc` (macOS)
 
 Or run:
 
@@ -253,12 +251,11 @@ Or run:
 
 Locate to the SeqForge/ directory:
 
-`cd ~/SeqForge` <br/>
-`pip install .`
+1. `cd ~/SeqForge` <br/>
+2. `pip install .`
 
 **Verify SeqForge Installation**
 
-`seqforge --version` <br/>
 `seqforge --module-health` <br/>
 
 You should see: <br/>
@@ -293,9 +290,11 @@ permissions may need to be changed manually. To do this, you can use the followi
 ______________________________________________________________________________________________________________________________________
 ______________________________________________________________________________________________________________________________________
 
-# <ins>Module 1: Genome Search</ins>
+# Usage
 
-**Building a BLAST+ Database Library**
+### <ins>Module 1: Genome Search</ins>
+
+### Building a BLAST Database
 
 seqforge makedb: <br/>
 **Required arguments:** <br/>
@@ -317,7 +316,7 @@ Example: <br />
 *   .faa == protein 
 ______________________________________________________________________________________________________________________________________
 
-**Querying a database library**
+### Querying a Database
 
 seqforge query: <br />
 **Required arguments:** <br/>
@@ -366,9 +365,9 @@ All plots and files are saved to the output directory specified by `--output`.
 ______________________________________________________________________________________________________________________________________
 ______________________________________________________________________________________________________________________________________
 
-# <ins>Module 2: Sequence Investigation</ins>
+### <ins>Module 2: Sequence Investigation</ins>
 
-## Extract Sequences from a SeqForge Query
+### Extract Sequences from a SeqForge Query
 
 seqforge extract: <br />
 **Required arguments:** <br/>
@@ -419,7 +418,7 @@ For instance, if `seqforge query` was called using `--perc 75`, but the `seqforg
 `seqforge extract` will generate a multi-FASTA file of all sequences identified by `seqforge queryP`/`query` based on the default or user-defined e-value cutoff.
 ______________________________________________________________________________________________________________________________________
 
-## Extract Entire Contig ##
+### Extract Entire Contig
 
 seqforge extract-contig: <br />
 **Required arguments:** <br/>
@@ -457,7 +456,7 @@ ________________________________________________________________________________
 
 # <ins>Module 3: Utilties<ins/>
 
-## Sanitize File Names
+### Sanitize File Names
 
 seqforge sanitize: <br/>
 `-i`, `--input`: FASTA file or directory of FASTA files to be cleaned <br/>
@@ -468,7 +467,7 @@ seqforge sanitize: <br/>
 `--dry-run`: preview changes without committing <br/>
 ______________________________________________________________________________________________________________________________________
 
-## FASTA File Metrics
+### FASTA File Metrics
 
 seqforge fasta-metrics: <br/>
 `-f`, `--fasta-directory`: path to FASTA file or directory of FASTA files to be analyzed <br/>
@@ -478,7 +477,7 @@ seqforge fasta-metrics: <br/>
 `--keep-temp-files`: for archive submission; retains temporary directory generated at /tmp/seqforge_fasta_extract_*
 ______________________________________________________________________________________________________________________________________
 
-## Split Multi-FASTA files
+### Split Multi-FASTA files
 
 seqforge split-fasta: <br />
 `-i`, `--input`: input multi-FASTA file <br />
@@ -487,7 +486,7 @@ seqforge split-fasta: <br />
 `-C`, `--compress`: compress output files as .gz <br />
 ______________________________________________________________________________________________________________________________________
 
-## Extract Sequence Metadata from JSON/GenBank Files
+### Extract Sequence Metadata from JSON or GenBank Files
 
 seqforge search: <br/>
 `-i`, `--input`: input file(s) (.json or .gb/.gbk)<br/>
@@ -506,8 +505,9 @@ seqforge search: <br/>
 `seqforge search -i /path/to/input/files -o metadata.csv --all --json`
 ______________________________________________________________________________________________________________________________________
 
-## Generate Unique FASTA Headers
-### Appends unique barcode to each FASTA header line
+### Generate Unique FASTA Headers
+
+**Appends unique barcode to each FASTA header line**
 
 seqforge unique-headers: <br/>
 `-f`, `--fasta-directory`: path to FASTA file(s) <br/>
