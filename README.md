@@ -13,15 +13,15 @@ SeqForge emphasizes clarity, flexibility, and scale. Each module is standalone b
  - [Recommended Workflow](#recommended-workflow)
  - [Installation](#installation)
  - [Usage](#usage)
- - [Database Creation](#building-a-blast-database)
- - [Querying a Database](#querying-a-database)
- - [Sequence Extraction](#extract-sequences-from-a-seqforge-query)
- - [Contig Extraction](#extract-entire-contig)
- - [Sanitize File Names](#sanitize-file-names)
- - [Assembly Metrics](#fasta-file-metrics)
- - [Split Multi-FASTA Files](#split-multi-fasta-files)
- - [Extract Metadata](#extract-sequence-metadata-from-json-or-genbank-files)
- - [Barcode FASTA Headers](#generate-unique-fasta-headers)
+    - [Database Creation](#building-a-blast-database)
+    - [Querying a Database](#querying-a-database)
+    - [Sequence Extraction](#extract-sequences-from-a-seqforge-query)
+    - [Contig Extraction](#extract-entire-contig)
+    - [Sanitize File Names](#sanitize-file-names)
+    - [Assembly Metrics](#fasta-file-metrics)
+    - [Split Multi-FASTA Files](#split-multi-fasta-files)
+    - [Extract Metadata](#extract-sequence-metadata-from-json-or-genbank-files)
+    - [Barcode FASTA Headers](#generate-unique-fasta-headers)
  - [Citations](#citations)
 
 # Overview
@@ -522,12 +522,14 @@ ________________________________________________________________________________
 # Citations
 
 Cite SeqForge: <br />
-SeqForge (https://github.com/ERBringHorvath/SeqForge)
+Bring Horvath, ER, Winter, JM, **2025**. <br/>
+SeqForge: A scalable platform for alignment-based searches, motif detection, and sequence curation across meta/genomic datasets
+*bioRxiv*. doi: https://doi.org/10.1101/2025.08.12.669971
 
 Cite NCBI BLAST+: <br />
 Camancho C, Coulouris G, Avagyan V, Ma N, Papadopoulos J, Bealer K, Madden TL, **2009**. <br />
 BLAST+: architecture and applications. *BMC Bioinformatics*, 10, 421. doi:10.1186/1471-2105-10-421
 
 Cite Logomaker: <br/>
-Ammar Tareen, Justin B Kinney, **2020** <br/>
+Tareen, A, Kinney, JB, **2020** <br/>
 Logomaker: beautiful sequence logos in Python. *Bioinformatics*, 36, 7, 2272–2274, doi.org/10.1093/bioinformatics/btz921
