@@ -1,8 +1,6 @@
 # **<ins>SeqForge<ins/>**
 
-[![Bioconda](https://img.shields.io/conda/vn/bioconda/seqforge.svg)](https://anaconda.org/bioconda/seqforge)  
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)  
-[![Python Version](https://img.shields.io/badge/python-3.10%2B-blue)](#)  
+[![Bioconda](https://img.shields.io/conda/vn/bioconda/seqforge.svg)](https://anaconda.org/bioconda/seqforge) [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue)](#) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ## Design Philosophy:
 
