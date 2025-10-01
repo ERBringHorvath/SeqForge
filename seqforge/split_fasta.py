@@ -28,7 +28,7 @@ def run_split(args):
     logger.info(f"Split-FASTA started at {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
 
     #arg wrangling
-    input_file = args.input
+    input_file = args.fasta
     output_dir = args.output_dir
     fragment_size = args.fragment
     compress = args.compress
@@ -54,8 +54,8 @@ def run_split(args):
     total_records = len(records)
 
     if fragment_size:
-        num_chunks = ceil(total_records / fragment_size) #round to closest int
-        digits = len(str(num_chunks))
+        num_chunks = ceil(total_records / fragment_size)
+        digits = len(str(num_chunks))  # for zero-padding the index
         msg = f"Splitting {total_records} sequences into {num_chunks} file(s) of ~{fragment_size} each"
         print(f"\n\033[94m{msg}\033[0m")
         logger.info(msg)
@@ -63,10 +63,15 @@ def run_split(args):
         progress = ProgressHandler(total=total_records, prefix="Fragmenting", mode='bar')
 
         for i in range(num_chunks):
-            chunk_records = records[i * fragment_size : (i + 1) * fragment_size]
-            chunk_num = str(i + 1).zfill(digits)
+            start = i * fragment_size
+            end = (i + 1) * fragment_size
+            chunk_records = records[start:end]
+            idx = str(i + 1).zfill(digits)  # 01, 02, ... if num_chunks >= 10
+
             ext = ".fa.gz" if compress else ".fa"
-            out_name = f"{base_name}_Frag{fragment_size}_{chunk_num}{ext}"
+            # old: out_name = f"{base_name}_Frag{fragment_size}_{chunk_num}{ext}"
+            out_name = f"{base_name}_Fragment_{idx}_of_{num_chunks}{ext}"
+
             out_path = os.path.join(output_dir, out_name)
             try:
                 if compress:
@@ -76,7 +81,7 @@ def run_split(args):
                     SeqIO.write(chunk_records, out_path, "fasta")
                 progress.update(len(chunk_records))
             except Exception as e:
-                logging.error(f"\n \033[91mError writing chunk {chunk_num}: {e}\033[0m")
+                logging.error(f"\n \033[91mError writing chunk {idx}: {e}\033[0m")
         
         progress.finish()
         print()

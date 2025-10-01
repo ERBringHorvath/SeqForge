@@ -4,9 +4,32 @@
 
 import argparse, sys, subprocess, os, importlib
 from datetime import datetime
+from argparse import RawTextHelpFormatter
 
 from .shared.constants import FIELD_ALIASES
 from . import __version__
+
+SUMMARIES = {
+    "makedb": "Create a BLAST database from a FASTA file.",
+    "query": "Run BLAST queries in parallel.",
+    "extract": "Extract sequences based on SeqForge Query results.",
+    "extract-contig": "Extract entire contigs containing matching sequences.",
+    "search": "Extract metadata from GenBank or JSON files.",
+    "sanitize": "Remove special characters from input file names (content unchanged; needed for BLAST+).",
+    "fasta-metrics": "Compute FASTA statistics (e.g., N50, GC content).",
+    "split-fasta": "Split a multi-FASTA into per-record files or fixed-size fragments.",
+    "unique-headers": "Append source and a unique suffix to FASTA headers (supports --deterministic).",
+}
+
+def add_cmd(subparsers, name, **kwargs):
+    p = subparsers.add_parser(
+        name,
+        help=SUMMARIES[name],
+        description=SUMMARIES[name],
+        formatter_class=RawTextHelpFormatter,
+        **kwargs
+    )
+    return p
 
 available_modules = {}
 
@@ -49,7 +72,7 @@ def main():
     subparsers = parser.add_subparsers(dest='command', help='Available commands')
 
     # Sub-parser for the "makedb" command
-    parser_makedb = subparsers.add_parser('makedb', help='Create a BLAST database from a FASTA file.')
+    parser_makedb = add_cmd(subparsers, 'makedb')
     parser_makedb.add_argument('-f', '--fasta-directory', required=True, help='Path to FASTA files.')
     parser_makedb.add_argument('-o', '--output-dir', required=True, help='Name for the output database.')
     parser_makedb.add_argument('-T', '--threads', type=int, help="Number of cores to dedicate for multi-processing")
@@ -66,12 +89,12 @@ def main():
         parser_makedb.set_defaults(func=available_modules['makedb'])
 
     ##Add sub-parser for the "query" command
-    parser_query = subparsers.add_parser('query', help="Run BLAST queries in parallel.")
+    parser_query = add_cmd(subparsers, 'query')
     parser_query.add_argument('-d', '--database', required=True, help='Path to the BLAST databases.')
     parser_query.add_argument('-q', '--query-files', required=True, help='Path to the query files in FASTA format.')
     parser_query.add_argument('-T', '--threads', type=int, help='Number of cores to dedicate')
     parser_query.add_argument('-e', '--evalue', type=float, help='E-value threshold.')
-    parser_query.add_argument('-o', '--output', required=True, help='Path to directory to store results.')
+    parser_query.add_argument('-o', '--output-dir', required=True, help='Path to directory to store results.')
     parser_query.add_argument('--min-perc', type=check_query_range, help='Define percent identity threshold (default = 90)')
     parser_query.add_argument('--min-cov', type=check_query_range, help="Define query coverage threshold (default = 75)")
     parser_query.add_argument('-R', '--report-strongest-matches', action='store_true', help='Report only the top hit for each query')
@@ -102,15 +125,15 @@ def main():
         parser_query.set_defaults(func=available_modules['query'])
 
     ##Add sub-parser for multi-FASTA file splitter
-    split_fasta_parser = subparsers.add_parser('split-fasta')
-    split_fasta_parser.add_argument('-i', '--input', required=True, help="Input multi-FASTA file")
+    split_fasta_parser = add_cmd(subparsers, 'split-fasta')
+    split_fasta_parser.add_argument('-f', '--fasta', required=True, help="Input multi-FASTA file")
     split_fasta_parser.add_argument('-o', '--output-dir', required=True, help="Output directory for split FASTA files")
     split_fasta_parser.add_argument('-F', '--fragment', type=int, help="Split multi-FASTA into chunks of this many sequences")
     split_fasta_parser.add_argument('-C', '--compress', action='store_true', help="Compress output files as .gz")
     if 'split_fasta' in available_modules:
         split_fasta_parser.set_defaults(func=available_modules['split_fasta'])
 
-    parser_extract = subparsers.add_parser('extract', help="Extract sequences based Query results")
+    parser_extract = add_cmd(subparsers, 'extract')
     parser_extract.add_argument('-c', '--csv-path', required=True, help="Path to BLAST results files.")
     parser_extract.add_argument('-f', '--fasta-directory', required=True, help="Path to reference FASTA assemblies.")
     parser_extract.add_argument('-o', '--output-fasta', required=True, help="Output FASTA file name.")
@@ -126,7 +149,7 @@ def main():
     if 'extract_sequences' in available_modules:
         parser_extract.set_defaults(func=available_modules['extract_sequences'])
 
-    parser_extract_contig = subparsers.add_parser('extract-contig', help="Extract entire contig containing matching sequences.")
+    parser_extract_contig = add_cmd(subparsers, 'extract-contig')
     parser_extract_contig.add_argument('-c', '--csv-path', required=True, help="Path to Query results file (all_results.csv or all_filtered_results.csv)")
     parser_extract_contig.add_argument('-f', '--fasta-directory', required=True, help="Path to your FASTA files used to create 'makedb' databases")
     parser_extract_contig.add_argument('-o', '--output-fasta', required=True, help="Output FASTA file with extension (.fa, .fas, .fna, .fasta)")
@@ -139,7 +162,7 @@ def main():
     if 'extract_contigs' in available_modules:
         parser_extract_contig.set_defaults(func=available_modules['extract_contigs'])
 
-    parser_search = subparsers.add_parser("search", help="Extract metadata from GenBank or JSON files")
+    parser_search = add_cmd(subparsers, 'search')
     parser_search.add_argument('-i', '--input', required=True, help="Input file (.json or .gb/.gbk/.genbank)")
     parser_search.add_argument('-o', '--output', required=True, help="Output file (e.g., .csv, .tsv, .json)")
     parser_search.add_argument('--all', action='store_true', help='Extract all available metadata')
@@ -150,7 +173,7 @@ def main():
     if 'search' in available_modules:
         parser_search.set_defaults(func=available_modules['search'])
 
-    parser_sanitize = subparsers.add_parser("sanitize", help="Remove special characters from input files (required for SeqForge modules)")
+    parser_sanitize = add_cmd(subparsers, 'sanitize')
     parser_sanitize.add_argument('-i', '--input', required=True, help="File(s) to sanitize. Can be a single file or a directory of files")
     parser_sanitize.add_argument('-e', '--extension', nargs='+', help="File extensions to process. Not needed if submitting a single file. For FASTA files, run '-e fasta' to allow for all standard FASTA extensions")
     parser_sanitize.add_argument('-I', '--in-place', action='store_true', help="Rename files in place (recommended)")
@@ -159,7 +182,7 @@ def main():
     if 'sanitize' in available_modules:
         parser_sanitize.set_defaults(func=available_modules['sanitize'])
 
-    parser_fasta_metrics = subparsers.add_parser("fasta-metrics", help="Compute FASTA file statistics (e.g., N50, GC Content, etc.)")
+    parser_fasta_metrics = add_cmd(subparsers, 'fasta-metrics')
     parser_fasta_metrics.add_argument('-f', '--fasta-directory', required=True, help="Path to FASTA file or directory of FASTA files")
     parser_fasta_metrics.add_argument('-o', '--output', default=None, help="Optional name for CSV summary (default: fasta_metrics_summary.csv)")
     parser_fasta_metrics.add_argument('-M', '--min-contig-size', type=int, default=500, help="Minimum contig size (in bp) to include for calculation of all reported metrics (default = 500)")
@@ -168,7 +191,7 @@ def main():
     if 'fasta_metrics' in available_modules:
         parser_fasta_metrics.set_defaults(func=available_modules['fasta_metrics'])
 
-    parser_unique = subparsers.add_parser('unique-headers', help='Append source and random suffix to FASTA headers')
+    parser_unique = add_cmd(subparsers, 'unique-headers')
     parser_unique.add_argument('-f', '--fasta-directory', required=True, help='Path to FASTA file(s)')
     parser_unique.add_argument('-o', '--output-dir', help="Directory for output FASTA files (unless using --in-place)")
     parser_unique.add_argument('-I', '--in-place', action='store_true', help="Modify input files in-place (uses temporary files for safety)")
@@ -178,7 +201,11 @@ def main():
                                help=("Progress reporting mode; "
                                      "passing only --progress is equivalent to --progress bar "
                                      "'--verbose' prints a line per record, 'none' silences output")
-                                     )
+                                     ),
+    parser_unique.add_argument("-D", "--deterministic",
+                               action="store_true",
+                               help="Use a stable MD5-based suffix derived from the sequence and header "
+                               "instead of a random alphanumeric code (default). Ensures reproducible IDs across runs")
     if 'generate_unique_fasta_headers' in available_modules:
         parser_unique.set_defaults(func=available_modules['generate_unique_fasta_headers'])
 

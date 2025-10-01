@@ -3,10 +3,18 @@ import sys
 import logging
 import random
 import string
+import hashlib
 from datetime import datetime
 from Bio import SeqIO
 
 from .utils.progress import ProgressHandler
+
+def make_suffix(seq, header, deterministic=False):
+    if deterministic:
+        h = hashlib.md5((seq + header).encode()).hexdigest()
+        return h[:8]
+    else:
+        return ''.join(random.choices(string.ascii_letters + string.digits, k=5))
 
 def run_unique_fasta_headers(args):
     logger = logging.getLogger("unique-fasta-headers")
@@ -79,10 +87,24 @@ def run_unique_fasta_headers(args):
         try:
             with open(target_path, 'w') as out_handle:
                 for rec in records:
-                    suffix = ''.join(random.choices(string.ascii_letters + string.digits, k=5))
-                    new_id = f"{rec.id}_{base}_{suffix}"
+                    # Preserve originals before mutation
+                    orig_id = rec.id
+                    orig_desc = rec.description  # full header (often starts with orig_id)
+
+                    # Build a tail that excludes the leading orig_id (if present)
+                    if orig_desc.startswith(orig_id):
+                        tail = orig_desc[len(orig_id):].lstrip()  # drop the leading id + space(s)
+                    else:
+                        tail = orig_desc  # unexpected, but keep whatever was there
+
+                    # Deterministic/random suffix using full original header
+                    suffix = make_suffix(str(rec.seq), orig_desc, deterministic=args.deterministic)
+
+                    # New stable/unique ID + preserve the original tail
+                    new_id = f"{orig_id}_{base}_{suffix}"
                     rec.id = new_id
-                    rec.description = ''
+                    rec.description = tail  # keep the rest of the original header intact
+
                     SeqIO.write(rec, out_handle, "fasta")
                     prog.update(1, current_item=new_id)
             

@@ -259,7 +259,7 @@ def run_multiblast(args):
     db_dir = args.database
     query_path = args.query_files
     fasta_path = args.fasta_directory
-    results_output_dir = args.output
+    results_output_dir = args.output_dir
     threads = args.threads if args.threads else 4
 
     evalue_threshold = args.evalue if args.evalue is not None else 1e-5
