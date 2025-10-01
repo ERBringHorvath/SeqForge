@@ -120,6 +120,9 @@ Purpose: General-use tools for various genomic workflows <br/>
         *   Source file: GCA_000346795_1.faa
         *   Example header: >hypothetical
         *   unique-headers modification: >hypothetical_GCA_000346795_1_54uMe
+
+### Note: <br/>
+**SeqForge accepts the following FASTA formats: .fasta, .fa, .fas, .fna, .ffn, .faa**
 ______________________________________________________________________________________________________________________________________
 ______________________________________________________________________________________________________________________________________
 
@@ -320,7 +323,7 @@ seqforge query: <br />
 **Required arguments:** <br/>
 `-d`, `--database`: path to directory containing BLAST+ databases <br />
 `-q`, `--query-files`: path to directory containing query files in amino acid FASTA format <br />
-`-o`, `--output`: path to directory to store results
+`-o`, `--output-dir`: path to directory to store results
 
 **Required for nucleotide queries (blastn):** <br/>
 `-N`, `--nucleotide-query`: use blastn for queries in nucleotide FASTA format
@@ -478,7 +481,7 @@ ________________________________________________________________________________
 ### Split Multi-FASTA files
 
 seqforge split-fasta: <br />
-`-i`, `--input`: input multi-FASTA file <br />
+`-f`, `--fasta`: input multi-FASTA file <br />
 `-o`, `--output-dir`: output directory for split FASTA files <br />
 `-F`, `--fragment`: split multi-FASTA file into defined chunks of *n* sequences each <br />
 `-C`, `--compress`: compress output files as .gz <br />
@@ -512,6 +515,7 @@ seqforge unique-headers: <br/>
 `-o`, `--output-dir`: directory for output FASTA files (unless using `--in-place`) <br/>
 `-I`, `--in-place`: modify input files in-place (uses temporary files for safety) <br/>
 `-p`, `--progress`: progress reporting mode; choices = 'bar', 'verbose', 'none'. `--progress verbose` prints a line per record.
+`-D`, `--deterministic`: use a stable MD5-based suffix derived from the sequence and header instead of a random alphanumeric code (default). Ensures reproducible IDs across runs
 
 We suggest using this module for any CDS prediction .faa output file(s) prior to Query-Motif
 ______________________________________________________________________________________________________________________________________
