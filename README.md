@@ -466,6 +466,11 @@ seqforge sanitize: <br/>
 `-S`, `--sanitize-outdir`: path to new directory for files. This option copies file(s) to a new directory and removes special characters from
         the copied file names, leaving the original file names intact (storage intensive) <br/>
 `--dry-run`: preview changes without committing <br/>
+
+**Example usage (sanitize in-place):** <br/>
+`seqforge sanitize -i /path/to/file(s) -e fasta -I` <br/>
+**Example usage (copy files to new directory and rename only copied files):** <br/>
+`seqforge sanitize -i /path/to/file(s) -e fasta -S /path/to/output/directory`
 ______________________________________________________________________________________________________________________________________
 
 ### FASTA File Metrics
@@ -476,6 +481,9 @@ seqforge fasta-metrics: <br/>
 `-M`, `--min-contig-size`: minimum contig size to include for all calculations (default = 500) <br/>
 `--temp-dir`: specify a temporary directory for archive extraction (default = /tmp/) <br/>
 `--keep-temp-files`: for archive submission; retains temporary directory generated at /tmp/seqforge_fasta_extract_*
+
+**Example usage:** <br/>
+`seqforge fasta-metrics -f /path/to/FASTA/file(s) -o /path/to/output/directory`
 ______________________________________________________________________________________________________________________________________
 
 ### Split Multi-FASTA files
@@ -485,6 +493,12 @@ seqforge split-fasta: <br />
 `-o`, `--output-dir`: output directory for split FASTA files <br />
 `-F`, `--fragment`: split multi-FASTA file into defined chunks of *n* sequences each <br />
 `-C`, `--compress`: compress output files as .gz <br />
+
+**Example usage:** <br/>
+`seqforge split-fasta -f /path/to/multi-FASTA/file -o /path/to/output/directory`
+
+### **NOTE:** <br/>
+If any FASTA headers contain a pipe symbol (|), we suggest removing it. `seqforge split-fasta` renames output FASTA files based on the associated FASTA header; in edge cases, inclusion of a pipe in headers can cause issues, as the shell may interpret the symbol as part of a command string, leading to errors. 
 ______________________________________________________________________________________________________________________________________
 
 ### Extract Sequence Metadata from JSON or GenBank Files
@@ -517,7 +531,10 @@ seqforge unique-headers: <br/>
 `-p`, `--progress`: progress reporting mode; choices = 'bar', 'verbose', 'none'. `--progress verbose` prints a line per record.
 `-D`, `--deterministic`: use a stable MD5-based suffix derived from the sequence and header instead of a random alphanumeric code (default). Ensures reproducible IDs across runs
 
-We suggest using this module for any CDS prediction .faa output file(s) prior to Query-Motif
+We suggest using this module for any CDS prediction .faa output file(s) prior to Query-Motif to mitigate potential file name collisions.
+
+**Example usage:** <br/>
+`seqforge unique-headers -f /path/to/FASTA/file(s) -o /path/to/output/directory -Dp bar`
 ______________________________________________________________________________________________________________________________________
 ______________________________________________________________________________________________________________________________________
 
