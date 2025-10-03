@@ -528,7 +528,7 @@ seqforge unique-headers: <br/>
 `-f`, `--fasta-directory`: path to FASTA file(s) <br/>
 `-o`, `--output-dir`: directory for output FASTA files (unless using `--in-place`) <br/>
 `-I`, `--in-place`: modify input files in-place (uses temporary files for safety) <br/>
-`-p`, `--progress`: progress reporting mode; choices = 'bar', 'verbose', 'none'. `--progress verbose` prints a line per record.
+`-p`, `--progress`: progress reporting mode; choices = 'bar', 'verbose', 'none'. `--progress verbose` prints a line per record. <br/>
 `-D`, `--deterministic`: use a stable MD5-based suffix derived from the sequence and header instead of a random alphanumeric code (default). Ensures reproducible IDs across runs
 
 We suggest using this module for any CDS prediction .faa output file(s) prior to Query-Motif to mitigate potential file name collisions.
