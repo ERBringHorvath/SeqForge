@@ -1,7 +1,7 @@
 # **<ins>SeqForge<ins/>**
 
 [![Bioconda](https://img.shields.io/conda/vn/bioconda/seqforge.svg?color=yellow)](https://anaconda.org/bioconda/seqforge) 
-[![conda downloads](https://img.shields.io/conda/dn/bioconda/seqforge?color=cyan)](https://anaconda.org/bioconda/seqforge)
+[![conda downloads](https://img.shields.io/conda/dn/bioconda/seqforge?color=gold)](https://anaconda.org/bioconda/seqforge)
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-green)](#) 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?color=lavender)](LICENSE)
 
