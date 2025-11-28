@@ -18,7 +18,7 @@ FASTA_EXTENSIONS = (".fasta", ".faa", ".fna", ".ffn", ".fa", ".fas",
 def sanitize_filename(filename):
     name, ext = os.path.splitext(filename)
     name = name.replace('.', '_')
-    name = re.sub(r'[-:;\s]', '_', name)
+    name = re.sub(r'[-:;\s|]', '_', name)
     name = re.sub(r"[()'`\"‘’“”]", '', name)
     name = re.sub(r'_+', '_', name)
     return name + ext

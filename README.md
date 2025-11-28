@@ -1,5 +1,7 @@
 # **<ins>SeqForge<ins/>**
 
+![SeqForge](img/SeqForge_Emblem.jpg)
+
 [![Bioconda](https://img.shields.io/conda/vn/bioconda/seqforge.svg?color=yellow)](https://anaconda.org/bioconda/seqforge) 
 [![conda downloads](https://img.shields.io/conda/dn/bioconda/seqforge?color=gold)](https://anaconda.org/bioconda/seqforge)
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-green)](#) 
@@ -546,7 +548,7 @@ ________________________________________________________________________________
 Cite SeqForge: <br />
 Bring Horvath, ER, Winter, JM, **2025**. <br/>
 SeqForge: A scalable platform for alignment-based searches, motif detection, and sequence curation across meta/genomic datasets
-*bioRxiv*. doi: https://doi.org/10.1101/2025.08.12.669971
+*BMC Bioinformatics* 26, 280. doi.org/10.1186/s12859-025-06297-9
 
 Cite NCBI BLAST+: <br />
 Camancho C, Coulouris G, Avagyan V, Ma N, Papadopoulos J, Bealer K, Madden TL, **2009**. <br />
@@ -554,4 +556,4 @@ BLAST+: architecture and applications. *BMC Bioinformatics*, 10, 421. doi:10.118
 
 Cite Logomaker: <br/>
 Tareen, A, Kinney, JB, **2020** <br/>
-Logomaker: beautiful sequence logos in Python. *Bioinformatics*, 36, 7, 2272–2274, doi.org/10.1093/bioinformatics/btz921
+Logomaker: beautiful sequence logos in Python. *Bioinformatics*, 36, 7, 2272–2274. doi.org/10.1093/bioinformatics/btz921
