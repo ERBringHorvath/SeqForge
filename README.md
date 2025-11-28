@@ -1,6 +1,6 @@
 # **<ins>SeqForge<ins/>**
 
-![SeqForge](img/SeqForge_Emblem.jpg)
+<img src="img/SeqForge_Emblem.jpg" width="50%">
 
 [![Bioconda](https://img.shields.io/conda/vn/bioconda/seqforge.svg?color=yellow)](https://anaconda.org/bioconda/seqforge) 
 [![conda downloads](https://img.shields.io/conda/dn/bioconda/seqforge?color=gold)](https://anaconda.org/bioconda/seqforge)
